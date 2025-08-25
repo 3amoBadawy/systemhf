@@ -1,0 +1,18 @@
+User-agent: *
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+Disallow: /wp-content/plugins/
+Disallow: /wp-content/themes/
+Disallow: /wp-content/cache/
+Disallow: /wp-content/uploads/2022/
+Disallow: /wp-content/uploads/2023/
+Disallow: /wp-content/uploads/2024/
+Allow: /wp-admin/admin-ajax.php
+Allow: /wp-content/uploads/2025/
+
+# Sitemaps
+Sitemap: https://www.betavape.com/sitemap.xml
+Sitemap: https://www.betavape.com/sitemap_index.xml
+
+# Crawl-delay for better performance
+Crawl-delay: 1

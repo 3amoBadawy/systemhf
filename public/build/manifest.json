@@ -1,0 +1,30 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-D2OFZe8r.css",
+    "src": "resources/css/app.css",
+    "isEntry": true,
+    "names": [
+      "app.css"
+    ]
+  },
+  "resources/css/invoice-create.css": {
+    "file": "assets/invoice-create-98ba9VD_.css",
+    "src": "resources/css/invoice-create.css",
+    "isEntry": true,
+    "names": [
+      "invoice-create.css"
+    ]
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-CtyOOn5w.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/js/invoice-create.js": {
+    "file": "assets/invoice-create-BaCvqnRX.js",
+    "name": "invoice-create",
+    "src": "resources/js/invoice-create.js",
+    "isEntry": true
+  }
+}

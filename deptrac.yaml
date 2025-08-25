@@ -1,0 +1,60 @@
+deptrac:
+  paths:
+    - ./app
+  exclude_files:
+    - ./app/Console/Kernel.php
+    - ./app/Exceptions/Handler.php
+    - ./app/Providers/*.php
+  
+  layers:
+    - name: Domain
+      collectors:
+        - type: class
+          value: App\\Models\\.*
+    
+    - name: Application
+      collectors:
+        - type: class
+          value: App\\Services\\.*
+        - type: class
+          value: App\\UseCases\\.*
+    
+    - name: Infrastructure
+      collectors:
+        - type: class
+          value: App\\Repositories\\.*
+        - type: class
+          value: App\\Providers\\.*
+    
+    - name: Http
+      collectors:
+        - type: class
+          value: App\\Http\\.*
+        - type: class
+          value: App\\Console\\.*
+    
+    - name: Exceptions
+      collectors:
+        - type: class
+          value: App\\Exceptions\\.*
+  
+  ruleset:
+    Domain:
+      - Application
+      - Infrastructure
+      - Http
+      - Exceptions
+    
+    Application:
+      - Infrastructure
+      - Http
+      - Exceptions
+    
+    Infrastructure:
+      - Http
+      - Exceptions
+    
+    Http:
+      - Exceptions
+    
+    Exceptions: []
