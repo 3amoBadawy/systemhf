@@ -15,7 +15,7 @@ class DashboardController extends Controller
     /**
      * عرض لوحة التحكم الرئيسية
      */
-    public function index(): View
+    public function index(): \Illuminate\View\View
     {
         $user = Auth::user();
 
@@ -51,7 +51,7 @@ class DashboardController extends Controller
         $currentMonth = now()->startOfMonth();
 
         return Invoice::where('created_at', '>=', $currentMonth)
-            ->sum('total_amount');
+            ->sum('total');
     }
 
     /**

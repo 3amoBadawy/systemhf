@@ -13,7 +13,7 @@ class FinancialController extends Controller
     /**
      * عرض الصفحة الرئيسية للمالية
      */
-    public function index(): View
+    public function index(): \Illuminate\View\View
     {
         $user = Auth::user();
 
@@ -32,7 +32,7 @@ class FinancialController extends Controller
     private function getFinancialStats(): array
     {
         return [
-            'total_revenue' => Invoice::sum('total_amount'),
+            'total_revenue' => Invoice::sum('total'),
             'total_payments' => Payment::sum('amount'),
             'total_expenses' => Expense::sum('amount'),
             'net_profit' => $this->calculateNetProfit(),
@@ -46,7 +46,7 @@ class FinancialController extends Controller
      */
     private function calculateNetProfit(): float
     {
-        $totalRevenue = Invoice::sum('total_amount');
+        $totalRevenue = Invoice::sum('total');
         $totalExpenses = Expense::sum('amount');
 
         return $totalRevenue - $totalExpenses;
@@ -60,7 +60,7 @@ class FinancialController extends Controller
         $currentMonth = now()->startOfMonth();
 
         return Invoice::where('created_at', '>=', $currentMonth)
-            ->sum('total_amount');
+            ->sum('total');
     }
 
     /**
@@ -69,7 +69,7 @@ class FinancialController extends Controller
     private function getOutstandingInvoices(): float
     {
         return Invoice::where('payment_status', 'pending')
-            ->sum('total_amount');
+            ->sum('total');
     }
 
     /**
