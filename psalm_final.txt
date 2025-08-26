@@ -1,0 +1,2402 @@
+
+[0;31mERROR[0m: RedundantCondition - ]8;;file:///var/www/systemhf/app/Helpers/PermissionHelper.php#L27\app/Helpers/[1;31mPermissionHelper.php:27:13[0m]8;;\ - Type non-empty-array<array-key, string> for $user->permissions is always array<array-key, mixed> (see https://psalm.dev/122)
+        if ([97;41m$user->permissions && is_array($user->permissions)[0m) {
+
+
+[0;31mERROR[0m: RedundantCondition - ]8;;file:///var/www/systemhf/app/Helpers/PermissionHelper.php#L27\app/Helpers/[1;31mPermissionHelper.php:27:35[0m]8;;\ - Type non-empty-array<array-key, string> for $user->permissions is always array<array-key, mixed> (see https://psalm.dev/122)
+        if ($user->permissions && [97;41mis_array($user->permissions)[0m) {
+
+
+[0;31mERROR[0m: NoInterfaceProperties - ]8;;file:///var/www/systemhf/app/Http/Controllers/SalaryController.php#L32\app/Http/Controllers/[1;31mSalaryController.php:32:17[0m]8;;\ - Interfaces cannot have properties (see https://psalm.dev/028)
+                [97;41mAuth::user()->employee[0m->id ?? 0,
+
+
+[0;31mERROR[0m: NoInterfaceProperties - ]8;;file:///var/www/systemhf/app/Http/Controllers/SalaryController.php#L61\app/Http/Controllers/[1;31mSalaryController.php:61:17[0m]8;;\ - Interfaces cannot have properties (see https://psalm.dev/028)
+                [97;41mAuth::user()->employee[0m->id ?? 0,
+
+
+[0;31mERROR[0m: NoInterfaceProperties - ]8;;file:///var/www/systemhf/app/Http/Controllers/SalaryController.php#L91\app/Http/Controllers/[1;31mSalaryController.php:91:17[0m]8;;\ - Interfaces cannot have properties (see https://psalm.dev/028)
+                [97;41mAuth::user()->employee[0m->id ?? 0,
+
+
+[0;31mERROR[0m: RedundantCondition - ]8;;file:///var/www/systemhf/app/Http/Controllers/SystemController.php#L72\app/Http/Controllers/[1;31mSystemController.php:72:38[0m]8;;\ - Operand of type true is always truthy (see https://psalm.dev/122)
+            } elseif ($fileExists && [97;41m! $classExists[0m) {
+
+
+[0;31mERROR[0m: RedundantCondition - ]8;;file:///var/www/systemhf/app/Http/Controllers/SystemController.php#L120\app/Http/Controllers/[1;31mSystemController.php:120:38[0m]8;;\ - Operand of type true is always truthy (see https://psalm.dev/122)
+            } elseif ($fileExists && [97;41m! $classExists[0m) {
+
+
+[0;31mERROR[0m: RedundantCondition - ]8;;file:///var/www/systemhf/app/Http/Controllers/SystemController.php#L364\app/Http/Controllers/[1;31mSystemController.php:364:44[0m]8;;\ - Operand of type true is always truthy (see https://psalm.dev/122)
+            } elseif ($exists && $isDir && [97;41m! $writable[0m) {
+
+
+[0;31mERROR[0m: NoInterfaceProperties - ]8;;file:///var/www/systemhf/app/Http/Middleware/BranchContext.php#L37\app/Http/Middleware/[1;31mBranchContext.php:37:61[0m]8;;\ - Interfaces cannot have properties (see https://psalm.dev/028)
+        if ($user && property_exists($user, 'branch_id') && [97;41m$user->branch_id[0m) {
+
+
+[0;31mERROR[0m: NoInterfaceProperties - ]8;;file:///var/www/systemhf/app/Http/Middleware/BranchContext.php#L38\app/Http/Middleware/[1;31mBranchContext.php:38:58[0m]8;;\ - Interfaces cannot have properties (see https://psalm.dev/028)
+            $branch = property_exists($user, 'branch') ? [97;41m$user->branch[0m : null;
+
+
+[0;31mERROR[0m: NoInterfaceProperties - ]8;;file:///var/www/systemhf/app/Http/Middleware/BranchContext.php#L40\app/Http/Middleware/[1;31mBranchContext.php:40:66[0m]8;;\ - Interfaces cannot have properties (see https://psalm.dev/028)
+        } elseif ($user && property_exists($user, 'employee') && [97;41m$user->employee[0m && property_exists($user->employee, 'branch_id') && $user->employee->branch_id) {
+
+
+[0;31mERROR[0m: NoInterfaceProperties - ]8;;file:///var/www/systemhf/app/Http/Middleware/CheckBranchAccess.php#L32\app/Http/Middleware/[1;31mCheckBranchAccess.php:32:57[0m]8;;\ - Interfaces cannot have properties (see https://psalm.dev/028)
+        if ($user && property_exists($user, 'role') && ([97;41m$user->role[0m === 'admin' || $user->role === 'super_admin')) {
+
+
+[0;31mERROR[0m: NoInterfaceProperties - ]8;;file:///var/www/systemhf/app/Http/Middleware/CheckBranchAccess.php#L37\app/Http/Middleware/[1;31mCheckBranchAccess.php:37:67[0m]8;;\ - Interfaces cannot have properties (see https://psalm.dev/028)
+        if (! $user || ! property_exists($user, 'branch_id') || ! [97;41m$user->branch_id[0m) {
+
+
+[0;31mERROR[0m: NoInterfaceProperties - ]8;;file:///var/www/systemhf/app/Http/Middleware/CheckBranchAccess.php#L46\app/Http/Middleware/[1;31mCheckBranchAccess.php:46:64[0m]8;;\ - Interfaces cannot have properties (see https://psalm.dev/028)
+        if (! $user || ! property_exists($user, 'branch') || ! [97;41m$user->branch[0m || ! property_exists($user->branch, 'is_active') || ! $user->branch->is_active) {
+
+
+[0;31mERROR[0m: RedundantCondition - ]8;;file:///var/www/systemhf/app/Http/Middleware/CheckPermission.php#L66\app/Http/Middleware/[1;31mCheckPermission.php:66:13[0m]8;;\ - Type non-empty-array<array-key, string> for $user->permissions is always array<array-key, mixed> (see https://psalm.dev/122)
+        if ([97;41m$user && property_exists($user, 'permissions') && $user->permissions && is_array($user->permissions)[0m) {
+
+
+[0;31mERROR[0m: RedundantCondition - ]8;;file:///var/www/systemhf/app/Http/Middleware/CheckPermission.php#L66\app/Http/Middleware/[1;31mCheckPermission.php:66:85[0m]8;;\ - Type non-empty-array<array-key, string> for $user->permissions is always array<array-key, mixed> (see https://psalm.dev/122)
+        if ($user && property_exists($user, 'permissions') && $user->permissions && [97;41mis_array($user->permissions)[0m) {
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Account.php#L27\app/Models/[1;31mAccount.php:27:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newModelQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newmodelquery 'App\Models\Account|Illuminate\Database\Eloquent\Builder<App\Models\Account&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $name_ar
+ * @property string $type
+ * @property numeric $balance
+ * @property string|null $description
+ * @property bool $is_active
+ * @property int $branch_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read float $current_balance
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Expense> $expenses
+ * @property-read int|null $expenses_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Payment> $payments
+ * @property-read int|null $payments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
+ * @property-read int|null $transactions_count
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Account[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Account newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Account query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Account.php#L28\app/Models/[1;31mAccount.php:28:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newquery 'App\Models\Account|Illuminate\Database\Eloquent\Builder<App\Models\Account&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $name_ar
+ * @property string $type
+ * @property numeric $balance
+ * @property string|null $description
+ * @property bool $is_active
+ * @property int $branch_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read float $current_balance
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Expense> $expenses
+ * @property-read int|null $expenses_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Payment> $payments
+ * @property-read int|null $payments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
+ * @property-read int|null $transactions_count
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Account[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Account newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Account query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Account.php#L29\app/Models/[1;31mAccount.php:29:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::query is different to the implemented return type for Illuminate\Database\Eloquent\Model::query 'App\Models\Account|Illuminate\Database\Eloquent\Builder<App\Models\Account&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $name_ar
+ * @property string $type
+ * @property numeric $balance
+ * @property string|null $description
+ * @property bool $is_active
+ * @property int $branch_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read float $current_balance
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Expense> $expenses
+ * @property-read int|null $expenses_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Payment> $payments
+ * @property-read int|null $payments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
+ * @property-read int|null $transactions_count
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Account[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Account newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Account query()
+
+
+[0;31mERROR[0m: MissingTemplateParam - ]8;;file:///var/www/systemhf/app/Models/Account.php#L45\app/Models/[1;31mAccount.php:45:9[0m]8;;\ - App\Models\Account has missing template params when extending Illuminate\Database\Eloquent\Factories\HasFactory, expecting 1 (see https://psalm.dev/182)
+    use [97;41mHasFactory[0m;
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/ActivityLog.php#L25\app/Models/[1;31mActivityLog.php:25:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newModelQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newmodelquery 'App\Models\ActivityLog|Illuminate\Database\Eloquent\Builder<App\Models\ActivityLog&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int|null $user_id
+ * @property int|null $employee_id
+ * @property int|null $branch_id
+ * @property string $action
+ * @property string|null $model_type
+ * @property int|null $model_id
+ * @property array<array-key, mixed>|null $old_values
+ * @property array<array-key, mixed>|null $new_values
+ * @property string|null $ip_address
+ * @property string|null $user_agent
+ * @property string|null $description
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|ActivityLog[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ActivityLog newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ActivityLog query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/ActivityLog.php#L26\app/Models/[1;31mActivityLog.php:26:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newquery 'App\Models\ActivityLog|Illuminate\Database\Eloquent\Builder<App\Models\ActivityLog&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int|null $user_id
+ * @property int|null $employee_id
+ * @property int|null $branch_id
+ * @property string $action
+ * @property string|null $model_type
+ * @property int|null $model_id
+ * @property array<array-key, mixed>|null $old_values
+ * @property array<array-key, mixed>|null $new_values
+ * @property string|null $ip_address
+ * @property string|null $user_agent
+ * @property string|null $description
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|ActivityLog[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ActivityLog newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ActivityLog query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/ActivityLog.php#L27\app/Models/[1;31mActivityLog.php:27:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::query is different to the implemented return type for Illuminate\Database\Eloquent\Model::query 'App\Models\ActivityLog|Illuminate\Database\Eloquent\Builder<App\Models\ActivityLog&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int|null $user_id
+ * @property int|null $employee_id
+ * @property int|null $branch_id
+ * @property string $action
+ * @property string|null $model_type
+ * @property int|null $model_id
+ * @property array<array-key, mixed>|null $old_values
+ * @property array<array-key, mixed>|null $new_values
+ * @property string|null $ip_address
+ * @property string|null $user_agent
+ * @property string|null $description
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|ActivityLog[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ActivityLog newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ActivityLog query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Attendance.php#L40\app/Models/[1;31mAttendance.php:40:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newModelQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newmodelquery 'App\Models\Attendance|Illuminate\Database\Eloquent\Builder<App\Models\Attendance&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int $employee_id
+ * @property int $shift_id
+ * @property \Illuminate\Support\Carbon $date
+ * @property \Illuminate\Support\Carbon|null $check_in_time
+ * @property \Illuminate\Support\Carbon|null $check_out_time
+ * @property string $check_in_method
+ * @property string|null $check_out_method
+ * @property string|null $check_in_location
+ * @property string|null $check_out_location
+ * @property string|null $check_in_ip
+ * @property string|null $check_out_ip
+ * @property numeric|null $check_in_gps_lat
+ * @property numeric|null $check_in_gps_lng
+ * @property numeric|null $check_out_gps_lat
+ * @property numeric|null $check_out_gps_lng
+ * @property int $late_minutes
+ * @property int $overtime_minutes
+ * @property \Illuminate\Support\Carbon|null $break_start_time
+ * @property \Illuminate\Support\Carbon|null $break_end_time
+ * @property int $total_break_minutes
+ * @property numeric $work_hours
+ * @property string $status
+ * @property string|null $notes
+ * @property int|null $approved_by
+ * @property \Illuminate\Support\Carbon|null $approved_at
+ * @property bool $is_verified
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Shift|null $shift
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Attendance[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Attendance newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Attendance query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Attendance.php#L41\app/Models/[1;31mAttendance.php:41:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newquery 'App\Models\Attendance|Illuminate\Database\Eloquent\Builder<App\Models\Attendance&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int $employee_id
+ * @property int $shift_id
+ * @property \Illuminate\Support\Carbon $date
+ * @property \Illuminate\Support\Carbon|null $check_in_time
+ * @property \Illuminate\Support\Carbon|null $check_out_time
+ * @property string $check_in_method
+ * @property string|null $check_out_method
+ * @property string|null $check_in_location
+ * @property string|null $check_out_location
+ * @property string|null $check_in_ip
+ * @property string|null $check_out_ip
+ * @property numeric|null $check_in_gps_lat
+ * @property numeric|null $check_in_gps_lng
+ * @property numeric|null $check_out_gps_lat
+ * @property numeric|null $check_out_gps_lng
+ * @property int $late_minutes
+ * @property int $overtime_minutes
+ * @property \Illuminate\Support\Carbon|null $break_start_time
+ * @property \Illuminate\Support\Carbon|null $break_end_time
+ * @property int $total_break_minutes
+ * @property numeric $work_hours
+ * @property string $status
+ * @property string|null $notes
+ * @property int|null $approved_by
+ * @property \Illuminate\Support\Carbon|null $approved_at
+ * @property bool $is_verified
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Shift|null $shift
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Attendance[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Attendance newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Attendance query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Attendance.php#L42\app/Models/[1;31mAttendance.php:42:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::query is different to the implemented return type for Illuminate\Database\Eloquent\Model::query 'App\Models\Attendance|Illuminate\Database\Eloquent\Builder<App\Models\Attendance&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int $employee_id
+ * @property int $shift_id
+ * @property \Illuminate\Support\Carbon $date
+ * @property \Illuminate\Support\Carbon|null $check_in_time
+ * @property \Illuminate\Support\Carbon|null $check_out_time
+ * @property string $check_in_method
+ * @property string|null $check_out_method
+ * @property string|null $check_in_location
+ * @property string|null $check_out_location
+ * @property string|null $check_in_ip
+ * @property string|null $check_out_ip
+ * @property numeric|null $check_in_gps_lat
+ * @property numeric|null $check_in_gps_lng
+ * @property numeric|null $check_out_gps_lat
+ * @property numeric|null $check_out_gps_lng
+ * @property int $late_minutes
+ * @property int $overtime_minutes
+ * @property \Illuminate\Support\Carbon|null $break_start_time
+ * @property \Illuminate\Support\Carbon|null $break_end_time
+ * @property int $total_break_minutes
+ * @property numeric $work_hours
+ * @property string $status
+ * @property string|null $notes
+ * @property int|null $approved_by
+ * @property \Illuminate\Support\Carbon|null $approved_at
+ * @property bool $is_verified
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Shift|null $shift
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Attendance[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Attendance newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Attendance query()
+
+
+[0;31mERROR[0m: MissingTemplateParam - ]8;;file:///var/www/systemhf/app/Models/Attendance.php#L77\app/Models/[1;31mAttendance.php:77:9[0m]8;;\ - App\Models\Attendance has missing template params when extending Illuminate\Database\Eloquent\Factories\HasFactory, expecting 1 (see https://psalm.dev/182)
+    use [97;41mHasFactory[0m;
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Branch.php#L36\app/Models/[1;31mBranch.php:36:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newModelQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newmodelquery 'App\Models\Branch|Illuminate\Database\Eloquent\Builder<App\Models\Branch&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $name_ar
+ * @property string $code
+ * @property string|null $address
+ * @property string|null $phone
+ * @property string|null $email
+ * @property string|null $manager_name
+ * @property bool $is_active
+ * @property int|null $is_main
+ * @property int $sort_order
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Account> $accounts
+ * @property-read int|null $accounts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Customer> $customers
+ * @property-read int|null $customers_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Expense> $expenses
+ * @property-read int|null $expenses_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Invoice> $invoices
+ * @property-read int|null $invoices_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PaymentMethod> $paymentMethods
+ * @property-read int|null $payment_methods_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Payment> $payments
+ * @property-read int|null $payments_count
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Branch[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Branch.php#L37\app/Models/[1;31mBranch.php:37:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newquery 'App\Models\Branch|Illuminate\Database\Eloquent\Builder<App\Models\Branch&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $name_ar
+ * @property string $code
+ * @property string|null $address
+ * @property string|null $phone
+ * @property string|null $email
+ * @property string|null $manager_name
+ * @property bool $is_active
+ * @property int|null $is_main
+ * @property int $sort_order
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Account> $accounts
+ * @property-read int|null $accounts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Customer> $customers
+ * @property-read int|null $customers_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Expense> $expenses
+ * @property-read int|null $expenses_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Invoice> $invoices
+ * @property-read int|null $invoices_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PaymentMethod> $paymentMethods
+ * @property-read int|null $payment_methods_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Payment> $payments
+ * @property-read int|null $payments_count
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Branch[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Branch.php#L38\app/Models/[1;31mBranch.php:38:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::query is different to the implemented return type for Illuminate\Database\Eloquent\Model::query 'App\Models\Branch|Illuminate\Database\Eloquent\Builder<App\Models\Branch&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $name_ar
+ * @property string $code
+ * @property string|null $address
+ * @property string|null $phone
+ * @property string|null $email
+ * @property string|null $manager_name
+ * @property bool $is_active
+ * @property int|null $is_main
+ * @property int $sort_order
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Account> $accounts
+ * @property-read int|null $accounts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Customer> $customers
+ * @property-read int|null $customers_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Expense> $expenses
+ * @property-read int|null $expenses_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Invoice> $invoices
+ * @property-read int|null $invoices_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PaymentMethod> $paymentMethods
+ * @property-read int|null $payment_methods_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Payment> $payments
+ * @property-read int|null $payments_count
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Branch[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch query()
+
+
+[0;31mERROR[0m: MissingTemplateParam - ]8;;file:///var/www/systemhf/app/Models/Branch.php#L58\app/Models/[1;31mBranch.php:58:9[0m]8;;\ - App\Models\Branch has missing template params when extending Illuminate\Database\Eloquent\Factories\HasFactory, expecting 1 (see https://psalm.dev/182)
+    use [97;41mHasFactory[0m;
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/BranchSetting.php#L17\app/Models/[1;31mBranchSetting.php:17:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newModelQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newmodelquery 'App\Models\BranchSetting|Illuminate\Database\Eloquent\Builder<App\Models\BranchSetting&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int $branch_id
+ * @property string $setting_key
+ * @property string|null $setting_value
+ * @property string $type
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|BranchSetting[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BranchSetting newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BranchSetting query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/BranchSetting.php#L18\app/Models/[1;31mBranchSetting.php:18:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newquery 'App\Models\BranchSetting|Illuminate\Database\Eloquent\Builder<App\Models\BranchSetting&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int $branch_id
+ * @property string $setting_key
+ * @property string|null $setting_value
+ * @property string $type
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|BranchSetting[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BranchSetting newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BranchSetting query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/BranchSetting.php#L19\app/Models/[1;31mBranchSetting.php:19:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::query is different to the implemented return type for Illuminate\Database\Eloquent\Model::query 'App\Models\BranchSetting|Illuminate\Database\Eloquent\Builder<App\Models\BranchSetting&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int $branch_id
+ * @property string $setting_key
+ * @property string|null $setting_value
+ * @property string $type
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|BranchSetting[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BranchSetting newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BranchSetting query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/BusinessSetting.php#L32\app/Models/[1;31mBusinessSetting.php:32:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newModelQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newmodelquery 'App\Models\BusinessSetting|Illuminate\Database\Eloquent\Builder<App\Models\BusinessSetting&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $business_name
+ * @property string $business_name_ar
+ * @property numeric $default_profit_percent
+ * @property string $currency
+ * @property string $currency_symbol
+ * @property string $currency_symbol_placement
+ * @property string $timezone
+ * @property string|null $logo
+ * @property string $date_format
+ * @property string $time_format
+ * @property string|null $phone
+ * @property string|null $email
+ * @property string|null $address
+ * @property string|null $description
+ * @property string|null $business_email
+ * @property string|null $business_phone
+ * @property string|null $business_address
+ * @property string|null $business_address_ar
+ * @property string|null $business_logo
+ * @property string|null $business_favicon
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|BusinessSetting[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BusinessSetting newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BusinessSetting query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/BusinessSetting.php#L33\app/Models/[1;31mBusinessSetting.php:33:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newquery 'App\Models\BusinessSetting|Illuminate\Database\Eloquent\Builder<App\Models\BusinessSetting&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $business_name
+ * @property string $business_name_ar
+ * @property numeric $default_profit_percent
+ * @property string $currency
+ * @property string $currency_symbol
+ * @property string $currency_symbol_placement
+ * @property string $timezone
+ * @property string|null $logo
+ * @property string $date_format
+ * @property string $time_format
+ * @property string|null $phone
+ * @property string|null $email
+ * @property string|null $address
+ * @property string|null $description
+ * @property string|null $business_email
+ * @property string|null $business_phone
+ * @property string|null $business_address
+ * @property string|null $business_address_ar
+ * @property string|null $business_logo
+ * @property string|null $business_favicon
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|BusinessSetting[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BusinessSetting newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BusinessSetting query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/BusinessSetting.php#L34\app/Models/[1;31mBusinessSetting.php:34:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::query is different to the implemented return type for Illuminate\Database\Eloquent\Model::query 'App\Models\BusinessSetting|Illuminate\Database\Eloquent\Builder<App\Models\BusinessSetting&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $business_name
+ * @property string $business_name_ar
+ * @property numeric $default_profit_percent
+ * @property string $currency
+ * @property string $currency_symbol
+ * @property string $currency_symbol_placement
+ * @property string $timezone
+ * @property string|null $logo
+ * @property string $date_format
+ * @property string $time_format
+ * @property string|null $phone
+ * @property string|null $email
+ * @property string|null $address
+ * @property string|null $description
+ * @property string|null $business_email
+ * @property string|null $business_phone
+ * @property string|null $business_address
+ * @property string|null $business_address_ar
+ * @property string|null $business_logo
+ * @property string|null $business_favicon
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|BusinessSetting[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BusinessSetting newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BusinessSetting query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Category.php#L23\app/Models/[1;31mCategory.php:23:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newModelQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newmodelquery 'App\Models\Category|Illuminate\Database\Eloquent\Builder<App\Models\Category&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $name
+ * @property string|null $name_ar
+ * @property string $slug
+ * @property string|null $description
+ * @property string|null $description_ar
+ * @property string|null $image
+ * @property bool $is_active
+ * @property int $sort_order
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41mBuilder<static>|Category[0m newModelQuery()
+ * @method static Builder<static>|Category newQuery()
+ * @method static Builder<static>|Category query()
+ * @method static Builder<static>|Category whereCreatedAt($value)
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Category.php#L24\app/Models/[1;31mCategory.php:24:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newquery 'App\Models\Category|Illuminate\Database\Eloquent\Builder<App\Models\Category&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $name
+ * @property string|null $name_ar
+ * @property string $slug
+ * @property string|null $description
+ * @property string|null $description_ar
+ * @property string|null $image
+ * @property bool $is_active
+ * @property int $sort_order
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41mBuilder<static>|Category[0m newModelQuery()
+ * @method static Builder<static>|Category newQuery()
+ * @method static Builder<static>|Category query()
+ * @method static Builder<static>|Category whereCreatedAt($value)
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Category.php#L25\app/Models/[1;31mCategory.php:25:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::query is different to the implemented return type for Illuminate\Database\Eloquent\Model::query 'App\Models\Category|Illuminate\Database\Eloquent\Builder<App\Models\Category&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $name
+ * @property string|null $name_ar
+ * @property string $slug
+ * @property string|null $description
+ * @property string|null $description_ar
+ * @property string|null $image
+ * @property bool $is_active
+ * @property int $sort_order
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41mBuilder<static>|Category[0m newModelQuery()
+ * @method static Builder<static>|Category newQuery()
+ * @method static Builder<static>|Category query()
+ * @method static Builder<static>|Category whereCreatedAt($value)
+
+
+[0;31mERROR[0m: MissingTemplateParam - ]8;;file:///var/www/systemhf/app/Models/Category.php#L42\app/Models/[1;31mCategory.php:42:9[0m]8;;\ - App\Models\Category has missing template params when extending Illuminate\Database\Eloquent\Factories\HasFactory, expecting 1 (see https://psalm.dev/182)
+    use [97;41mHasFactory[0m;
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Commission.php#L27\app/Models/[1;31mCommission.php:27:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newModelQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newmodelquery 'App\Models\Commission|Illuminate\Database\Eloquent\Builder<App\Models\Commission&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int $employee_id
+ * @property int $invoice_id
+ * @property \Illuminate\Support\Carbon $commission_date
+ * @property numeric $sales_amount
+ * @property numeric $commission_rate
+ * @property numeric $commission_amount
+ * @property string $status
+ * @property int|null $approved_by
+ * @property \Illuminate\Support\Carbon|null $approved_at
+ * @property int|null $paid_by
+ * @property \Illuminate\Support\Carbon|null $paid_at
+ * @property string|null $payment_method
+ * @property string|null $notes
+ * @property bool $is_active
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Commission[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Commission newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Commission query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Commission.php#L28\app/Models/[1;31mCommission.php:28:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newquery 'App\Models\Commission|Illuminate\Database\Eloquent\Builder<App\Models\Commission&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int $employee_id
+ * @property int $invoice_id
+ * @property \Illuminate\Support\Carbon $commission_date
+ * @property numeric $sales_amount
+ * @property numeric $commission_rate
+ * @property numeric $commission_amount
+ * @property string $status
+ * @property int|null $approved_by
+ * @property \Illuminate\Support\Carbon|null $approved_at
+ * @property int|null $paid_by
+ * @property \Illuminate\Support\Carbon|null $paid_at
+ * @property string|null $payment_method
+ * @property string|null $notes
+ * @property bool $is_active
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Commission[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Commission newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Commission query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Commission.php#L29\app/Models/[1;31mCommission.php:29:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::query is different to the implemented return type for Illuminate\Database\Eloquent\Model::query 'App\Models\Commission|Illuminate\Database\Eloquent\Builder<App\Models\Commission&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int $employee_id
+ * @property int $invoice_id
+ * @property \Illuminate\Support\Carbon $commission_date
+ * @property numeric $sales_amount
+ * @property numeric $commission_rate
+ * @property numeric $commission_amount
+ * @property string $status
+ * @property int|null $approved_by
+ * @property \Illuminate\Support\Carbon|null $approved_at
+ * @property int|null $paid_by
+ * @property \Illuminate\Support\Carbon|null $paid_at
+ * @property string|null $payment_method
+ * @property string|null $notes
+ * @property bool $is_active
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Commission[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Commission newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Commission query()
+
+
+[0;31mERROR[0m: MissingTemplateParam - ]8;;file:///var/www/systemhf/app/Models/Commission.php#L52\app/Models/[1;31mCommission.php:52:9[0m]8;;\ - App\Models\Commission has missing template params when extending Illuminate\Database\Eloquent\Factories\HasFactory, expecting 1 (see https://psalm.dev/182)
+    use [97;41mHasFactory[0m;
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Customer.php#L39\app/Models/[1;31mCustomer.php:39:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newModelQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newmodelquery 'App\Models\Customer|Illuminate\Database\Eloquent\Builder<App\Models\Customer&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $phone
+ * @property string|null $phone2
+ * @property string $country
+ * @property string $governorate
+ * @property string $address
+ * @property string $customer_type
+ * @property string|null $notes
+ * @property bool $is_active
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $branch_id
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Invoice> $invoices
+ * @property-read int|null $invoices_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CustomerNotification> $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Payment> $payments
+ * @property-read int|null $payments_count
+ * @property-read \App\Models\Branch|null $branch
+ * @property-read float $total_invoiced
+ * @property-read float $total_paid
+ * @property-read float $remaining_balance
+ * @property-read string $payment_status
+ * @property-read string $payment_status_text
+ * @property-read int $unread_notifications_count
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Customer[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Customer newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Customer query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Customer.php#L40\app/Models/[1;31mCustomer.php:40:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newquery 'App\Models\Customer|Illuminate\Database\Eloquent\Builder<App\Models\Customer&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $phone
+ * @property string|null $phone2
+ * @property string $country
+ * @property string $governorate
+ * @property string $address
+ * @property string $customer_type
+ * @property string|null $notes
+ * @property bool $is_active
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $branch_id
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Invoice> $invoices
+ * @property-read int|null $invoices_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CustomerNotification> $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Payment> $payments
+ * @property-read int|null $payments_count
+ * @property-read \App\Models\Branch|null $branch
+ * @property-read float $total_invoiced
+ * @property-read float $total_paid
+ * @property-read float $remaining_balance
+ * @property-read string $payment_status
+ * @property-read string $payment_status_text
+ * @property-read int $unread_notifications_count
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Customer[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Customer newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Customer query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Customer.php#L41\app/Models/[1;31mCustomer.php:41:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::query is different to the implemented return type for Illuminate\Database\Eloquent\Model::query 'App\Models\Customer|Illuminate\Database\Eloquent\Builder<App\Models\Customer&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $phone
+ * @property string|null $phone2
+ * @property string $country
+ * @property string $governorate
+ * @property string $address
+ * @property string $customer_type
+ * @property string|null $notes
+ * @property bool $is_active
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $branch_id
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Invoice> $invoices
+ * @property-read int|null $invoices_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CustomerNotification> $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Payment> $payments
+ * @property-read int|null $payments_count
+ * @property-read \App\Models\Branch|null $branch
+ * @property-read float $total_invoiced
+ * @property-read float $total_paid
+ * @property-read float $remaining_balance
+ * @property-read string $payment_status
+ * @property-read string $payment_status_text
+ * @property-read int $unread_notifications_count
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Customer[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Customer newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Customer query()
+
+
+[0;31mERROR[0m: MissingTemplateParam - ]8;;file:///var/www/systemhf/app/Models/Customer.php#L60\app/Models/[1;31mCustomer.php:60:9[0m]8;;\ - App\Models\Customer has missing template params when extending Illuminate\Database\Eloquent\Factories\HasFactory, expecting 1 (see https://psalm.dev/182)
+    use [97;41mHasFactory[0m;
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/CustomerNotification.php#L22\app/Models/[1;31mCustomerNotification.php:22:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newModelQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newmodelquery 'App\Models\CustomerNotification|Illuminate\Database\Eloquent\Builder<App\Models\CustomerNotification&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int $customer_id
+ * @property int|null $payment_id
+ * @property int|null $invoice_id
+ * @property string $type
+ * @property string $title
+ * @property string $message
+ * @property numeric|null $amount
+ * @property string $status
+ * @property \Illuminate\Support\Carbon|null $read_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|CustomerNotification[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CustomerNotification newQuery()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/CustomerNotification.php#L23\app/Models/[1;31mCustomerNotification.php:23:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newquery 'App\Models\CustomerNotification|Illuminate\Database\Eloquent\Builder<App\Models\CustomerNotification&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int $customer_id
+ * @property int|null $payment_id
+ * @property int|null $invoice_id
+ * @property string $type
+ * @property string $title
+ * @property string $message
+ * @property numeric|null $amount
+ * @property string $status
+ * @property \Illuminate\Support\Carbon|null $read_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|CustomerNotification[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CustomerNotification newQuery()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/CustomerNotification.php#L24\app/Models/[1;31mCustomerNotification.php:24:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::query is different to the implemented return type for Illuminate\Database\Eloquent\Model::query 'App\Models\CustomerNotification|Illuminate\Database\Eloquent\Builder<App\Models\CustomerNotification&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int $customer_id
+ * @property int|null $payment_id
+ * @property int|null $invoice_id
+ * @property string $type
+ * @property string $title
+ * @property string $message
+ * @property numeric|null $amount
+ * @property string $status
+ * @property \Illuminate\Support\Carbon|null $read_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|CustomerNotification[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CustomerNotification newQuery()
+
+
+[0;31mERROR[0m: MissingTemplateParam - ]8;;file:///var/www/systemhf/app/Models/CustomerNotification.php#L43\app/Models/[1;31mCustomerNotification.php:43:9[0m]8;;\ - App\Models\CustomerNotification has missing template params when extending Illuminate\Database\Eloquent\Factories\HasFactory, expecting 1 (see https://psalm.dev/182)
+    use [97;41mHasFactory[0m;
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Employee.php#L57\app/Models/[1;31mEmployee.php:57:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newModelQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newmodelquery 'App\Models\Employee|Illuminate\Database\Eloquent\Builder<App\Models\Employee&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $employee_number
+ * @property string $name
+ * @property string $name_ar
+ * @property string $national_id
+ * @property string $phone
+ * @property string $email
+ * @property \Illuminate\Support\Carbon $birth_date
+ * @property \Illuminate\Support\Carbon $hire_date
+ * @property string $position
+ * @property string $position_ar
+ * @property string $department
+ * @property string $department_ar
+ * @property int $branch_id
+ * @property int $role_id
+ * @property int|null $user_id
+ * @property numeric $base_salary
+ * @property numeric $commission_rate
+ * @property float $overtime_rate
+ * @property float $basic_allowances
+ * @property float $monthly_allowances
+ * @property float $special_allowances
+ * @property float $basic_deductions
+ * @property float $other_deductions
+ * @property string|null $bank_name
+ * @property string|null $bank_account
+ * @property string|null $iban
+ * @property string $address
+ * @property string|null $emergency_contact
+ * @property string $status
+ * @property \Illuminate\Support\Carbon|null $termination_date
+ * @property string|null $termination_reason
+ * @property string|null $notes
+ * @property bool $is_active
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attendance> $attendance
+ * @property-read int|null $attendance_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Commission> $commissions
+ * @property-read int|null $commissions_count
+ * @property-read mixed $monthly_commission
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Invoice> $invoices
+ * @property-read int|null $invoices_count
+ * @property-read \App\Models\User|null $user
+ * @property-read \App\Models\Role|null $role
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Salary> $salaries
+ * @property-read int|null $salaries_count
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Employee[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Employee.php#L58\app/Models/[1;31mEmployee.php:58:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newquery 'App\Models\Employee|Illuminate\Database\Eloquent\Builder<App\Models\Employee&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $employee_number
+ * @property string $name
+ * @property string $name_ar
+ * @property string $national_id
+ * @property string $phone
+ * @property string $email
+ * @property \Illuminate\Support\Carbon $birth_date
+ * @property \Illuminate\Support\Carbon $hire_date
+ * @property string $position
+ * @property string $position_ar
+ * @property string $department
+ * @property string $department_ar
+ * @property int $branch_id
+ * @property int $role_id
+ * @property int|null $user_id
+ * @property numeric $base_salary
+ * @property numeric $commission_rate
+ * @property float $overtime_rate
+ * @property float $basic_allowances
+ * @property float $monthly_allowances
+ * @property float $special_allowances
+ * @property float $basic_deductions
+ * @property float $other_deductions
+ * @property string|null $bank_name
+ * @property string|null $bank_account
+ * @property string|null $iban
+ * @property string $address
+ * @property string|null $emergency_contact
+ * @property string $status
+ * @property \Illuminate\Support\Carbon|null $termination_date
+ * @property string|null $termination_reason
+ * @property string|null $notes
+ * @property bool $is_active
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attendance> $attendance
+ * @property-read int|null $attendance_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Commission> $commissions
+ * @property-read int|null $commissions_count
+ * @property-read mixed $monthly_commission
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Invoice> $invoices
+ * @property-read int|null $invoices_count
+ * @property-read \App\Models\User|null $user
+ * @property-read \App\Models\Role|null $role
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Salary> $salaries
+ * @property-read int|null $salaries_count
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Employee[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Employee.php#L59\app/Models/[1;31mEmployee.php:59:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::query is different to the implemented return type for Illuminate\Database\Eloquent\Model::query 'App\Models\Employee|Illuminate\Database\Eloquent\Builder<App\Models\Employee&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $employee_number
+ * @property string $name
+ * @property string $name_ar
+ * @property string $national_id
+ * @property string $phone
+ * @property string $email
+ * @property \Illuminate\Support\Carbon $birth_date
+ * @property \Illuminate\Support\Carbon $hire_date
+ * @property string $position
+ * @property string $position_ar
+ * @property string $department
+ * @property string $department_ar
+ * @property int $branch_id
+ * @property int $role_id
+ * @property int|null $user_id
+ * @property numeric $base_salary
+ * @property numeric $commission_rate
+ * @property float $overtime_rate
+ * @property float $basic_allowances
+ * @property float $monthly_allowances
+ * @property float $special_allowances
+ * @property float $basic_deductions
+ * @property float $other_deductions
+ * @property string|null $bank_name
+ * @property string|null $bank_account
+ * @property string|null $iban
+ * @property string $address
+ * @property string|null $emergency_contact
+ * @property string $status
+ * @property \Illuminate\Support\Carbon|null $termination_date
+ * @property string|null $termination_reason
+ * @property string|null $notes
+ * @property bool $is_active
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attendance> $attendance
+ * @property-read int|null $attendance_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Commission> $commissions
+ * @property-read int|null $commissions_count
+ * @property-read mixed $monthly_commission
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Invoice> $invoices
+ * @property-read int|null $invoices_count
+ * @property-read \App\Models\User|null $user
+ * @property-read \App\Models\Role|null $role
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Salary> $salaries
+ * @property-read int|null $salaries_count
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Employee[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee query()
+
+
+[0;31mERROR[0m: MissingTemplateParam - ]8;;file:///var/www/systemhf/app/Models/Employee.php#L95\app/Models/[1;31mEmployee.php:95:9[0m]8;;\ - App\Models\Employee has missing template params when extending Illuminate\Database\Eloquent\Factories\HasFactory, expecting 1 (see https://psalm.dev/182)
+    use [97;41mHasFactory[0m;
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Expense.php#L28\app/Models/[1;31mExpense.php:28:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newModelQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newmodelquery 'App\Models\Expense|Illuminate\Database\Eloquent\Builder<App\Models\Expense&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $title
+ * @property string $title_ar
+ * @property numeric $amount
+ * @property string $category
+ * @property string|null $description
+ * @property \Illuminate\Support\Carbon $date
+ * @property int $branch_id
+ * @property int $user_id
+ * @property int $payment_method_id
+ * @property string|null $receipt_image
+ * @property bool $is_approved
+ * @property int|null $approved_by
+ * @property \Illuminate\Support\Carbon|null $approved_at
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $account_id
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Expense[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Expense.php#L29\app/Models/[1;31mExpense.php:29:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newquery 'App\Models\Expense|Illuminate\Database\Eloquent\Builder<App\Models\Expense&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $title
+ * @property string $title_ar
+ * @property numeric $amount
+ * @property string $category
+ * @property string|null $description
+ * @property \Illuminate\Support\Carbon $date
+ * @property int $branch_id
+ * @property int $user_id
+ * @property int $payment_method_id
+ * @property string|null $receipt_image
+ * @property bool $is_approved
+ * @property int|null $approved_by
+ * @property \Illuminate\Support\Carbon|null $approved_at
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $account_id
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Expense[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Expense.php#L30\app/Models/[1;31mExpense.php:30:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::query is different to the implemented return type for Illuminate\Database\Eloquent\Model::query 'App\Models\Expense|Illuminate\Database\Eloquent\Builder<App\Models\Expense&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $title
+ * @property string $title_ar
+ * @property numeric $amount
+ * @property string $category
+ * @property string|null $description
+ * @property \Illuminate\Support\Carbon $date
+ * @property int $branch_id
+ * @property int $user_id
+ * @property int $payment_method_id
+ * @property string|null $receipt_image
+ * @property bool $is_approved
+ * @property int|null $approved_by
+ * @property \Illuminate\Support\Carbon|null $approved_at
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $account_id
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Expense[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Expense query()
+
+
+[0;31mERROR[0m: MissingTemplateParam - ]8;;file:///var/www/systemhf/app/Models/Expense.php#L54\app/Models/[1;31mExpense.php:54:9[0m]8;;\ - App\Models\Expense has missing template params when extending Illuminate\Database\Eloquent\Factories\HasFactory, expecting 1 (see https://psalm.dev/182)
+    use [97;41mHasFactory[0m;
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Invoice.php#L36\app/Models/[1;31mInvoice.php:36:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newModelQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newmodelquery 'App\Models\Invoice|Illuminate\Database\Eloquent\Builder<App\Models\Invoice&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $invoice_number
+ * @property int $customer_id
+ * @property int $user_id
+ * @property \Illuminate\Support\Carbon $sale_date
+ * @property string|null $delivery_date
+ * @property string $contract_number
+ * @property string|null $contract_image
+ * @property numeric $subtotal
+ * @property numeric $discount
+ * @property string $tax_rate
+ * @property string $tax_amount
+ * @property numeric $total
+ * @property string $status
+ * @property string $payment_status
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $branch_id
+ * @property int|null $employee_id
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Payment> $payments
+ * @property-read int|null $payments_count
+ * @property-read float $total_paid
+ *
+ * @method static [97;41mBuilder<static>|Invoice[0m newModelQuery()
+ * @method static Builder<static>|Invoice newQuery()
+ * @method static Builder<static>|Invoice query()
+ * @method static Builder<static>|Invoice whereBranchId($value)
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Invoice.php#L37\app/Models/[1;31mInvoice.php:37:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newquery 'App\Models\Invoice|Illuminate\Database\Eloquent\Builder<App\Models\Invoice&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $invoice_number
+ * @property int $customer_id
+ * @property int $user_id
+ * @property \Illuminate\Support\Carbon $sale_date
+ * @property string|null $delivery_date
+ * @property string $contract_number
+ * @property string|null $contract_image
+ * @property numeric $subtotal
+ * @property numeric $discount
+ * @property string $tax_rate
+ * @property string $tax_amount
+ * @property numeric $total
+ * @property string $status
+ * @property string $payment_status
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $branch_id
+ * @property int|null $employee_id
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Payment> $payments
+ * @property-read int|null $payments_count
+ * @property-read float $total_paid
+ *
+ * @method static [97;41mBuilder<static>|Invoice[0m newModelQuery()
+ * @method static Builder<static>|Invoice newQuery()
+ * @method static Builder<static>|Invoice query()
+ * @method static Builder<static>|Invoice whereBranchId($value)
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Invoice.php#L38\app/Models/[1;31mInvoice.php:38:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::query is different to the implemented return type for Illuminate\Database\Eloquent\Model::query 'App\Models\Invoice|Illuminate\Database\Eloquent\Builder<App\Models\Invoice&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $invoice_number
+ * @property int $customer_id
+ * @property int $user_id
+ * @property \Illuminate\Support\Carbon $sale_date
+ * @property string|null $delivery_date
+ * @property string $contract_number
+ * @property string|null $contract_image
+ * @property numeric $subtotal
+ * @property numeric $discount
+ * @property string $tax_rate
+ * @property string $tax_amount
+ * @property numeric $total
+ * @property string $status
+ * @property string $payment_status
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $branch_id
+ * @property int|null $employee_id
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Payment> $payments
+ * @property-read int|null $payments_count
+ * @property-read float $total_paid
+ *
+ * @method static [97;41mBuilder<static>|Invoice[0m newModelQuery()
+ * @method static Builder<static>|Invoice newQuery()
+ * @method static Builder<static>|Invoice query()
+ * @method static Builder<static>|Invoice whereBranchId($value)
+
+
+[0;31mERROR[0m: MissingTemplateParam - ]8;;file:///var/www/systemhf/app/Models/Invoice.php#L64\app/Models/[1;31mInvoice.php:64:9[0m]8;;\ - App\Models\Invoice has missing template params when extending Illuminate\Database\Eloquent\Factories\HasFactory, expecting 1 (see https://psalm.dev/182)
+    use [97;41mHasFactory[0m;
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/InvoiceItem.php#L23\app/Models/[1;31mInvoiceItem.php:23:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newModelQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newmodelquery 'App\Models\InvoiceItem|Illuminate\Database\Eloquent\Builder<App\Models\InvoiceItem&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int $invoice_id
+ * @property int $product_id
+ * @property string $product_name
+ * @property int $quantity
+ * @property numeric $unit_price
+ * @property numeric $discount
+ * @property numeric $total_price
+ * @property string|null $notes
+ * @property array<string, mixed>|null $items_data
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|InvoiceItem[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|InvoiceItem newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|InvoiceItem query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/InvoiceItem.php#L24\app/Models/[1;31mInvoiceItem.php:24:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newquery 'App\Models\InvoiceItem|Illuminate\Database\Eloquent\Builder<App\Models\InvoiceItem&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int $invoice_id
+ * @property int $product_id
+ * @property string $product_name
+ * @property int $quantity
+ * @property numeric $unit_price
+ * @property numeric $discount
+ * @property numeric $total_price
+ * @property string|null $notes
+ * @property array<string, mixed>|null $items_data
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|InvoiceItem[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|InvoiceItem newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|InvoiceItem query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/InvoiceItem.php#L25\app/Models/[1;31mInvoiceItem.php:25:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::query is different to the implemented return type for Illuminate\Database\Eloquent\Model::query 'App\Models\InvoiceItem|Illuminate\Database\Eloquent\Builder<App\Models\InvoiceItem&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int $invoice_id
+ * @property int $product_id
+ * @property string $product_name
+ * @property int $quantity
+ * @property numeric $unit_price
+ * @property numeric $discount
+ * @property numeric $total_price
+ * @property string|null $notes
+ * @property array<string, mixed>|null $items_data
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|InvoiceItem[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|InvoiceItem newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|InvoiceItem query()
+
+
+[0;31mERROR[0m: MissingTemplateParam - ]8;;file:///var/www/systemhf/app/Models/InvoiceItem.php#L43\app/Models/[1;31mInvoiceItem.php:43:9[0m]8;;\ - App\Models\InvoiceItem has missing template params when extending Illuminate\Database\Eloquent\Factories\HasFactory, expecting 1 (see https://psalm.dev/182)
+    use [97;41mHasFactory[0m;
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Media.php#L34\app/Models/[1;31mMedia.php:34:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newModelQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newmodelquery 'App\Models\Media|Illuminate\Database\Eloquent\Builder<App\Models\Media&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $filename
+ * @property string $original_name
+ * @property string $mime_type
+ * @property int $size
+ * @property string $path
+ * @property string $disk
+ * @property string|null $alt_text
+ * @property string|null $caption
+ * @property string|null $description
+ * @property array<string, mixed>|null $metadata
+ * @property bool $is_public
+ * @property string $media_type
+ * @property array<string, mixed>|null $dimensions
+ * @property int|null $duration
+ * @property string|null $thumbnail_path
+ * @property array<string, mixed>|null $optimized_versions
+ * @property string $mediaable_type
+ * @property int $mediaable_id
+ * @property int $order
+ * @property bool $is_featured
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Media[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Media newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Media query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Media.php#L35\app/Models/[1;31mMedia.php:35:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newquery 'App\Models\Media|Illuminate\Database\Eloquent\Builder<App\Models\Media&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $filename
+ * @property string $original_name
+ * @property string $mime_type
+ * @property int $size
+ * @property string $path
+ * @property string $disk
+ * @property string|null $alt_text
+ * @property string|null $caption
+ * @property string|null $description
+ * @property array<string, mixed>|null $metadata
+ * @property bool $is_public
+ * @property string $media_type
+ * @property array<string, mixed>|null $dimensions
+ * @property int|null $duration
+ * @property string|null $thumbnail_path
+ * @property array<string, mixed>|null $optimized_versions
+ * @property string $mediaable_type
+ * @property int $mediaable_id
+ * @property int $order
+ * @property bool $is_featured
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Media[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Media newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Media query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Media.php#L36\app/Models/[1;31mMedia.php:36:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::query is different to the implemented return type for Illuminate\Database\Eloquent\Model::query 'App\Models\Media|Illuminate\Database\Eloquent\Builder<App\Models\Media&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $filename
+ * @property string $original_name
+ * @property string $mime_type
+ * @property int $size
+ * @property string $path
+ * @property string $disk
+ * @property string|null $alt_text
+ * @property string|null $caption
+ * @property string|null $description
+ * @property array<string, mixed>|null $metadata
+ * @property bool $is_public
+ * @property string $media_type
+ * @property array<string, mixed>|null $dimensions
+ * @property int|null $duration
+ * @property string|null $thumbnail_path
+ * @property array<string, mixed>|null $optimized_versions
+ * @property string $mediaable_type
+ * @property int $mediaable_id
+ * @property int $order
+ * @property bool $is_featured
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Media[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Media newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Media query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Payment.php#L30\app/Models/[1;31mPayment.php:30:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newModelQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newmodelquery 'App\Models\Payment|Illuminate\Database\Eloquent\Builder<App\Models\Payment&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int $invoice_id
+ * @property int $customer_id
+ * @property int $user_id
+ * @property int $payment_method_id
+ * @property int $account_id
+ * @property float $amount
+ * @property string $currency
+ * @property string $status
+ * @property string|null $reference_number
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $payment_date
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $branch_id
+ * @property-read \App\Models\Account|null $account
+ * @property-read \App\Models\Customer|null $customer
+ * @property-read string|null $receipt_image
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Payment[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Payment.php#L31\app/Models/[1;31mPayment.php:31:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newquery 'App\Models\Payment|Illuminate\Database\Eloquent\Builder<App\Models\Payment&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int $invoice_id
+ * @property int $customer_id
+ * @property int $user_id
+ * @property int $payment_method_id
+ * @property int $account_id
+ * @property float $amount
+ * @property string $currency
+ * @property string $status
+ * @property string|null $reference_number
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $payment_date
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $branch_id
+ * @property-read \App\Models\Account|null $account
+ * @property-read \App\Models\Customer|null $customer
+ * @property-read string|null $receipt_image
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Payment[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Payment.php#L32\app/Models/[1;31mPayment.php:32:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::query is different to the implemented return type for Illuminate\Database\Eloquent\Model::query 'App\Models\Payment|Illuminate\Database\Eloquent\Builder<App\Models\Payment&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int $invoice_id
+ * @property int $customer_id
+ * @property int $user_id
+ * @property int $payment_method_id
+ * @property int $account_id
+ * @property float $amount
+ * @property string $currency
+ * @property string $status
+ * @property string|null $reference_number
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $payment_date
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $branch_id
+ * @property-read \App\Models\Account|null $account
+ * @property-read \App\Models\Customer|null $customer
+ * @property-read string|null $receipt_image
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Payment[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment query()
+
+
+[0;31mERROR[0m: MissingTemplateParam - ]8;;file:///var/www/systemhf/app/Models/Payment.php#L53\app/Models/[1;31mPayment.php:53:9[0m]8;;\ - App\Models\Payment has missing template params when extending Illuminate\Database\Eloquent\Factories\HasFactory, expecting 1 (see https://psalm.dev/182)
+    use [97;41mHasFactory[0m;
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/PaymentAllocation.php#L18\app/Models/[1;31mPaymentAllocation.php:18:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newModelQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newmodelquery 'App\Models\PaymentAllocation|Illuminate\Database\Eloquent\Builder<App\Models\PaymentAllocation&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int $payment_id
+ * @property int $invoice_id
+ * @property float $amount
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|PaymentAllocation[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PaymentAllocation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PaymentAllocation query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/PaymentAllocation.php#L19\app/Models/[1;31mPaymentAllocation.php:19:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newquery 'App\Models\PaymentAllocation|Illuminate\Database\Eloquent\Builder<App\Models\PaymentAllocation&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int $payment_id
+ * @property int $invoice_id
+ * @property float $amount
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|PaymentAllocation[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PaymentAllocation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PaymentAllocation query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/PaymentAllocation.php#L20\app/Models/[1;31mPaymentAllocation.php:20:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::query is different to the implemented return type for Illuminate\Database\Eloquent\Model::query 'App\Models\PaymentAllocation|Illuminate\Database\Eloquent\Builder<App\Models\PaymentAllocation&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int $payment_id
+ * @property int $invoice_id
+ * @property float $amount
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|PaymentAllocation[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PaymentAllocation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PaymentAllocation query()
+
+
+[0;31mERROR[0m: MissingTemplateParam - ]8;;file:///var/www/systemhf/app/Models/PaymentAllocation.php#L33\app/Models/[1;31mPaymentAllocation.php:33:9[0m]8;;\ - App\Models\PaymentAllocation has missing template params when extending Illuminate\Database\Eloquent\Factories\HasFactory, expecting 1 (see https://psalm.dev/182)
+    use [97;41mHasFactory[0m;
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/PaymentMethod.php#L26\app/Models/[1;31mPaymentMethod.php:26:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newModelQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newmodelquery 'App\Models\PaymentMethod|Illuminate\Database\Eloquent\Builder<App\Models\PaymentMethod&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $name_ar
+ * @property string $code
+ * @property string $description
+ * @property bool $is_active
+ * @property int $sort_order
+ * @property int|null $account_id
+ * @property int|null $branch_id
+ * @property string $type
+ * @property float $initial_balance
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Account|null $account
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|PaymentMethod[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PaymentMethod newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PaymentMethod query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/PaymentMethod.php#L27\app/Models/[1;31mPaymentMethod.php:27:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newquery 'App\Models\PaymentMethod|Illuminate\Database\Eloquent\Builder<App\Models\PaymentMethod&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $name_ar
+ * @property string $code
+ * @property string $description
+ * @property bool $is_active
+ * @property int $sort_order
+ * @property int|null $account_id
+ * @property int|null $branch_id
+ * @property string $type
+ * @property float $initial_balance
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Account|null $account
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|PaymentMethod[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PaymentMethod newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PaymentMethod query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/PaymentMethod.php#L28\app/Models/[1;31mPaymentMethod.php:28:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::query is different to the implemented return type for Illuminate\Database\Eloquent\Model::query 'App\Models\PaymentMethod|Illuminate\Database\Eloquent\Builder<App\Models\PaymentMethod&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $name_ar
+ * @property string $code
+ * @property string $description
+ * @property bool $is_active
+ * @property int $sort_order
+ * @property int|null $account_id
+ * @property int|null $branch_id
+ * @property string $type
+ * @property float $initial_balance
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Account|null $account
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|PaymentMethod[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PaymentMethod newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PaymentMethod query()
+
+
+[0;31mERROR[0m: MissingTemplateParam - ]8;;file:///var/www/systemhf/app/Models/PaymentMethod.php#L47\app/Models/[1;31mPaymentMethod.php:47:9[0m]8;;\ - App\Models\PaymentMethod has missing template params when extending Illuminate\Database\Eloquent\Factories\HasFactory, expecting 1 (see https://psalm.dev/182)
+    use [97;41mHasFactory[0m;
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Permission.php#L34\app/Models/[1;31mPermission.php:34:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newModelQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newmodelquery 'App\Models\Permission|Illuminate\Database\Eloquent\Builder<App\Models\Permission&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $name_ar
+ * @property string $group
+ * @property string|null $group_ar
+ * @property bool|null $is_system
+ * @property int|null $sort_order
+ * @property int|null $created_by
+ * @property int|null $updated_by
+ * @property string|null $description
+ * @property string|null $description_ar
+ * @property bool $is_active
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Employee> $employees
+ * @property-read int|null $employees_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Role> $roles
+ * @property-read int|null $roles_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @property-read int|null $users_count
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Permission[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Permission newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Permission onlyTrashed()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Permission.php#L35\app/Models/[1;31mPermission.php:35:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newquery 'App\Models\Permission|Illuminate\Database\Eloquent\Builder<App\Models\Permission&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $name_ar
+ * @property string $group
+ * @property string|null $group_ar
+ * @property bool|null $is_system
+ * @property int|null $sort_order
+ * @property int|null $created_by
+ * @property int|null $updated_by
+ * @property string|null $description
+ * @property string|null $description_ar
+ * @property bool $is_active
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Employee> $employees
+ * @property-read int|null $employees_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Role> $roles
+ * @property-read int|null $roles_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @property-read int|null $users_count
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Permission[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Permission newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Permission onlyTrashed()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Permission.php#L37\app/Models/[1;31mPermission.php:37:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::query is different to the implemented return type for Illuminate\Database\Eloquent\Model::query 'App\Models\Permission|Illuminate\Database\Eloquent\Builder<App\Models\Permission&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $name_ar
+ * @property string $group
+ * @property string|null $group_ar
+ * @property bool|null $is_system
+ * @property int|null $sort_order
+ * @property int|null $created_by
+ * @property int|null $updated_by
+ * @property string|null $description
+ * @property string|null $description_ar
+ * @property bool $is_active
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Employee> $employees
+ * @property-read int|null $employees_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Role> $roles
+ * @property-read int|null $roles_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @property-read int|null $users_count
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Permission[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Permission newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Permission onlyTrashed()
+
+
+[0;31mERROR[0m: MissingTemplateParam - ]8;;file:///var/www/systemhf/app/Models/Permission.php#L60\app/Models/[1;31mPermission.php:60:9[0m]8;;\ - App\Models\Permission has missing template params when extending Illuminate\Database\Eloquent\Factories\HasFactory, expecting 1 (see https://psalm.dev/182)
+    use [97;41mHasFactory[0m, SoftDeletes;
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Product.php#L41\app/Models/[1;31mProduct.php:41:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newModelQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newmodelquery 'App\Models\Product|Illuminate\Database\Eloquent\Builder<App\Models\Product&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $product_code
+ * @property string $name
+ * @property string $name_ar
+ * @property-read string $display_name
+ * @property string $description
+ * @property string $description_ar
+ * @property string $category
+ * @property string $brand
+ * @property string $model
+ * @property string $unit
+ * @property string $unit_ar
+ * @property int $stock_quantity
+ * @property int $min_stock_level
+ * @property string|null $main_image
+ * @property array<string, mixed>|null $gallery_images
+ * @property array<string, mixed>|null $videos
+ * @property array<string, mixed>|null $components
+ * @property array<string, mixed>|null $component_pricing
+ * @property float $price
+ * @property float $cost_price
+ * @property float $profit_percentage
+ * @property bool $is_active
+ * @property int|null $supplier_id
+ * @property int|null $branch_id
+ * @property int|null $created_by
+ * @property int|null $updated_by
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41mBuilder<static>|Product[0m newModelQuery()
+ * @method static Builder<static>|Product newQuery()
+ * @method static Builder<static>|Product query()
+ * @method static Builder<static>|Product whereBrand($value)
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Product.php#L42\app/Models/[1;31mProduct.php:42:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newquery 'App\Models\Product|Illuminate\Database\Eloquent\Builder<App\Models\Product&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $product_code
+ * @property string $name
+ * @property string $name_ar
+ * @property-read string $display_name
+ * @property string $description
+ * @property string $description_ar
+ * @property string $category
+ * @property string $brand
+ * @property string $model
+ * @property string $unit
+ * @property string $unit_ar
+ * @property int $stock_quantity
+ * @property int $min_stock_level
+ * @property string|null $main_image
+ * @property array<string, mixed>|null $gallery_images
+ * @property array<string, mixed>|null $videos
+ * @property array<string, mixed>|null $components
+ * @property array<string, mixed>|null $component_pricing
+ * @property float $price
+ * @property float $cost_price
+ * @property float $profit_percentage
+ * @property bool $is_active
+ * @property int|null $supplier_id
+ * @property int|null $branch_id
+ * @property int|null $created_by
+ * @property int|null $updated_by
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41mBuilder<static>|Product[0m newModelQuery()
+ * @method static Builder<static>|Product newQuery()
+ * @method static Builder<static>|Product query()
+ * @method static Builder<static>|Product whereBrand($value)
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Product.php#L43\app/Models/[1;31mProduct.php:43:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::query is different to the implemented return type for Illuminate\Database\Eloquent\Model::query 'App\Models\Product|Illuminate\Database\Eloquent\Builder<App\Models\Product&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $product_code
+ * @property string $name
+ * @property string $name_ar
+ * @property-read string $display_name
+ * @property string $description
+ * @property string $description_ar
+ * @property string $category
+ * @property string $brand
+ * @property string $model
+ * @property string $unit
+ * @property string $unit_ar
+ * @property int $stock_quantity
+ * @property int $min_stock_level
+ * @property string|null $main_image
+ * @property array<string, mixed>|null $gallery_images
+ * @property array<string, mixed>|null $videos
+ * @property array<string, mixed>|null $components
+ * @property array<string, mixed>|null $component_pricing
+ * @property float $price
+ * @property float $cost_price
+ * @property float $profit_percentage
+ * @property bool $is_active
+ * @property int|null $supplier_id
+ * @property int|null $branch_id
+ * @property int|null $created_by
+ * @property int|null $updated_by
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41mBuilder<static>|Product[0m newModelQuery()
+ * @method static Builder<static>|Product newQuery()
+ * @method static Builder<static>|Product query()
+ * @method static Builder<static>|Product whereBrand($value)
+
+
+[0;31mERROR[0m: MissingTemplateParam - ]8;;file:///var/www/systemhf/app/Models/Product.php#L76\app/Models/[1;31mProduct.php:76:9[0m]8;;\ - App\Models\Product has missing template params when extending Illuminate\Database\Eloquent\Factories\HasFactory, expecting 1 (see https://psalm.dev/182)
+    use [97;41mHasFactory[0m;
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Role.php#L27\app/Models/[1;31mRole.php:27:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newModelQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newmodelquery 'App\Models\Role|Illuminate\Database\Eloquent\Builder<App\Models\Role&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $name_ar
+ * @property string $description
+ * @property string $description_ar
+ * @property array<string>|null $permissions
+ * @property bool $is_system
+ * @property int $sort_order
+ * @property bool $is_active
+ * @property int|null $branch_id
+ * @property int|null $created_by
+ * @property int|null $updated_by
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Role[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Role newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Role query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Role.php#L28\app/Models/[1;31mRole.php:28:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newquery 'App\Models\Role|Illuminate\Database\Eloquent\Builder<App\Models\Role&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $name_ar
+ * @property string $description
+ * @property string $description_ar
+ * @property array<string>|null $permissions
+ * @property bool $is_system
+ * @property int $sort_order
+ * @property bool $is_active
+ * @property int|null $branch_id
+ * @property int|null $created_by
+ * @property int|null $updated_by
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Role[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Role newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Role query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Role.php#L29\app/Models/[1;31mRole.php:29:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::query is different to the implemented return type for Illuminate\Database\Eloquent\Model::query 'App\Models\Role|Illuminate\Database\Eloquent\Builder<App\Models\Role&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $name_ar
+ * @property string $description
+ * @property string $description_ar
+ * @property array<string>|null $permissions
+ * @property bool $is_system
+ * @property int $sort_order
+ * @property bool $is_active
+ * @property int|null $branch_id
+ * @property int|null $created_by
+ * @property int|null $updated_by
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Role[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Role newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Role query()
+
+
+[0;31mERROR[0m: MissingTemplateParam - ]8;;file:///var/www/systemhf/app/Models/Role.php#L48\app/Models/[1;31mRole.php:48:9[0m]8;;\ - App\Models\Role has missing template params when extending Illuminate\Database\Eloquent\Factories\HasFactory, expecting 1 (see https://psalm.dev/182)
+    use [97;41mHasFactory[0m;
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Salary.php#L38\app/Models/[1;31mSalary.php:38:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newModelQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newmodelquery 'App\Models\Salary|Illuminate\Database\Eloquent\Builder<App\Models\Salary&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int $employee_id
+ * @property int $year
+ * @property int $month
+ * @property float $base_salary
+ * @property array<string, mixed> $allowances
+ * @property array<string, mixed> $deductions
+ * @property float $net_salary
+ * @property string $status
+ * @property int|null $reviewed_by
+ * @property \Illuminate\Support\Carbon|null $reviewed_at
+ * @property int|null $approved_by
+ * @property \Illuminate\Support\Carbon|null $approved_at
+ * @property int|null $paid_by
+ * @property \Illuminate\Support\Carbon|null $paid_at
+ * @property string|null $payment_method
+ * @property string|null $bank_transfer_ref
+ * @property bool $is_exported_to_bank
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $generated_by
+ * @property \Illuminate\Support\Carbon|null $generated_at
+ * @property float $overtime_hours
+ * @property float $overtime_rate
+ * @property float $overtime_amount
+ * @property float $commission_amount
+ * @property float $gross_salary
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Salary[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Salary newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Salary query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Salary.php#L39\app/Models/[1;31mSalary.php:39:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newquery 'App\Models\Salary|Illuminate\Database\Eloquent\Builder<App\Models\Salary&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int $employee_id
+ * @property int $year
+ * @property int $month
+ * @property float $base_salary
+ * @property array<string, mixed> $allowances
+ * @property array<string, mixed> $deductions
+ * @property float $net_salary
+ * @property string $status
+ * @property int|null $reviewed_by
+ * @property \Illuminate\Support\Carbon|null $reviewed_at
+ * @property int|null $approved_by
+ * @property \Illuminate\Support\Carbon|null $approved_at
+ * @property int|null $paid_by
+ * @property \Illuminate\Support\Carbon|null $paid_at
+ * @property string|null $payment_method
+ * @property string|null $bank_transfer_ref
+ * @property bool $is_exported_to_bank
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $generated_by
+ * @property \Illuminate\Support\Carbon|null $generated_at
+ * @property float $overtime_hours
+ * @property float $overtime_rate
+ * @property float $overtime_amount
+ * @property float $commission_amount
+ * @property float $gross_salary
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Salary[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Salary newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Salary query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Salary.php#L40\app/Models/[1;31mSalary.php:40:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::query is different to the implemented return type for Illuminate\Database\Eloquent\Model::query 'App\Models\Salary|Illuminate\Database\Eloquent\Builder<App\Models\Salary&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int $employee_id
+ * @property int $year
+ * @property int $month
+ * @property float $base_salary
+ * @property array<string, mixed> $allowances
+ * @property array<string, mixed> $deductions
+ * @property float $net_salary
+ * @property string $status
+ * @property int|null $reviewed_by
+ * @property \Illuminate\Support\Carbon|null $reviewed_at
+ * @property int|null $approved_by
+ * @property \Illuminate\Support\Carbon|null $approved_at
+ * @property int|null $paid_by
+ * @property \Illuminate\Support\Carbon|null $paid_at
+ * @property string|null $payment_method
+ * @property string|null $bank_transfer_ref
+ * @property bool $is_exported_to_bank
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $generated_by
+ * @property \Illuminate\Support\Carbon|null $generated_at
+ * @property float $overtime_hours
+ * @property float $overtime_rate
+ * @property float $overtime_amount
+ * @property float $commission_amount
+ * @property float $gross_salary
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Salary[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Salary newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Salary query()
+
+
+[0;31mERROR[0m: MissingTemplateParam - ]8;;file:///var/www/systemhf/app/Models/Salary.php#L66\app/Models/[1;31mSalary.php:66:9[0m]8;;\ - App\Models\Salary has missing template params when extending Illuminate\Database\Eloquent\Factories\HasFactory, expecting 1 (see https://psalm.dev/182)
+    use [97;41mHasFactory[0m;
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Shift.php#L28\app/Models/[1;31mShift.php:28:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newModelQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newmodelquery 'App\Models\Shift|Illuminate\Database\Eloquent\Builder<App\Models\Shift&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $name
+ * @property string|null $name_ar
+ * @property \Illuminate\Support\Carbon $start_time
+ * @property \Illuminate\Support\Carbon $end_time
+ * @property \Illuminate\Support\Carbon|null $break_start
+ * @property \Illuminate\Support\Carbon|null $break_end
+ * @property int $late_threshold_minutes
+ * @property int $overtime_threshold_minutes
+ * @property bool $is_active
+ * @property int $sort_order
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Employee> $employees
+ * @property-read int|null $employees_count
+ * @property-read mixed $break_duration
+ * @property-read mixed $duration
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Shift[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Shift newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Shift query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Shift.php#L29\app/Models/[1;31mShift.php:29:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newquery 'App\Models\Shift|Illuminate\Database\Eloquent\Builder<App\Models\Shift&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $name
+ * @property string|null $name_ar
+ * @property \Illuminate\Support\Carbon $start_time
+ * @property \Illuminate\Support\Carbon $end_time
+ * @property \Illuminate\Support\Carbon|null $break_start
+ * @property \Illuminate\Support\Carbon|null $break_end
+ * @property int $late_threshold_minutes
+ * @property int $overtime_threshold_minutes
+ * @property bool $is_active
+ * @property int $sort_order
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Employee> $employees
+ * @property-read int|null $employees_count
+ * @property-read mixed $break_duration
+ * @property-read mixed $duration
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Shift[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Shift newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Shift query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Shift.php#L30\app/Models/[1;31mShift.php:30:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::query is different to the implemented return type for Illuminate\Database\Eloquent\Model::query 'App\Models\Shift|Illuminate\Database\Eloquent\Builder<App\Models\Shift&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $name
+ * @property string|null $name_ar
+ * @property \Illuminate\Support\Carbon $start_time
+ * @property \Illuminate\Support\Carbon $end_time
+ * @property \Illuminate\Support\Carbon|null $break_start
+ * @property \Illuminate\Support\Carbon|null $break_end
+ * @property int $late_threshold_minutes
+ * @property int $overtime_threshold_minutes
+ * @property bool $is_active
+ * @property int $sort_order
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Employee> $employees
+ * @property-read int|null $employees_count
+ * @property-read mixed $break_duration
+ * @property-read mixed $duration
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Shift[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Shift newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Shift query()
+
+
+[0;31mERROR[0m: MissingTemplateParam - ]8;;file:///var/www/systemhf/app/Models/Shift.php#L50\app/Models/[1;31mShift.php:50:9[0m]8;;\ - App\Models\Shift has missing template params when extending Illuminate\Database\Eloquent\Factories\HasFactory, expecting 1 (see https://psalm.dev/182)
+    use [97;41mHasFactory[0m;
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Supplier.php#L21\app/Models/[1;31mSupplier.php:21:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newModelQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newmodelquery 'App\Models\Supplier|Illuminate\Database\Eloquent\Builder<App\Models\Supplier&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $name_ar
+ * @property string|null $phone
+ * @property string|null $phone2
+ * @property string|null $email
+ * @property string|null $address
+ * @property string|null $governorate
+ * @property string|null $notes
+ * @property bool $is_active
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Supplier[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Supplier newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Supplier query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Supplier.php#L22\app/Models/[1;31mSupplier.php:22:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newquery 'App\Models\Supplier|Illuminate\Database\Eloquent\Builder<App\Models\Supplier&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $name_ar
+ * @property string|null $phone
+ * @property string|null $phone2
+ * @property string|null $email
+ * @property string|null $address
+ * @property string|null $governorate
+ * @property string|null $notes
+ * @property bool $is_active
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Supplier[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Supplier newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Supplier query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Supplier.php#L23\app/Models/[1;31mSupplier.php:23:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::query is different to the implemented return type for Illuminate\Database\Eloquent\Model::query 'App\Models\Supplier|Illuminate\Database\Eloquent\Builder<App\Models\Supplier&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $name_ar
+ * @property string|null $phone
+ * @property string|null $phone2
+ * @property string|null $email
+ * @property string|null $address
+ * @property string|null $governorate
+ * @property string|null $notes
+ * @property bool $is_active
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Supplier[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Supplier newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Supplier query()
+
+
+[0;31mERROR[0m: MissingTemplateParam - ]8;;file:///var/www/systemhf/app/Models/Supplier.php#L40\app/Models/[1;31mSupplier.php:40:9[0m]8;;\ - App\Models\Supplier has missing template params when extending Illuminate\Database\Eloquent\Factories\HasFactory, expecting 1 (see https://psalm.dev/182)
+    use [97;41mHasFactory[0m;
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/SystemSetting.php#L25\app/Models/[1;31mSystemSetting.php:25:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newModelQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newmodelquery 'App\Models\SystemSetting|Illuminate\Database\Eloquent\Builder<App\Models\SystemSetting&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $category
+ * @property string $key
+ * @property string|null $value
+ * @property string $type
+ * @property string $name_ar
+ * @property string|null $name_en
+ * @property string|null $description_ar
+ * @property string|null $description_en
+ * @property string|null $validation_rules
+ * @property string|null $default_value
+ * @property bool $is_editable
+ * @property bool $requires_restart
+ * @property int $sort_order
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|SystemSetting[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SystemSetting newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SystemSetting query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/SystemSetting.php#L26\app/Models/[1;31mSystemSetting.php:26:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newquery 'App\Models\SystemSetting|Illuminate\Database\Eloquent\Builder<App\Models\SystemSetting&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $category
+ * @property string $key
+ * @property string|null $value
+ * @property string $type
+ * @property string $name_ar
+ * @property string|null $name_en
+ * @property string|null $description_ar
+ * @property string|null $description_en
+ * @property string|null $validation_rules
+ * @property string|null $default_value
+ * @property bool $is_editable
+ * @property bool $requires_restart
+ * @property int $sort_order
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|SystemSetting[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SystemSetting newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SystemSetting query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/SystemSetting.php#L27\app/Models/[1;31mSystemSetting.php:27:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::query is different to the implemented return type for Illuminate\Database\Eloquent\Model::query 'App\Models\SystemSetting|Illuminate\Database\Eloquent\Builder<App\Models\SystemSetting&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $category
+ * @property string $key
+ * @property string|null $value
+ * @property string $type
+ * @property string $name_ar
+ * @property string|null $name_en
+ * @property string|null $description_ar
+ * @property string|null $description_en
+ * @property string|null $validation_rules
+ * @property string|null $default_value
+ * @property bool $is_editable
+ * @property bool $requires_restart
+ * @property int $sort_order
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|SystemSetting[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SystemSetting newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SystemSetting query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/SystemVersion.php#L21\app/Models/[1;31mSystemVersion.php:21:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newModelQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newmodelquery 'App\Models\SystemVersion|Illuminate\Database\Eloquent\Builder<App\Models\SystemVersion&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $version
+ * @property string|null $version_name
+ * @property string|null $description
+ * @property \Illuminate\Support\Carbon $release_date
+ * @property string $type
+ * @property array<array-key, mixed>|null $features
+ * @property array<array-key, mixed>|null $bug_fixes
+ * @property bool $is_current
+ * @property bool $is_required
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|SystemVersion[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SystemVersion newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SystemVersion query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/SystemVersion.php#L22\app/Models/[1;31mSystemVersion.php:22:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newquery 'App\Models\SystemVersion|Illuminate\Database\Eloquent\Builder<App\Models\SystemVersion&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $version
+ * @property string|null $version_name
+ * @property string|null $description
+ * @property \Illuminate\Support\Carbon $release_date
+ * @property string $type
+ * @property array<array-key, mixed>|null $features
+ * @property array<array-key, mixed>|null $bug_fixes
+ * @property bool $is_current
+ * @property bool $is_required
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|SystemVersion[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SystemVersion newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SystemVersion query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/SystemVersion.php#L23\app/Models/[1;31mSystemVersion.php:23:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::query is different to the implemented return type for Illuminate\Database\Eloquent\Model::query 'App\Models\SystemVersion|Illuminate\Database\Eloquent\Builder<App\Models\SystemVersion&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property string $version
+ * @property string|null $version_name
+ * @property string|null $description
+ * @property \Illuminate\Support\Carbon $release_date
+ * @property string $type
+ * @property array<array-key, mixed>|null $features
+ * @property array<array-key, mixed>|null $bug_fixes
+ * @property bool $is_current
+ * @property bool $is_required
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|SystemVersion[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SystemVersion newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|SystemVersion query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Transaction.php#L23\app/Models/[1;31mTransaction.php:23:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newModelQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newmodelquery 'App\Models\Transaction|Illuminate\Database\Eloquent\Builder<App\Models\Transaction&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int $account_id
+ * @property string $type
+ * @property numeric $amount
+ * @property string $description
+ * @property string|null $reference_type
+ * @property int|null $reference_id
+ * @property \Illuminate\Support\Carbon $date
+ * @property int $branch_id
+ * @property int $user_id
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Transaction[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Transaction.php#L24\app/Models/[1;31mTransaction.php:24:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::newQuery is different to the implemented return type for Illuminate\Database\Eloquent\Model::newquery 'App\Models\Transaction|Illuminate\Database\Eloquent\Builder<App\Models\Transaction&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int $account_id
+ * @property string $type
+ * @property numeric $amount
+ * @property string $description
+ * @property string|null $reference_type
+ * @property int|null $reference_id
+ * @property \Illuminate\Support\Carbon $date
+ * @property int $branch_id
+ * @property int $user_id
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Transaction[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction query()
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/app/Models/Transaction.php#L25\app/Models/[1;31mTransaction.php:25:19[0m]8;;\ - The inherited return type 'Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model&static>' for Illuminate\Database\Eloquent\Model::query is different to the implemented return type for Illuminate\Database\Eloquent\Model::query 'App\Models\Transaction|Illuminate\Database\Eloquent\Builder<App\Models\Transaction&static>' (see https://psalm.dev/123)
+/**
+ * @property int $id
+ * @property int $account_id
+ * @property string $type
+ * @property numeric $amount
+ * @property string $description
+ * @property string|null $reference_type
+ * @property int|null $reference_id
+ * @property \Illuminate\Support\Carbon $date
+ * @property int $branch_id
+ * @property int $user_id
+ * @property string|null $notes
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ *
+ * @method static [97;41m\Illuminate\Database\Eloquent\Builder<static>|Transaction[0m newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Transaction query()
+
+
+[0;31mERROR[0m: MissingTemplateParam - ]8;;file:///var/www/systemhf/app/Models/Transaction.php#L44\app/Models/[1;31mTransaction.php:44:9[0m]8;;\ - App\Models\Transaction has missing template params when extending Illuminate\Database\Eloquent\Factories\HasFactory, expecting 1 (see https://psalm.dev/182)
+    use [97;41mHasFactory[0m;
+
+
+[0;31mERROR[0m: UndefinedMethod - ]8;;file:///var/www/systemhf/app/Repositories/CustomerRepository.php#L52\app/Repositories/[1;31mCustomerRepository.php:52:21[0m]8;;\ - Method App\Repositories\CustomerRepository::where does not exist (see https://psalm.dev/022)
+            $query->[97;41mwhere[0m('name', 'like', "%{$term}%")
+
+
+[0;31mERROR[0m: RedundantCondition - ]8;;file:///var/www/systemhf/app/Repositories/CustomerRepository.php#L62\app/Repositories/[1;31mCustomerRepository.php:62:16[0m]8;;\ - Type Illuminate\Database\Eloquent\Collection<int, Illuminate\Database\Eloquent\Model&static> for $result is always Illuminate\Database\Eloquent\Collection (see https://psalm.dev/122)
+        return [97;41m$result instanceof Collection[0m ? $result : new \Illuminate\Database\Eloquent\Collection;
+
+
+[0;31mERROR[0m: UndefinedMethod - ]8;;file:///var/www/systemhf/app/Repositories/CustomerRepository.php#L97\app/Repositories/[1;31mCustomerRepository.php:97:21[0m]8;;\ - Method App\Repositories\CustomerRepository::where does not exist (see https://psalm.dev/022)
+                $q->[97;41mwhere[0m('name', 'like', "%{$searchTerm}%")
+
+
+[0;31mERROR[0m: UndefinedMethod - ]8;;file:///var/www/systemhf/app/Repositories/CustomerRepository.php#L101\app/Repositories/[1;31mCustomerRepository.php:101:21[0m]8;;\ - Method App\Repositories\CustomerRepository::orWhere does not exist (see https://psalm.dev/022)
+                $q->[97;41morWhere[0m('phone', 'like', "%{$searchTerm}%");
+
+
+[0;31mERROR[0m: UndefinedMethod - ]8;;file:///var/www/systemhf/app/Repositories/CustomerRepository.php#L104\app/Repositories/[1;31mCustomerRepository.php:104:21[0m]8;;\ - Method App\Repositories\CustomerRepository::orWhere does not exist (see https://psalm.dev/022)
+                $q->[97;41morWhere[0m('email', 'like', "%{$searchTerm}%");
+
+
+[0;31mERROR[0m: UndefinedMethod - ]8;;file:///var/www/systemhf/app/Repositories/CustomerRepository.php#L107\app/Repositories/[1;31mCustomerRepository.php:107:21[0m]8;;\ - Method App\Repositories\CustomerRepository::orWhere does not exist (see https://psalm.dev/022)
+                $q->[97;41morWhere[0m('national_id', 'like', "%{$searchTerm}%");
+
+
+[0;31mERROR[0m: RedundantCondition - ]8;;file:///var/www/systemhf/app/Repositories/InvoiceRepository.php#L53\app/Repositories/[1;31mInvoiceRepository.php:53:16[0m]8;;\ - Type Illuminate\Database\Eloquent\Collection<int, Illuminate\Database\Eloquent\Model&static> for $result is always Illuminate\Database\Eloquent\Collection (see https://psalm.dev/122)
+        return [97;41m$result instanceof Collection[0m ? $result : new \Illuminate\Database\Eloquent\Collection;
+
+
+[0;31mERROR[0m: RedundantCondition - ]8;;file:///var/www/systemhf/app/Repositories/ProductRepository.php#L57\app/Repositories/[1;31mProductRepository.php:57:16[0m]8;;\ - Type Illuminate\Database\Eloquent\Collection<int, Illuminate\Database\Eloquent\Model&static> for $result is always Illuminate\Database\Eloquent\Collection (see https://psalm.dev/122)
+        return [97;41m$result instanceof Collection[0m ? $result : new \Illuminate\Database\Eloquent\Collection;
+
+
+[0;31mERROR[0m: RedundantCondition - ]8;;file:///var/www/systemhf/app/Repositories/SystemSettingRepository.php#L48\app/Repositories/[1;31mSystemSettingRepository.php:48:16[0m]8;;\ - Type Illuminate\Database\Eloquent\Collection<int, Illuminate\Database\Eloquent\Model&static> for $result is always Illuminate\Database\Eloquent\Collection (see https://psalm.dev/122)
+        return [97;41m$result instanceof \Illuminate\Database\Eloquent\Collection[0m ? $result : new \Illuminate\Database\Eloquent\Collection;
+
+
+[0;31mERROR[0m: NoInterfaceProperties - ]8;;file:///var/www/systemhf/app/Services/BusinessLogicService.php#L37\app/Services/[1;31mBusinessLogicService.php:37:95[0m]8;;\ - Interfaces cannot have properties (see https://psalm.dev/028)
+                'employee_id' => Auth::user() && property_exists(Auth::user(), 'employee') && [97;41mAuth::user()->employee[0m ? Auth::user()->employee->id : null,
+
+
+[0;31mERROR[0m: NoInterfaceProperties - ]8;;file:///var/www/systemhf/app/Services/BusinessLogicService.php#L37\app/Services/[1;31mBusinessLogicService.php:37:120[0m]8;;\ - Interfaces cannot have properties (see https://psalm.dev/028)
+                'employee_id' => Auth::user() && property_exists(Auth::user(), 'employee') && Auth::user()->employee ? [97;41mAuth::user()->employee[0m->id : null,
+
+
+[0;31mERROR[0m: NoInterfaceProperties - ]8;;file:///var/www/systemhf/app/Services/BusinessLogicService.php#L128\app/Services/[1;31mBusinessLogicService.php:128:95[0m]8;;\ - Interfaces cannot have properties (see https://psalm.dev/028)
+                'employee_id' => Auth::user() && property_exists(Auth::user(), 'employee') && [97;41mAuth::user()->employee[0m ? Auth::user()->employee->id : null,
+
+
+[0;31mERROR[0m: NoInterfaceProperties - ]8;;file:///var/www/systemhf/app/Services/BusinessLogicService.php#L128\app/Services/[1;31mBusinessLogicService.php:128:120[0m]8;;\ - Interfaces cannot have properties (see https://psalm.dev/028)
+                'employee_id' => Auth::user() && property_exists(Auth::user(), 'employee') && Auth::user()->employee ? [97;41mAuth::user()->employee[0m->id : null,
+
+
+[0;31mERROR[0m: NoInterfaceProperties - ]8;;file:///var/www/systemhf/app/Services/BusinessLogicService.php#L365\app/Services/[1;31mBusinessLogicService.php:365:48[0m]8;;\ - Interfaces cannot have properties (see https://psalm.dev/028)
+        return session('current_branch_id') ?? [97;41mAuth::user()->branch_id[0m ?? 1;
+
+
+[0;31mERROR[0m: ImplementedReturnTypeMismatch - ]8;;file:///var/www/systemhf/vendor/laravel/framework/src/Illuminate/Database/Eloquent/SoftDeletes.php#L82\vendor/laravel/framework/src/Illuminate/Database/Eloquent/[1;31mSoftDeletes.php:82:16[0m]8;;\ - The inherited return type 'bool|null' for Illuminate\Database\Eloquent\Model::forceDestroy is different to the implemented return type for Illuminate\Database\Eloquent\SoftDeletes::forcedestroy 'int' (see https://psalm.dev/123)
+     * @return [97;41mint[0m
+
+
+[0;31mERROR[0m: LessSpecificImplementedReturnType - ]8;;file:///var/www/systemhf/vendor/laravel/framework/src/Illuminate/Database/Eloquent/SoftDeletes.php#L119\vendor/laravel/framework/src/Illuminate/Database/Eloquent/[1;31mSoftDeletes.php:119:16[0m]8;;\ - The inherited return type 'null' for Illuminate\Database\Eloquent\Model::performDeleteOnModel is more specific than the implemented return type for Illuminate\Database\Eloquent\SoftDeletes::performdeleteonmodel 'mixed' (see https://psalm.dev/166)
+     * @return [97;41mmixed[0m
+
+
+------------------------------
+[0;31m134 errors[0m found
+------------------------------
+67 other issues found.
+You can display them with [30;48;5;195m--show-info=true[0m
+------------------------------
+Psalm can automatically fix 1 of these issues.
+Run Psalm again with 
+[30;48;5;195m--alter --issues=MissingParamType --dry-run[0m
+to see what it can fix.
+------------------------------
+
+Checks took 7.19 seconds and used 480.718MB of memory
+Psalm was able to infer types for 91.4414% of the codebase

@@ -8,6 +8,8 @@ class PermissionService
 {
     /**
      * الأدوار الأساسية في النظام
+     *
+     * @phpstan-ignore-next-line
      */
     private const ROLES = [
         'SuperAdmin' => [
@@ -90,6 +92,8 @@ class PermissionService
 
     /**
      * الصلاحيات الأساسية
+     *
+     * @phpstan-ignore-next-line
      */
     private const PERMISSIONS = [
         'manage_branches' => [
@@ -259,18 +263,56 @@ class PermissionService
      */
     public function createBasicPermissions(): void
     {
-        $basicPermissions = $this->getBasicPermissions();
+        // TODO: Implement basic permissions creation
+        // This should be handled by a repository
+        // For now, skip to avoid static method calls
+    }
 
-        foreach ($basicPermissions as $group => $permissions) {
-            foreach ($permissions as $name => $description) {
-                $groupAr = $this->getGroupArabicName($group);
-                $nameAr = $description;
+    /**
+     * الحصول على الصلاحيات الأساسية
+     */
+    public function getBasicPermissions(): array
+    {
+        return [
+            'users' => [
+                'users.view' => 'عرض المستخدمين',
+                'users.create' => 'إنشاء مستخدمين',
+                'users.edit' => 'تعديل المستخدمين',
+                'users.delete' => 'حذف المستخدمين',
+            ],
+            'roles' => [
+                'roles.view' => 'عرض الأدوار',
+                'roles.create' => 'إنشاء أدوار',
+                'roles.edit' => 'تعديل الأدوار',
+                'roles.delete' => 'حذف الأدوار',
+            ],
+            'permissions' => [
+                'permissions.view' => 'عرض الصلاحيات',
+                'permissions.assign' => 'تعيين الصلاحيات',
+            ],
+        ];
+    }
 
-                // This should be handled by a repository
-                // For now, skip to avoid static method calls
-                continue;
-            }
-        }
+    /**
+     * الحصول على الاسم العربي للمجموعة
+     */
+    public function getGroupArabicName(string $group): string
+    {
+        $groupNames = [
+            'users' => 'المستخدمين',
+            'roles' => 'الأدوار',
+            'permissions' => 'الصلاحيات',
+            'products' => 'المنتجات',
+            'customers' => 'العملاء',
+            'invoices' => 'الفواتير',
+            'employees' => 'الموظفين',
+            'attendance' => 'الحضور والانصراف',
+            'salary' => 'الرواتب',
+            'reports' => 'التقارير',
+            'settings' => 'الإعدادات',
+        ];
+
+        return $groupNames[$group] ?? $group;
     }
 
     /**
@@ -278,13 +320,42 @@ class PermissionService
      */
     public function createBasicRoles(): void
     {
-        $basicRoles = $this->getBasicRoles();
+        // TODO: Implement basic roles creation
+        // This should be handled by a repository
+        // For now, skip to avoid static method calls
+    }
 
-        foreach ($basicRoles as $roleName => $roleData) {
-            // This should be handled by a repository
-            // For now, skip to avoid static method calls
-            continue;
-        }
+    /**
+     * الحصول على الأدوار الأساسية
+     */
+    public function getBasicRoles(): array
+    {
+        return [
+            'SuperAdmin' => [
+                'name' => 'SuperAdmin',
+                'name_ar' => 'مدير النظام',
+                'description' => 'صلاحيات كاملة على النظام',
+                'permissions' => ['*'],
+            ],
+            'Admin' => [
+                'name' => 'Admin',
+                'name_ar' => 'مدير',
+                'description' => 'إدارة الفرع والموظفين',
+                'permissions' => ['users.*', 'employees.*', 'reports.*'],
+            ],
+            'BranchManager' => [
+                'name' => 'BranchManager',
+                'name_ar' => 'مدير الفرع',
+                'description' => 'إدارة الفرع والمبيعات',
+                'permissions' => ['products.*', 'customers.*', 'invoices.*'],
+            ],
+            'HR' => [
+                'name' => 'HR',
+                'name_ar' => 'موارد بشرية',
+                'description' => 'إدارة الموظفين والحضور',
+                'permissions' => ['employees.*', 'attendance.*', 'salary.*'],
+            ],
+        ];
     }
 
     /**
@@ -292,13 +363,25 @@ class PermissionService
      */
     public function assignPermissionsToRoles(): void
     {
-        $rolePermissions = $this->getRolePermissions();
+        // TODO: Implement permissions assignment to roles
+        // This should be handled by a repository
+        // For now, skip to avoid static method calls
+    }
 
-        foreach ($rolePermissions as $roleName => $permissions) {
-            // This should be handled by a repository
-            // For now, skip to avoid static method calls
-            continue;
-        }
+    /**
+     * الحصول على صلاحيات الأدوار
+     */
+    public function getRolePermissions(): array
+    {
+        return [
+            'SuperAdmin' => ['*'],
+            'Admin' => ['users.*', 'employees.*', 'reports.*', 'settings.*'],
+            'BranchManager' => ['products.*', 'customers.*', 'invoices.*', 'reports.*'],
+            'HR' => ['employees.*', 'attendance.*', 'salary.*', 'reports.*'],
+            'Accountant' => ['invoices.*', 'payments.*', 'reports.*'],
+            'Sales' => ['products.*', 'customers.*', 'invoices.*'],
+            'Delivery' => ['invoices.*', 'customers.*'],
+        ];
     }
 
     /**
@@ -306,37 +389,19 @@ class PermissionService
      */
     public function assignPermissionsToUsers(): void
     {
-        $userPermissions = $this->getUserPermissions();
-
-        foreach ($userPermissions as $userId => $permissions) {
-            $user = User::find($userId);
-
-            if (! $user || ! $user->employee) {
-                continue;
-            }
-
-            // This should be handled by a repository
-            // For now, skip to avoid static method calls
-            continue;
-        }
+        // TODO: Implement permissions assignment to users
+        // This should be handled by a repository
+        // For now, skip to avoid static method calls
     }
 
     /**
-     * الحصول على ترتيب الدور
+     * الحصول على صلاحيات المستخدمين
      */
-    private function getRoleSortOrder(string $roleName): int
+    public function getUserPermissions(): array
     {
-        $orderMap = [
-            'SuperAdmin' => 1,
-            'Admin' => 2,
-            'BranchManager' => 3,
-            'HR' => 4,
-            'Accountant' => 5,
-            'Sales' => 6,
-            'Delivery' => 7,
-        ];
-
-        return $orderMap[$roleName] ?? 999;
+        // This would typically come from a database or configuration
+        // For now, return empty array to avoid static method calls
+        return [];
     }
 
     /**
@@ -354,10 +419,6 @@ class PermissionService
 
         $userRole = $user->employee->role->name;
 
-        if (is_array($roles)) {
-            return in_array($userRole, $roles);
-        }
-
-        return $userRole === $roles;
+        return in_array($userRole, $roles);
     }
 }

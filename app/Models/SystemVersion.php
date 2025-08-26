@@ -50,12 +50,17 @@ class SystemVersion extends Model
         'is_required',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'release_date' => 'date',
         'features' => 'array',
         'bug_fixes' => 'array',
         'is_current' => 'boolean',
         'is_required' => 'boolean',
+        'version' => 'string',
+        'version_name' => 'string',
+        'description' => 'string',
+        'type' => 'string',
     ];
 
     /**

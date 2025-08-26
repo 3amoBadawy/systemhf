@@ -3,12 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Salary;
+use App\Services\SalaryService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SalaryController extends Controller
 {
-    protected $salaryService;
+    protected SalaryService $salaryService;
+
+    public function __construct(SalaryService $salaryService)
+    {
+        $this->salaryService = $salaryService;
+    }
 
     /**
      * مراجعة الراتب
@@ -22,8 +29,8 @@ class SalaryController extends Controller
         try {
             $salary = $this->salaryService->reviewSalary(
                 $salary->id,
-                auth()->user()->employee->id,
-                $request->notes
+                Auth::user()->employee->id ?? 0,
+                $request->input('notes')
             );
 
             return response()->json([
@@ -51,8 +58,8 @@ class SalaryController extends Controller
         try {
             $salary = $this->salaryService->approveSalary(
                 $salary->id,
-                auth()->user()->employee->id,
-                $request->notes
+                Auth::user()->employee->id ?? 0,
+                $request->input('notes')
             );
 
             return response()->json([
@@ -81,9 +88,9 @@ class SalaryController extends Controller
         try {
             $salary = $this->salaryService->paySalary(
                 $salary->id,
-                auth()->user()->employee->id,
-                $request->payment_method,
-                $request->bank_transfer_ref
+                Auth::user()->employee->id ?? 0,
+                $request->input('payment_method'),
+                $request->input('bank_transfer_ref')
             );
 
             return response()->json([
@@ -110,7 +117,7 @@ class SalaryController extends Controller
         ]);
 
         try {
-            $result = $this->salaryService->exportSalariesToBank($request->salary_ids);
+            $result = $this->salaryService->exportSalariesToBank($request->input('salary_ids'));
 
             return response()->json([
                 'success' => true,
@@ -138,14 +145,18 @@ class SalaryController extends Controller
 
         try {
             $salary->update([
-                'base_salary' => $request->base_salary,
-                'overtime_rate' => $request->overtime_rate,
-                'notes' => $request->notes,
+                'base_salary' => $request->input('base_salary'),
+                'overtime_rate' => $request->input('overtime_rate'),
+                'notes' => $request->input('notes'),
             ]);
 
             // إعادة حساب الراتب
             $salary->refresh();
-            $salary->calculateSalary();
+            // Get employee from the employee_id
+            $employee = \App\Models\Employee::find($salary->employee_id);
+            if ($employee) {
+                $this->salaryService->calculateSalary($employee);
+            }
 
             return response()->json([
                 'success' => true,

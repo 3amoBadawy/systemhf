@@ -17,14 +17,16 @@ class RoleController extends Controller
         ]);
 
         $role->update([
-            'name' => $request->name,
-            'name_ar' => $request->name_ar,
-            'description' => $request->description,
+            'name' => $request->input('name'),
+            'name_ar' => $request->input('name_ar'),
+            'description' => $request->input('description'),
         ]);
 
         if ($request->has('permissions')) {
-            $role->permissions()->sync($request->permissions);
-        } else {
+            $role->permissions()->sync($request->input('permissions'));
+        }
+
+        if (! $request->has('permissions')) {
             $role->permissions()->detach();
         }
 

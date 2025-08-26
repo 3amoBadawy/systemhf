@@ -7,7 +7,7 @@ class SystemHelper
     /**
      * الحصول على اسم الفئة باللغة العربية
      */
-    public static function getCategoryName($category)
+    public static function getCategoryName(string $category): string
     {
         $categories = [
             'general' => 'إعدادات عامة',
@@ -67,7 +67,6 @@ class SystemHelper
             'subdomain' => 'النطاق الفرعي',
             'redirect' => 'إعادة التوجيه',
             'rewrite' => 'إعادة الكتابة',
-            'compression' => 'الضغط',
             'gzip' => 'Gzip',
             'brotli' => 'Brotli',
             'cdn' => 'شبكة توصيل المحتوى',
@@ -79,7 +78,6 @@ class SystemHelper
             'scaling' => 'التوسع',
             'auto_scaling' => 'التوسع التلقائي',
             'elastic' => 'المرونة',
-            'distributed' => 'الموزع',
             'microservices' => 'الخدمات المصغرة',
             'api_gateway' => 'بوابة API',
             'service_mesh' => 'شبكة الخدمات',
@@ -106,7 +104,6 @@ class SystemHelper
             'github_actions' => 'GitHub Actions',
             'gitlab_ci' => 'GitLab CI',
             'bitbucket_pipelines' => 'Bitbucket Pipelines',
-            'deployment' => 'النشر',
             'ci_cd' => 'CI/CD',
             'automation' => 'الأتمتة',
             'orchestration' => 'التنسيق',
@@ -150,7 +147,6 @@ class SystemHelper
             'development' => 'التطوير',
             'staging' => 'الاختبار',
             'production' => 'الإنتاج',
-            'testing' => 'الاختبار',
             'qa' => 'ضمان الجودة',
             'beta' => 'بيتا',
             'alpha' => 'ألفا',
@@ -224,7 +220,7 @@ class SystemHelper
     /**
      * الحصول على وصف الفئة
      */
-    public static function getCategoryDescription($category): string
+    public static function getCategoryDescription(string $category): string
     {
         $descriptions = [
             'general' => 'الإعدادات الأساسية للنظام مثل اسم الشركة واللغة والمنطقة الزمنية',
@@ -365,7 +361,6 @@ class SystemHelper
             'development' => 'إعدادات التطوير',
             'staging' => 'إعدادات الاختبار',
             'production' => 'إعدادات الإنتاج',
-            'testing' => 'إعدادات الاختبار',
             'qa' => 'إعدادات ضمان الجودة',
             'beta' => 'إعدادات بيتا',
             'alpha' => 'إعدادات ألفا',
@@ -404,7 +399,6 @@ class SystemHelper
             'multi_threaded' => 'إعدادات متعدد الخيوط',
             'concurrent' => 'إعدادات متزامن',
             'parallel' => 'إعدادات متوازي',
-            'distributed' => 'إعدادات موزع',
             'centralized' => 'إعدادات مركزي',
             'decentralized' => 'إعدادات لامركزي',
             'federated' => 'إعدادات اتحادي',
@@ -439,7 +433,7 @@ class SystemHelper
     /**
      * الحصول على اسم المجموعة باللغة العربية
      */
-    public static function getGroupArabicName($group)
+    public static function getGroupArabicName(string $group): string
     {
         $groups = [
             'users' => 'المستخدمون',
@@ -462,7 +456,7 @@ class SystemHelper
     /**
      * الحصول على وصف المجموعة
      */
-    public static function getGroupDescription($group): string
+    public static function getGroupDescription(string $group): string
     {
         $descriptions = [
             'users' => 'إدارة المستخدمين والصلاحيات',

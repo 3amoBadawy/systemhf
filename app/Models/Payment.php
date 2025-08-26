@@ -23,6 +23,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int|null $branch_id
+ * @property-read \App\Models\Account|null $account
+ * @property-read \App\Models\Customer|null $customer
+ * @property-read string|null $receipt_image
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Payment newQuery()
@@ -64,9 +67,20 @@ class Payment extends Model
         'branch_id',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'amount' => 'decimal:2',
         'payment_date' => 'datetime',
+        'invoice_id' => 'integer',
+        'customer_id' => 'integer',
+        'user_id' => 'integer',
+        'payment_method_id' => 'integer',
+        'account_id' => 'integer',
+        'currency' => 'string',
+        'status' => 'string',
+        'reference_number' => 'string',
+        'notes' => 'string',
+        'branch_id' => 'integer',
     ];
 
     /**

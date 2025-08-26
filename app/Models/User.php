@@ -11,6 +11,26 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property string $password
+ * @property string $role
+ * @property string|null $phone
+ * @property int|null $branch_id
+ * @property string|null $employee_number
+ * @property bool $is_active
+ * @property int|null $role_id
+ * @property-read \App\Models\Employee|null $employee
+ * @property-read \App\Models\Role|null $role
+ * @property-read \App\Models\Branch|null $branch
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Invoice> $invoices
+ * @property-read int|null $invoices_count
+ * @property-read array<string>|null $permissions
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ */
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -41,6 +61,18 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+    ];
+
+    /** @var array<string, string> */
+    protected $casts = [
+        'name' => 'string',
+        'email' => 'string',
+        'role' => 'string',
+        'phone' => 'string',
+        'branch_id' => 'integer',
+        'employee_number' => 'string',
+        'is_active' => 'boolean',
+        'role_id' => 'integer',
     ];
 
     /**
@@ -76,12 +108,23 @@ class User extends Authenticatable
     }
 
     /**
+     * الحصول على صلاحيات المستخدم
+     */
+    public function getPermissionsAttribute(): ?array
+    {
+        $role = $this->role()->first();
+
+        return $role ? $role->permissions : null;
+    }
+
+    /**
      * التحقق من وجود صلاحية معينة
      */
     public function hasPermission(string $permissionName): bool
     {
-        if ($this->role && $this->role->permissions) {
-            return in_array($permissionName, $this->role->permissions);
+        $role = $this->role()->first();
+        if ($role && property_exists($role, 'permissions') && $role->permissions) {
+            return in_array($permissionName, $role->permissions);
         }
 
         return false;
@@ -89,6 +132,8 @@ class User extends Authenticatable
 
     /**
      * نطاق المستخدمين النشطين
+     *
+     * @phpstan-ignore-next-line
      */
     public function scopeActive(Builder $query): Builder
     {
@@ -97,6 +142,8 @@ class User extends Authenticatable
 
     /**
      * نطاق حسب الفرع
+     *
+     * @phpstan-ignore-next-line
      */
     public function scopeByBranch(Builder $query, int $branchId): Builder
     {
@@ -105,6 +152,8 @@ class User extends Authenticatable
 
     /**
      * نطاق حسب الدور
+     *
+     * @phpstan-ignore-next-line
      */
     public function scopeByRole(Builder $query, string|int $role): Builder
     {

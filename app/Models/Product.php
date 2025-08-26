@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -12,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @property string $product_code
  * @property string $name
  * @property string $name_ar
+ * @property-read string $display_name
  * @property string $description
  * @property string $description_ar
  * @property string $category
@@ -98,6 +98,7 @@ class Product extends Model
         'is_active',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'price' => 'decimal:2',
         'cost_price' => 'decimal:2',
@@ -110,6 +111,21 @@ class Product extends Model
         'components' => 'array',
         'component_pricing' => 'array',
         'is_active' => 'boolean',
+        'product_code' => 'string',
+        'name' => 'string',
+        'name_ar' => 'string',
+        'description' => 'string',
+        'description_ar' => 'string',
+        'category' => 'string',
+        'brand' => 'string',
+        'model' => 'string',
+        'unit' => 'string',
+        'unit_ar' => 'string',
+        'main_image' => 'string',
+        'supplier_id' => 'integer',
+        'branch_id' => 'integer',
+        'created_by' => 'integer',
+        'updated_by' => 'integer',
     ];
 
     #[\Override]
@@ -117,36 +133,118 @@ class Product extends Model
     {
         parent::boot();
 
-        // إنشاء كود المنتج تلقائياً
-        static::creating(function ($product) {
-            if (empty($product->product_code)) {
-                $product->product_code = self::generateProductCode();
-            }
+        static::creating([self::class, 'handleCreating']);
+        static::updating([self::class, 'handleUpdating']);
+    }
 
-            // حساب نسبة الربح تلقائياً إذا لم يتم تحديدها
-            if (empty($product->profit_percentage)) {
-                // This should be handled by a service or configuration
-                $product->profit_percentage = 20.0; // Default 20%
-            }
+    /**
+     * معالجة حدث الإنشاء
+     */
+    protected static function handleCreating(Product $product): void
+    {
+        self::setProductCode($product);
+        self::setDefaultProfitPercentage($product);
+        self::calculatePrice($product);
+    }
 
-            // حساب السعر تلقائياً إذا تم تحديد سعر التكلفة ونسبة الربح
-            if (! empty($product->cost_price) && ! empty($product->profit_percentage) && empty($product->price)) {
-                $product->price = $product->cost_price * (1 + ($product->profit_percentage / 100));
-            }
-        });
+    /**
+     * معالجة حدث التحديث
+     */
+    protected static function handleUpdating(Product $product): void
+    {
+        self::calculateProfitPercentage($product);
+        self::recalculatePrice($product);
+    }
 
-        // تحديث تلقائي عند تغيير القيم
-        static::updating(function ($product) {
-            // إذا تم تغيير السعر، احسب نسبة الربح
-            if ($product->isDirty('price') && ! empty($product->cost_price) && ! empty($product->price)) {
-                $product->profit_percentage = (($product->price - $product->cost_price) / $product->cost_price) * 100;
-            }
+    /**
+     * تعيين كود المنتج
+     */
+    private static function setProductCode(Product $product): void
+    {
+        if (empty($product->product_code)) {
+            $product->product_code = self::generateProductCode();
+        }
+    }
 
-            // إذا تم تغيير سعر التكلفة أو نسبة الربح، احسب السعر
-            if (($product->isDirty('cost_price') || $product->isDirty('profit_percentage')) && ! empty($product->cost_price) && ! empty($product->profit_percentage)) {
-                $product->price = $product->cost_price * (1 + ($product->profit_percentage / 100));
-            }
-        });
+    /**
+     * تعيين نسبة الربح الافتراضية
+     */
+    private static function setDefaultProfitPercentage(Product $product): void
+    {
+        if (empty($product->profit_percentage)) {
+            $product->profit_percentage = 20.0; // Default 20%
+        }
+    }
+
+    /**
+     * حساب السعر
+     */
+    private static function calculatePrice(Product $product): void
+    {
+        if (self::canCalculatePrice($product)) {
+            $product->price = self::calculatePriceFromCostAndProfit($product);
+        }
+    }
+
+    /**
+     * التحقق من إمكانية حساب السعر
+     */
+    private static function canCalculatePrice(Product $product): bool
+    {
+        return ! empty($product->cost_price) && ! empty($product->profit_percentage) && empty($product->price);
+    }
+
+    /**
+     * حساب السعر من التكلفة ونسبة الربح
+     */
+    private static function calculatePriceFromCostAndProfit(Product $product): float
+    {
+        return $product->cost_price * (1 + ($product->profit_percentage / 100));
+    }
+
+    /**
+     * حساب نسبة الربح
+     */
+    private static function calculateProfitPercentage(Product $product): void
+    {
+        if (self::canCalculateProfitPercentage($product)) {
+            $product->profit_percentage = self::calculateProfitPercentageFromPriceAndCost($product);
+        }
+    }
+
+    /**
+     * التحقق من إمكانية حساب نسبة الربح
+     */
+    private static function canCalculateProfitPercentage(Product $product): bool
+    {
+        return $product->isDirty('price') && ! empty($product->cost_price) && ! empty($product->price);
+    }
+
+    /**
+     * حساب نسبة الربح من السعر والتكلفة
+     */
+    private static function calculateProfitPercentageFromPriceAndCost(Product $product): float
+    {
+        return (($product->price - $product->cost_price) / $product->cost_price) * 100;
+    }
+
+    /**
+     * إعادة حساب السعر
+     */
+    private static function recalculatePrice(Product $product): void
+    {
+        if (self::shouldRecalculatePrice($product)) {
+            $product->price = self::calculatePriceFromCostAndProfit($product);
+        }
+    }
+
+    /**
+     * التحقق من الحاجة لإعادة حساب السعر
+     */
+    private static function shouldRecalculatePrice(Product $product): bool
+    {
+        return ($product->isDirty('cost_price') || $product->isDirty('profit_percentage')) &&
+               ! empty($product->cost_price) && ! empty($product->profit_percentage);
     }
 
     /**
@@ -174,7 +272,7 @@ class Product extends Model
      */
     public function images(): MorphMany
     {
-        return $this->morphMany(Media::class, 'mediaable')->where('media_type', 'image');
+        return $this->morphMany(Media::class, 'mediaable');
     }
 
     /**
@@ -182,7 +280,7 @@ class Product extends Model
      */
     public function videos(): MorphMany
     {
-        return $this->morphMany(Media::class, 'mediaable')->where('media_type', 'video');
+        return $this->morphMany(Media::class, 'mediaable');
     }
 
     /**
@@ -199,5 +297,13 @@ class Product extends Model
     public function branch(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Branch::class);
+    }
+
+    /**
+     * الحصول على اسم العرض
+     */
+    public function getDisplayNameAttribute(): string
+    {
+        return app()->getLocale() === 'ar' ? $this->name_ar : $this->name;
     }
 }

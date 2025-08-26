@@ -8,27 +8,27 @@ use App\Services\ConfigurationService;
 
 class SystemSettingsController extends Controller
 {
-    protected BusinessSettingRepositoryInterface $businessSettingRepository;
+    protected BusinessSettingRepositoryInterface $settingRepository;
 
-    protected ConfigurationService $configurationService;
+    protected ConfigurationService $configService;
 
     public function __construct(
-        BusinessSettingRepositoryInterface $businessSettingRepository,
-        ConfigurationService $configurationService
+        BusinessSettingRepositoryInterface $settingRepository,
+        ConfigurationService $configService
     ) {
-        $this->businessSettingRepository = $businessSettingRepository;
-        $this->configurationService = $configurationService;
+        $this->settingRepository = $settingRepository;
+        $this->configService = $configService;
     }
 
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
     {
         try {
-            $businessSettings = $this->businessSettingRepository->getInstance();
-            $timezones = $this->businessSettingRepository->getTimezones();
-            $dateFormats = $this->businessSettingRepository->getDateFormats();
-            $timeFormats = $this->businessSettingRepository->getTimeFormats();
-            $currencies = $this->businessSettingRepository->getCurrencies();
-            $settingsByCategory = $this->configurationService->getEditable();
+            $businessSettings = $this->settingRepository->getInstance();
+            $timezones = $this->settingRepository->getTimezones();
+            $dateFormats = $this->settingRepository->getDateFormats();
+            $timeFormats = $this->settingRepository->getTimeFormats();
+            $currencies = $this->settingRepository->getCurrencies();
+            $settingsByCategory = $this->configService->getEditable();
 
             return view('system-settings.index', compact(
                 'businessSettings',
@@ -43,20 +43,25 @@ class SystemSettingsController extends Controller
         }
     }
 
-    public function updateBusiness(BusinessSettingsRequest $request)
+    public function updateBusiness(BusinessSettingsRequest $request): \Illuminate\Http\RedirectResponse
     {
         try {
             $data = $request->validated();
 
             // Handle logo upload
             if ($request->hasFile('logo')) {
-                $logoPath = $request->file('logo')->store('business/logos', 'public');
-                $this->businessSettingRepository->updateLogo($logoPath);
+                $logoFile = $request->file('logo');
+                if ($logoFile && $logoFile instanceof \Illuminate\Http\UploadedFile) {
+                    $logoPath = $logoFile->store('business/logos', 'public');
+                    if ($logoPath !== false) {
+                        $this->settingRepository->updateLogo($logoPath);
+                    }
+                }
             }
 
             // Update other settings
             unset($data['logo']); // Remove logo from data array
-            $this->businessSettingRepository->updateSettings($data);
+            $this->settingRepository->updateSettings($data);
 
             return back()->with('success', 'تم تحديث إعدادات الأعمال بنجاح');
         } catch (\Exception $e) {
@@ -64,10 +69,10 @@ class SystemSettingsController extends Controller
         }
     }
 
-    public function removeLogo()
+    public function removeLogo(): \Illuminate\Http\RedirectResponse
     {
         try {
-            $this->businessSettingRepository->removeLogo();
+            $this->settingRepository->removeLogo();
 
             return back()->with('success', 'تم إزالة الشعار بنجاح');
         } catch (\Exception $e) {
@@ -75,10 +80,10 @@ class SystemSettingsController extends Controller
         }
     }
 
-    public function clearCache()
+    public function clearCache(): \Illuminate\Http\RedirectResponse
     {
         try {
-            $this->configurationService->clearCache();
+            $this->configService->clearCache();
 
             return back()->with('success', 'تم مسح الذاكرة المؤقتة بنجاح');
         } catch (\Exception $e) {

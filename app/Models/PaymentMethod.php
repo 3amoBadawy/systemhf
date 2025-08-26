@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property float $initial_balance
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Account|null $account
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PaymentMethod newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PaymentMethod newQuery()
@@ -58,10 +59,18 @@ class PaymentMethod extends Model
         'initial_balance',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'is_active' => 'boolean',
         'sort_order' => 'integer',
         'initial_balance' => 'decimal:2',
+        'name' => 'string',
+        'name_ar' => 'string',
+        'code' => 'string',
+        'description' => 'string',
+        'type' => 'string',
+        'account_id' => 'integer',
+        'branch_id' => 'integer',
     ];
 
     /**

@@ -9,6 +9,13 @@ use Illuminate\Support\Facades\Storage;
 
 class BusinessSettingsController extends Controller
 {
+    protected BusinessSettingsService $settingsService;
+
+    public function __construct(BusinessSettingsService $settingsService)
+    {
+        $this->settingsService = $settingsService;
+    }
+
     /**
      * Display business settings page
      */
@@ -55,13 +62,19 @@ class BusinessSettingsController extends Controller
 
         // Handle logo upload
         if ($request->hasFile('logo')) {
+            $logoFile = $request->file('logo');
+
             // Delete old logo if exists
             if ($settings->logo && Storage::disk('public')->exists($settings->logo)) {
                 Storage::disk('public')->delete($settings->logo);
             }
 
-            $logoPath = $request->file('logo')->store('business/logos', 'public');
-            $settings->logo = $logoPath;
+            if ($logoFile instanceof \Illuminate\Http\UploadedFile) {
+                $logoPath = $logoFile->store('business/logos', 'public');
+                if ($logoPath !== false) {
+                    $settings->logo = $logoPath;
+                }
+            }
         }
 
         // Update all settings
@@ -71,7 +84,7 @@ class BusinessSettingsController extends Controller
         config(['app.timezone' => $settings->timezone]);
 
         // Clear cache
-        BusinessSettingsService::clearCache();
+        $this->settingsService->clearCache();
 
         return redirect()->route('business-settings.index')
             ->with('success', 'تم تحديث إعدادات الأعمال بنجاح!');
@@ -91,7 +104,7 @@ class BusinessSettingsController extends Controller
         $settings->update(['logo' => null]);
 
         // Clear cache
-        BusinessSettingsService::clearCache();
+        $this->settingsService->clearCache();
 
         return redirect()->route('business-settings.index')
             ->with('success', 'تم حذف الشعار بنجاح!');

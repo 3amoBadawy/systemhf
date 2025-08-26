@@ -11,11 +11,11 @@ use Illuminate\Support\Facades\Log;
 
 class ConfigurationService
 {
-    protected SystemSettingRepositoryInterface $systemSettingRepository;
+    protected SystemSettingRepositoryInterface $settingsRepo;
 
-    public function __construct(SystemSettingRepositoryInterface $systemSettingRepository)
+    public function __construct(SystemSettingRepositoryInterface $settingsRepo)
     {
-        $this->systemSettingRepository = $systemSettingRepository;
+        $this->settingsRepo = $settingsRepo;
     }
 
     /**
@@ -37,7 +37,7 @@ class ConfigurationService
      */
     public function set(string $key, mixed $value, string $type = 'string'): bool
     {
-        $setting = SystemSetting::updateOrCreate(
+        SystemSetting::updateOrCreate(
             ['key' => $key],
             [
                 'value' => $value,
@@ -77,10 +77,11 @@ class ConfigurationService
             $cacheKey = 'system_settings_all';
 
             return Cache::remember($cacheKey, 3600, function () {
-                $settings = $this->systemSettingRepository->all();
+                $settings = $this->settingsRepo->all();
                 $result = [];
 
                 foreach ($settings as $setting) {
+                    /** @var \App\Models\SystemSetting $setting */
                     $result[$setting->key] = $setting->value;
                 }
 
@@ -102,9 +103,9 @@ class ConfigurationService
     public function delete(string $key): bool
     {
         try {
-            $setting = $this->systemSettingRepository->findByKey($key);
+            $setting = $this->settingsRepo->findByKey($key);
             if ($setting) {
-                $deleted = $this->systemSettingRepository->delete($setting->id);
+                $deleted = $this->settingsRepo->delete($setting->id);
                 if ($deleted) {
                     $this->clearCache($key);
 

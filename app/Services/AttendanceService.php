@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Models\Attendance;
 use App\Models\Employee;
 use App\Models\Shift;
+use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class AttendanceService
@@ -29,7 +31,7 @@ class AttendanceService
             ]);
 
             return $attendance;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('فشل تسجيل الحضور عبر كشك الويب', [
                 'employee_id' => $employeeId,
                 'shift_id' => $shiftId,
@@ -46,7 +48,7 @@ class AttendanceService
     {
         try {
             // التحقق من صحة PIN
-            $this->validatePin($employeeId, $pin);
+            $this->validatePin($pin);
 
             // التحقق من صحة البيانات
             $this->validateCheckInData($employeeId, $shiftId);
@@ -61,7 +63,7 @@ class AttendanceService
             ]);
 
             return $attendance;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('فشل تسجيل الحضور عبر QR/PIN', [
                 'employee_id' => $employeeId,
                 'shift_id' => $shiftId,
@@ -99,7 +101,7 @@ class AttendanceService
             ]);
 
             return $attendance;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('فشل تسجيل الحضور عبر GPS', [
                 'employee_id' => $employeeId,
                 'shift_id' => $shiftId,
@@ -138,7 +140,7 @@ class AttendanceService
             ]);
 
             return $attendance;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('فشل تسجيل الحضور يدوياً', [
                 'employee_id' => $employeeId,
                 'shift_id' => $shiftId,
@@ -167,7 +169,7 @@ class AttendanceService
             ]);
 
             return $attendance;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('فشل تسجيل الانصراف', [
                 'attendance_id' => $attendanceId,
                 'method' => $method,
@@ -194,7 +196,7 @@ class AttendanceService
             ]);
 
             return $attendance;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('فشل بدء الاستراحة', [
                 'attendance_id' => $attendanceId,
                 'error' => $e->getMessage(),
@@ -220,7 +222,7 @@ class AttendanceService
             ]);
 
             return $attendance;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('فشل إنهاء الاستراحة', [
                 'attendance_id' => $attendanceId,
                 'error' => $e->getMessage(),
@@ -237,13 +239,13 @@ class AttendanceService
         // التحقق من وجود الموظف
         $employee = Employee::findOrFail($employeeId);
         if (! $employee->isActive()) {
-            throw new \Exception('الموظف غير نشط');
+            throw new Exception('الموظف غير نشط');
         }
 
         // التحقق من وجود الشِفت
         $shift = Shift::findOrFail($shiftId);
         if (! $shift->isActive()) {
-            throw new \Exception('الشِفت غير نشط');
+            throw new Exception('الشِفت غير نشط');
         }
 
         // التحقق من عدم وجود تسجيل سابق اليوم
@@ -252,19 +254,19 @@ class AttendanceService
             ->first();
 
         if ($existing) {
-            throw new \Exception('تم تسجيل الحضور مسبقاً لهذا اليوم');
+            throw new Exception('تم تسجيل الحضور مسبقاً لهذا اليوم');
         }
     }
 
     /**
      * التحقق من صحة PIN
      */
-    private function validatePin(int $employeeId, string $pin): void
+    private function validatePin(string $pin): void
     {
         // يمكن إضافة منطق التحقق من PIN هنا
         // مثال: التحقق من قاعدة البيانات أو نظام خارجي
         if (strlen($pin) < 4) {
-            throw new \Exception('PIN غير صحيح');
+            throw new Exception('PIN غير صحيح');
         }
     }
 
@@ -277,13 +279,13 @@ class AttendanceService
         $branch = $employee->branch;
 
         if (! $branch) {
-            throw new \Exception('الموظف غير مرتبط بفرع');
+            throw new Exception('الموظف غير مرتبط بفرع');
         }
 
         // يمكن إضافة منطق التحقق من موقع الفرع هنا
         // مثال: التحقق من أن GPS ضمن نطاق الفرع
         if ($lat < -90 || $lat > 90 || $lng < -180 || $lng > 180) {
-            throw new \Exception('إحداثيات GPS غير صحيحة');
+            throw new Exception('إحداثيات GPS غير صحيحة');
         }
     }
 
@@ -295,7 +297,7 @@ class AttendanceService
         // يمكن إضافة منطق التحقق من صلاحية المعتمد هنا
         // مثال: التحقق من أن المعتمد له صلاحية الموافقة
         if (empty($approverId)) {
-            throw new \Exception('معرف المعتمد مطلوب');
+            throw new Exception('معرف المعتمد مطلوب');
         }
     }
 
@@ -313,7 +315,7 @@ class AttendanceService
             'check_out_time' => $type === 'check_out' ? now() : null,
             'notes' => $notes,
             'branch_id' => $employee->branch_id,
-            'user_id' => auth()->id(),
+            'user_id' => Auth::id() ?? 0,
         ]);
 
         return $attendance;
@@ -385,8 +387,6 @@ class AttendanceService
      */
     public function getAttendanceStatistics(int $employeeId, string $period): array
     {
-        $employee = Employee::findOrFail($employeeId);
-
         $attendance = Attendance::where('employee_id', $employeeId)
             ->where('check_in_time', 'like', $period.'%')
             ->get();
@@ -435,7 +435,8 @@ class AttendanceService
      */
     public function getBranchAttendanceReport(int $branchId, string $date): array
     {
-        $attendance = Attendance::whereHas('employee', function ($query) use ($branchId) {
+        // @phpstan-ignore-next-line
+        $attendance = Attendance::query()->whereHas('employee', function ($query) use ($branchId) {
             $query->where('branch_id', $branchId);
         })
             ->where('date', $date)

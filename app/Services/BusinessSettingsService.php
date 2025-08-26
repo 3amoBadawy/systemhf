@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Models\BusinessSetting;
 use App\Repositories\Contracts\BusinessSettingRepositoryInterface;
 use Illuminate\Support\Facades\Cache;
 
 class BusinessSettingsService
 {
-    protected BusinessSettingRepositoryInterface $businessSettingRepository;
+    protected BusinessSettingRepositoryInterface $settingsRepo;
 
-    public function __construct(BusinessSettingRepositoryInterface $businessSettingRepository)
+    public function __construct(BusinessSettingRepositoryInterface $settingsRepo)
     {
-        $this->businessSettingRepository = $businessSettingRepository;
+        $this->settingsRepo = $settingsRepo;
     }
 
     /**
@@ -24,27 +25,57 @@ class BusinessSettingsService
         $settings = $this->getInstance();
 
         return [
-            'business_name' => $settings->business_name,
-            'business_name_ar' => $settings->business_name_ar,
-            'business_email' => $settings->business_email,
-            'business_phone' => $settings->business_phone,
-            'business_address' => $settings->business_address,
-            'business_address_ar' => $settings->business_address_ar,
-            'business_website' => $settings->business_website,
-            'business_logo' => $settings->business_logo,
-            'business_favicon' => $settings->business_favicon,
-            'currency' => $settings->currency,
-            'currency_symbol' => $settings->currency_symbol,
-            'timezone' => $settings->timezone,
-            'date_format' => $settings->date_format,
-            'time_format' => $settings->time_format,
-            'tax_rate' => $settings->tax_rate,
-            'tax_number' => $settings->tax_number,
-            'commercial_record' => $settings->commercial_record,
-            'bank_name' => $settings->bank_name,
-            'bank_account' => $settings->bank_account,
-            'iban' => $settings->iban,
+            'business_name' => $settings->business_name ?? '',
+            'business_name_ar' => $settings->business_name_ar ?? '',
+            'business_email' => $settings->business_email ?? '',
+            'business_phone' => $settings->business_phone ?? '',
+            'business_address' => $settings->business_address ?? '',
+            'business_address_ar' => $settings->business_address_ar ?? '',
+            'business_website' => $settings->business_website ?? '',
+            'business_logo' => $settings->business_logo ?? '',
+            'business_favicon' => $settings->business_favicon ?? '',
+            'currency' => $settings->currency ?? 'EGP',
+            'currency_symbol' => $settings->currency_symbol ?? 'ج.م',
+            'timezone' => $settings->timezone ?? 'Africa/Cairo',
+            'date_format' => $settings->date_format ?? 'Y-m-d',
+            'time_format' => $settings->time_format ?? 'H:i:s',
+            'tax_rate' => $settings->tax_rate ?? 14.0,
+            'tax_number' => $settings->tax_number ?? '',
+            'commercial_record' => $settings->commercial_record ?? '',
+            'bank_name' => $settings->bank_name ?? '',
+            'bank_account' => $settings->bank_account ?? '',
+            'iban' => $settings->iban ?? '',
         ];
+    }
+
+    /**
+     * Get singleton instance
+     */
+    public function getInstance(): BusinessSetting
+    {
+        return BusinessSetting::firstOrCreate([], [
+            'business_name' => 'SystemHF',
+            'business_name_ar' => 'نظام إدارة الأعمال',
+            'business_email' => 'info@systemhf.com',
+            'business_phone' => '+20 100 000 0000',
+            'business_address' => 'Cairo, Egypt',
+            'business_address_ar' => 'القاهرة، مصر',
+            'business_website' => 'https://systemhf.com',
+            'business_logo' => '',
+            'business_favicon' => '',
+            'currency' => 'EGP',
+            'currency_symbol' => 'ج.م',
+            'timezone' => 'Africa/Cairo',
+            'date_format' => 'Y-m-d',
+            'time_format' => 'H:i:s',
+            'tax_rate' => 14.0,
+            'tax_number' => '',
+            'commercial_record' => '',
+            'bank_name' => '',
+            'bank_account' => '',
+            'iban' => '',
+            'default_profit_percent' => 30.0,
+        ]);
     }
 
     /**
@@ -54,7 +85,7 @@ class BusinessSettingsService
     {
         $settings = $this->getSettings();
 
-        return $locale === 'ar' ? $settings->business_name_ar : $settings->business_name;
+        return $locale === 'ar' ? $settings['business_name_ar'] : $settings['business_name'];
     }
 
     /**
@@ -63,7 +94,7 @@ class BusinessSettingsService
     public function formatCurrency(float $amount): string
     {
         $settings = $this->getSettings();
-        $symbol = $settings->currency_symbol ?? 'ج.م';
+        $symbol = $settings['currency_symbol'] ?? 'ج.م';
 
         return $symbol.' '.number_format($amount, 2);
     }
@@ -75,7 +106,7 @@ class BusinessSettingsService
     {
         $settings = $this->getSettings();
 
-        return $settings->currency_symbol ?? 'ج.م';
+        return $settings['currency_symbol'] ?? 'ج.م';
     }
 
     /**
@@ -85,7 +116,7 @@ class BusinessSettingsService
     {
         $settings = $this->getSettings();
 
-        return $settings->default_profit_percent ?? 30.0;
+        return $settings['default_profit_percent'] ?? 30.0;
     }
 
     /**
@@ -95,7 +126,7 @@ class BusinessSettingsService
     {
         $settings = $this->getSettings();
 
-        return $settings->logo_url;
+        return $settings['business_logo'] ?? null;
     }
 
     /**
@@ -114,14 +145,14 @@ class BusinessSettingsService
         $settings = $this->getSettings();
 
         return [
-            'business_name' => $settings->business_name,
-            'business_name_ar' => $settings->business_name_ar,
-            'default_profit_percent' => $settings->default_profit_percent,
-            'currency_symbol' => $settings->currency_symbol,
-            'timezone' => $settings->timezone,
-            'logo_url' => $settings->logo_url,
-            'date_format' => $settings->date_format,
-            'time_format' => $settings->time_format,
+            'business_name' => $settings['business_name'],
+            'business_name_ar' => $settings['business_name_ar'],
+            'default_profit_percent' => $settings['default_profit_percent'],
+            'currency_symbol' => $settings['currency_symbol'],
+            'timezone' => $settings['timezone'],
+            'logo_url' => $settings['business_logo'],
+            'date_format' => $settings['date_format'],
+            'time_format' => $settings['time_format'],
         ];
     }
 }

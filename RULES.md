@@ -1,561 +1,246 @@
-# 📋 **قواعد التطوير الإلزامية - SystemHF**
+# SystemHF Project Rules & Standards
 
-## 🎯 **معلومات عامة**
+## 🎯 **Project Overview**
 
-- **اسم النظام:** نظام إدارة معرض الأثاث - SystemHF
-- **الإصدار:** 2.1.0
-- **تاريخ التحديث:** 24 أغسطس 2025
-- **إطار العمل:** Laravel 11
-- **اللغة الأساسية:** العربية (مع دعم الإنجليزية)
+SystemHF is a Laravel-based business management system with strict quality standards and automated CI/CD enforcement. This document outlines the rules, standards, and processes that must be followed.
 
-## 🚀 **الإصدار 2.1.0 - إصلاح شامل للنظام**
+## 🚀 **CI/CD & Quality Enforcement**
 
-### ✅ **الإصلاحات الرئيسية:**
+### **Quality Gates (MANDATORY)**
+- **All commits must pass quality checks** before being allowed
+- **Pre-commit hooks are enforced** - cannot bypass quality checks
+- **GitHub Actions run automatically** on every push and PR
+- **Branch protection rules** require quality checks to pass
 
-#### **1. إصلاح جميع أخطاء 500 Server Error:**
-- ✅ إصلاح جميع أخطاء قاعدة البيانات
-- ✅ إصلاح جميع العلاقات بين النماذج
-- ✅ إصلاح جميع متغيرات `$this` في Views
-- ✅ إصلاح جميع Routes والمسارات
+### **Quality Tools Configuration**
+- **Laravel Pint**: Code style enforcement (PSR-12)
+- **PHPStan**: Static analysis (Level 8 - Maximum)
+- **Psalm**: Additional static analysis
+- **PHPMD**: Mess detection and code smell identification
+- **Deptrac**: Dependency analysis and architecture validation
+- **PHPUnit**: Test execution and coverage
 
-#### **2. إصلاح نظام الصلاحيات والأدوار:**
-- ✅ إصلاح نظام RBAC (Role-Based Access Control)
-- ✅ إضافة نظام الصلاحيات المتقدم
-- ✅ إصلاح إدارة المستخدمين والموظفين
-- ✅ إضافة نظام الأدوار المخصصة
+## 📋 **Commit Rules**
 
-#### **3. إضافة صفحات مفقودة:**
-- ✅ إضافة صفحة system-settings محسنة
-- ✅ إضافة صفحة business-settings محسنة
-- ✅ إضافة صفحة الأدوات المتقدمة
-- ✅ إضافة صفحة إدارة النشاطات
+### **Pre-commit Requirements**
+1. **Code Style**: Must pass Laravel Pint
+2. **Static Analysis**: Must pass PHPStan Level 8
+3. **Tests**: Must pass all tests
+4. **No Quality Issues**: Zero tolerance for quality violations
 
-#### **4. إصلاح قاعدة البيانات:**
-- ✅ إصلاح جميع الجداول والعلاقات
-- ✅ إضافة الأعمدة المفقودة
-- ✅ إصلاح البيانات المخزنة
-- ✅ تحسين الأداء
-
-#### **5. إضافة SystemHelper:**
-- ✅ إضافة دوال مفقودة للنظام
-- ✅ إضافة ValidationHelper
-- ✅ إضافة PermissionHelper
-- ✅ إضافة ConfigurationService
-
-#### **6. إصلاح جميع العلاقات:**
-- ✅ إصلاح علاقات User-Employee
-- ✅ إصلاح علاقات Invoice-Product
-- ✅ إصلاح علاقات Salary-Employee
-- ✅ إصلاح علاقات Branch-Settings
-
-#### **7. إضافة middleware متقدم:**
-- ✅ إضافة ActivityLogger
-- ✅ إضافة ErrorLogger
-- ✅ إضافة PermissionMiddleware
-- ✅ إضافة BranchMiddleware
-
-#### **8. إصلاح جميع Routes:**
-- ✅ إصلاح route naming conventions
-- ✅ إصلاح جميع المسارات
-- ✅ إضافة المسارات المفقودة
-- ✅ تنظيم المسارات
-
-## 📋 **القواعد الإلزامية للتطوير**
-
-### **1. قواعد التطوير العامة:**
-
-#### **أ. التوثيق الإلزامي:**
-- ✅ **يجب** توثيق جميع الدوال والكلاسات
-- ✅ **يجب** تحديث ملفات MD مع كل تغيير
-- ✅ **يجب** كتابة تعليقات باللغة العربية
-- ✅ **يجب** توثيق جميع المتغيرات والمعاملات
-
-#### **ب. معايير الكود:**
-- ✅ **يجب** اتباع معايير PSR-12
-- ✅ **يجب** استخدام أسماء واضحة ومفهومة
-- ✅ **يجب** تجنب الكود المكرر
-- ✅ **يجب** استخدام Type Hints
-
-#### **ج. إدارة الأخطاء:**
-- ✅ **يجب** استخدام try-catch blocks
-- ✅ **يجب** تسجيل جميع الأخطاء
-- ✅ **يجب** إرجاع رسائل خطأ واضحة
-- ✅ **يجب** عدم عرض أخطاء النظام للمستخدم
-
-### **2. قواعد قاعدة البيانات:**
-
-#### **أ. تصميم الجداول:**
-- ✅ **يجب** استخدام أسماء واضحة للجداول
-- ✅ **يجب** إضافة timestamps لجميع الجداول
-- ✅ **يجب** استخدام soft deletes عند الحاجة
-- ✅ **يجب** إضافة فهارس للعمود المستخدم في البحث
-
-#### **ب. العلاقات:**
-- ✅ **يجب** تعريف العلاقات بشكل صحيح
-- ✅ **يجب** استخدام foreign keys
-- ✅ **يجب** إضافة cascade delete عند الحاجة
-- ✅ **يجب** تجنب العلاقات الدائرية
-
-#### **ج. الهجرات:**
-- ✅ **يجب** كتابة هجرات قابلة للتراجع
-- ✅ **يجب** اختبار الهجرات قبل النشر
-- ✅ **يجب** استخدام seeders للبيانات الأساسية
-- ✅ **يجب** نسخ احتياطي قبل الهجرات
-
-### **3. قواعد الأمان:**
-
-#### **أ. المصادقة والتفويض:**
-- ✅ **يجب** التحقق من الصلاحيات في كل طلب
-- ✅ **يجب** استخدام middleware للصلاحيات
-- ✅ **يجب** تشفير كلمات المرور
-- ✅ **يجب** حماية من CSRF attacks
-
-#### **ب. حماية البيانات:**
-- ✅ **يجب** التحقق من صحة المدخلات
-- ✅ **يجب** استخدام prepared statements
-- ✅ **يجب** تشفير البيانات الحساسة
-- ✅ **يجب** عدم عرض معلومات النظام
-
-#### **ج. إدارة الجلسات:**
-- ✅ **يجب** تسجيل جميع العمليات
-- ✅ **يجب** تسجيل خروج المستخدمين
-- ✅ **يجب** حماية من session hijacking
-- ✅ **يجب** تنظيف الجلسات القديمة
-
-### **4. قواعد الأداء:**
-
-#### **أ. قاعدة البيانات:**
-- ✅ **يجب** استخدام فهارس مناسبة
-- ✅ **يجب** تجنب N+1 queries
-- ✅ **يجب** استخدام eager loading
-- ✅ **يجب** تحسين الاستعلامات المعقدة
-
-#### **ب. التخزين المؤقت:**
-- ✅ **يجب** استخدام cache للبيانات الثابتة
-- ✅ **يجب** مسح الكاش عند التحديث
-- ✅ **يجب** استخدام cache tags
-- ✅ **يجب** مراقبة استخدام الكاش
-
-#### **ج. تحميل الصفحات:**
-- ✅ **يجب** تقليل حجم الصور
-- ✅ **يجب** استخدام lazy loading
-- ✅ **يجب** ضغط الملفات
-- ✅ **يجب** استخدام CDN عند الحاجة
-
-### **5. قواعد الواجهات:**
-
-#### **أ. التصميم:**
-- ✅ **يجب** استخدام Tailwind CSS
-- ✅ **يجب** دعم اللغة العربية (RTL)
-- ✅ **يجب** تصميم متجاوب
-- ✅ **يجب** استخدام الألوان المحددة
-
-#### **ب. التفاعل:**
-- ✅ **يجب** استخدام Alpine.js
-- ✅ **يجب** إضافة رسائل تأكيد
-- ✅ **يجب** عرض مؤشرات التحميل
-- ✅ **يجب** معالجة الأخطاء في الواجهة
-
-#### **ج. إمكانية الوصول:**
-- ✅ **يجب** إضافة alt text للصور
-- ✅ **يجب** استخدام semantic HTML
-- ✅ **يجب** دعم لوحة المفاتيح
-- ✅ **يجب** اختبار مع قارئات الشاشة
-
-### **6. قواعد الاختبار:**
-
-#### **أ. اختبار الوحدات:**
-- ✅ **يجب** كتابة tests للدوال
-- ✅ **يجب** اختبار جميع الحالات
-- ✅ **يجب** استخدام factories للبيانات
-- ✅ **يجب** اختبار الأخطاء
-
-#### **ب. اختبار التكامل:**
-- ✅ **يجب** اختبار المسارات
-- ✅ **يجب** اختبار النماذج
-- ✅ **يجب** اختبار قاعدة البيانات
-- ✅ **يجب** اختبار الواجهات
-
-#### **ج. اختبار الأداء:**
-- ✅ **يجب** اختبار وقت الاستجابة
-- ✅ **يجب** اختبار استخدام الذاكرة
-- ✅ **يجب** اختبار قاعدة البيانات
-- ✅ **يجب** اختبار التحميل
-
-### **7. قواعد النشر:**
-
-#### **أ. التحضير للنشر:**
-- ✅ **يجب** اختبار النظام بالكامل
-- ✅ **يجب** نسخ احتياطي للبيانات
-- ✅ **يجب** تحديث ملفات التوثيق
-- ✅ **يجب** إعداد البيئة الإنتاجية
-
-#### **ب. النشر:**
-- ✅ **يجب** استخدام deployment tools
-- ✅ **يجب** نشر تدريجي
-- ✅ **يجب** مراقبة النظام
-- ✅ **يجب** إعداد التنبيهات
-
-#### **ج. ما بعد النشر:**
-- ✅ **يجب** مراقبة الأداء
-- ✅ **يجب** مراقبة الأخطاء
-- ✅ **يجب** نسخ احتياطي منتظم
-- ✅ **يجب** تحديث النظام
-
-## 🔧 **أدوات التطوير المطلوبة**
-
-### **1. أدوات PHP:**
-- ✅ **Composer:** لإدارة التبعيات
-- ✅ **PHPUnit:** للاختبار
-- ✅ **PHPStan:** لفحص الكود
-- ✅ **PHP CS Fixer:** لتنسيق الكود
-
-### **2. أدوات قاعدة البيانات:**
-- ✅ **MySQL Workbench:** لإدارة قاعدة البيانات
-- ✅ **phpMyAdmin:** لإدارة قاعدة البيانات
-- ✅ **Sequel Pro:** لإدارة قاعدة البيانات (Mac)
-- ✅ **HeidiSQL:** لإدارة قاعدة البيانات (Windows)
-
-### **3. أدوات الواجهة:**
-- ✅ **Node.js & NPM:** لإدارة الأصول
-- ✅ **Tailwind CSS:** للتصميم
-- ✅ **Alpine.js:** للتفاعل
-- ✅ **Vite:** لبناء الأصول
-
-### **4. أدوات المراقبة:**
-- ✅ **Laravel Telescope:** لمراقبة النظام
-- ✅ **Laravel Debugbar:** لتصحيح الأخطاء
-- ✅ **Laravel Log Viewer:** لعرض السجلات
-- ✅ **Laravel Horizon:** لمراقبة القوائم
-
-## 📝 **قوالب الكود المطلوبة**
-
-### **1. قالب Controller:**
-```php
-<?php
-
-namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-
-class ExampleController extends Controller
-{
-    /**
-     * عرض قائمة العناصر
-     */
-    public function index()
-    {
-        try {
-            $items = Example::paginate(20);
-            return view('examples.index', compact('items'));
-        } catch (\Exception $e) {
-            Log::error('Error in ExampleController@index: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'حدث خطأ في النظام');
-        }
-    }
-
-    /**
-     * حفظ عنصر جديد
-     */
-    public function store(Request $request)
-    {
-        try {
-            $request->validate([
-                'name' => 'required|string|max:255',
-                'description' => 'nullable|string',
-            ]);
-
-            DB::transaction(function () use ($request) {
-                Example::create($request->validated());
-            });
-
-            return redirect()->route('examples.index')
-                           ->with('success', 'تم إنشاء العنصر بنجاح');
-        } catch (\Exception $e) {
-            Log::error('Error in ExampleController@store: ' . $e->getMessage());
-            return redirect()->back()
-                           ->withErrors(['error' => 'حدث خطأ أثناء حفظ العنصر'])
-                           ->withInput();
-        }
-    }
-}
+### **Commit Message Standards**
+```bash
+# Format: type(scope): description
+feat(auth): add user authentication system
+fix(database): resolve connection timeout issue
+docs(api): update endpoint documentation
+test(users): add user model tests
+refactor(services): improve business logic service
 ```
 
-### **2. قالب Model:**
-```php
-<?php
-
-namespace App\Models;
-
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-
-class Example extends Model
-{
-    use HasFactory, SoftDeletes;
-
-    protected $fillable = [
-        'name',
-        'description',
-        'is_active',
-    ];
-
-    protected $casts = [
-        'is_active' => 'boolean',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-        'deleted_at' => 'datetime',
-    ];
-
-    /**
-     * العلاقة مع الجداول الأخرى
-     */
-    public function relatedItems()
-    {
-        return $this->hasMany(RelatedItem::class);
-    }
-
-    /**
-     * نطاق العناصر النشطة
-     */
-    public function scopeActive($query)
-    {
-        return $query->where('is_active', true);
-    }
-
-    /**
-     * نطاق البحث
-     */
-    public function scopeSearch($query, $search)
-    {
-        return $query->where('name', 'like', "%{$search}%")
-                    ->orWhere('description', 'like', "%{$search}%");
-    }
-}
+### **Branch Naming Convention**
+```bash
+feature/user-management
+bugfix/database-connection
+hotfix/security-vulnerability
+refactor/authentication-system
 ```
 
-### **3. قالب View:**
-```blade
-@extends('layouts.app')
+## 🔧 **Code Quality Standards**
 
-@section('title', 'العناصر')
+### **PHPStan Level 8 Requirements**
+- **Zero static analysis errors** allowed
+- **Generic type specifications** required for Eloquent relationships
+- **Property access validation** enforced
+- **Method signature compatibility** required
+- **Return type specifications** mandatory
 
-@section('content')
-<div class="container mx-auto px-4 py-6">
-    <!-- رأس الصفحة -->
-    <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900 mb-2">العناصر</h1>
-        <p class="text-gray-600">إدارة جميع العناصر في النظام</p>
-    </div>
+### **Laravel Pint Standards**
+- **PSR-12 compliance** required
+- **Consistent formatting** across all files
+- **No style violations** tolerated
+- **Automatic fixing** available via `./vendor/bin/pint`
 
-    <!-- رسائل النجاح والخطأ -->
-    @if(session('success'))
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-            {{ session('success') }}
-        </div>
-    @endif
+### **Test Coverage Requirements**
+- **Minimum 80% coverage** required
+- **All public methods** must have tests
+- **Feature tests** for all routes
+- **Unit tests** for all services
+- **Integration tests** for complex workflows
 
-    @if($errors->any())
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-            <ul class="list-disc list-inside">
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+## 🏗️ **Architecture Rules**
 
-    <!-- شريط الأدوات -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-        <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-4 space-x-reverse">
-                <a href="{{ route('examples.create') }}" 
-                   class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
-                    <i class="fas fa-plus ml-2"></i>
-                    إضافة عنصر جديد
-                </a>
-            </div>
-            
-            <div class="flex items-center space-x-4 space-x-reverse">
-                <input type="text" id="search" placeholder="البحث في العناصر..." 
-                       class="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-            </div>
-        </div>
-    </div>
+### **Model Standards**
+- **Eloquent traits** must be properly specified
+- **Relationship methods** must have generic types
+- **Fillable properties** must be defined
+- **Casts** must be properly typed
+- **Scopes** must be properly documented
 
-    <!-- جدول العناصر -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            الاسم
-                        </th>
-                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            الوصف
-                        </th>
-                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            الحالة
-                        </th>
-                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            الإجراءات
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    @forelse($examples as $example)
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">
-                                    {{ $example->name }}
-                                </div>
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="text-sm text-gray-900">
-                                    {{ Str::limit($example->description, 100) }}
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $example->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                    {{ $example->is_active ? 'نشط' : 'غير نشط' }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="{{ route('examples.edit', $example) }}" 
-                                   class="text-blue-600 hover:text-blue-900 ml-4">
-                                    تعديل
-                                </a>
-                                <form action="{{ route('examples.destroy', $example) }}" 
-                                      method="POST" class="inline ml-2">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" 
-                                            class="text-red-600 hover:text-red-900"
-                                            onclick="return confirm('هل أنت متأكد من حذف هذا العنصر؟')">
-                                        حذف
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4" class="px-6 py-4 text-center text-gray-500">
-                                لا توجد عناصر لعرضها
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-        
-        <!-- ترقيم الصفحات -->
-        @if($examples->hasPages())
-            <div class="px-6 py-3 border-t border-gray-200">
-                {{ $examples->links() }}
-            </div>
-        @endif
-    </div>
-</div>
+### **Service Layer Rules**
+- **Interface contracts** must be implemented
+- **Method signatures** must match interfaces
+- **Error handling** required for all operations
+- **Logging** mandatory for critical operations
+- **Validation** required for all inputs
 
-@push('scripts')
-<script>
-// البحث في العناصر
-document.getElementById('search').addEventListener('input', function() {
-    const searchTerm = this.value.toLowerCase();
-    const rows = document.querySelectorAll('tbody tr');
-    
-    rows.forEach(row => {
-        const text = row.textContent.toLowerCase();
-        if (text.includes(searchTerm)) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
-        }
-    });
-});
-</script>
-@endpush
-@endsection
+### **Repository Pattern**
+- **Base repository interface** must be followed
+- **Generic types** required for collections
+- **Query building** must be type-safe
+- **Pagination** must return proper types
+- **Error handling** for database operations
+
+## 📊 **Quality Metrics & Monitoring**
+
+### **Daily Quality Checks**
+```bash
+# Before starting work
+composer quality
+
+# During development
+./vendor/bin/phpstan analyse --level=8
+./vendor/bin/pint --test
+php artisan test
 ```
 
-## 🚫 **المحظورات المطلقة**
+### **Quality Reports**
+- **PHPStan baseline** updated regularly
+- **Code coverage reports** generated on each run
+- **Quality metrics** tracked over time
+- **Performance benchmarks** maintained
 
-### **1. أمان النظام:**
-- ❌ **ممنوع** تخزين كلمات المرور كنص عادي
-- ❌ **ممنوع** عرض معلومات النظام للمستخدمين
-- ❌ **ممنوع** تجاهل التحقق من الصلاحيات
-- ❌ **ممنوع** استخدام SQL queries مباشرة
+### **Quality Thresholds**
+- **Static Analysis**: 0 errors (PHPStan Level 8)
+- **Code Style**: 0 violations (Laravel Pint)
+- **Test Coverage**: Minimum 80%
+- **Security**: 0 vulnerabilities (composer audit)
 
-### **2. الأداء:**
-- ❌ **ممنوع** استخدام N+1 queries
-- ❌ **ممنوع** تحميل بيانات غير ضرورية
-- ❌ **ممنوع** تجاهل التخزين المؤقت
-- ❌ **ممنوع** استخدام loops بدلاً من collections
+## 🚫 **Prohibited Practices**
 
-### **3. الكود:**
-- ❌ **ممنوع** نسخ الكود
-- ❌ **ممنوع** تجاهل معايير الترميز
-- ❌ **ممنوع** كتابة كود معقد بدون تعليقات
-- ❌ **ممنوع** تجاهل إدارة الأخطاء
+### **Code Quality Violations**
+- **Bypassing quality checks** (pre-commit hooks)
+- **Committing with errors** (quality gates)
+- **Ignoring static analysis** warnings
+- **Skipping tests** for new features
+- **Using deprecated methods** or patterns
 
-### **4. قاعدة البيانات:**
-- ❌ **ممنوع** حذف البيانات بدون نسخ احتياطي
-- ❌ **ممنوع** تجاهل العلاقات بين الجداول
-- ❌ **ممنوع** استخدام أسماء غير واضحة
-- ❌ **ممنوع** تجاهل الفهارس
+### **Architecture Violations**
+- **Direct database queries** in controllers
+- **Business logic** in views or routes
+- **Hardcoded values** in code
+- **Missing error handling** for critical operations
+- **Inconsistent naming** conventions
 
-## ✅ **قائمة التحقق قبل النشر**
+### **Security Violations**
+- **Exposing sensitive data** in logs or errors
+- **Missing input validation** for user data
+- **SQL injection** vulnerabilities
+- **XSS vulnerabilities** in output
+- **Missing authentication** checks
 
-### **1. اختبار النظام:**
-- [ ] اختبار جميع الوظائف
-- [ ] اختبار جميع المسارات
-- [ ] اختبار جميع النماذج
-- [ ] اختبار جميع الواجهات
+## ✅ **Required Practices**
 
-### **2. اختبار قاعدة البيانات:**
-- [ ] اختبار جميع الهجرات
-- [ ] اختبار جميع العلاقات
-- [ ] اختبار جميع الاستعلامات
-- [ ] اختبار جميع البيانات
+### **Code Organization**
+- **PSR-4 autoloading** compliance
+- **Consistent file structure** following Laravel conventions
+- **Proper namespacing** for all classes
+- **Clear separation** of concerns
+- **Documentation** for complex logic
 
-### **3. اختبار الأمان:**
-- [ ] اختبار نظام الصلاحيات
-- [ ] اختبار حماية CSRF
-- [ ] اختبار التحقق من المدخلات
-- [ ] اختبار تسجيل النشاطات
+### **Error Handling**
+- **Try-catch blocks** for external operations
+- **Proper logging** for all errors
+- **User-friendly error messages** (no technical details)
+- **Graceful degradation** for non-critical failures
+- **Error reporting** to monitoring systems
 
-### **4. اختبار الأداء:**
-- [ ] اختبار وقت الاستجابة
-- [ ] اختبار استخدام الذاكرة
-- [ ] اختبار قاعدة البيانات
-- [ ] اختبار التحميل
+### **Performance Standards**
+- **Eager loading** for relationships
+- **Database indexing** for frequently queried fields
+- **Caching** for expensive operations
+- **Query optimization** for complex operations
+- **Memory management** for large datasets
 
-### **5. التوثيق:**
-- [ ] تحديث README.md
-- [ ] تحديث SYSTEM_DOCUMENTATION.md
-- [ ] تحديث RULES.md
-- [ ] تحديث CHANGELOG.md
+## 🔄 **Development Workflow**
 
-## 📞 **الدعم والمساعدة**
+### **Feature Development**
+1. **Create feature branch** from main
+2. **Implement feature** following standards
+3. **Write tests** for all functionality
+4. **Run quality checks** locally
+5. **Create pull request** with quality checks passing
+6. **Code review** by team members
+7. **Merge** after approval and CI checks
 
-### **معلومات الاتصال:**
-- **المطور:** SystemHF Team
-- **البريد الإلكتروني:** support@systemhf.com
-- **الموقع:** https://systemhf.com
+### **Bug Fixes**
+1. **Create bugfix branch** from main
+2. **Identify root cause** of the issue
+3. **Implement fix** following standards
+4. **Add regression tests** to prevent recurrence
+5. **Run quality checks** locally
+6. **Create pull request** with fix
+7. **Merge** after review and CI checks
 
-### **المستندات الإضافية:**
-- [دليل المستخدم](USER_GUIDE.md)
-- [دليل المطور](DEVELOPER_GUIDE.md)
-- [وثائق النظام](SYSTEM_DOCUMENTATION.md)
-- [سجل التغييرات](CHANGELOG.md)
+### **Hotfixes**
+1. **Create hotfix branch** from main
+2. **Implement critical fix** following standards
+3. **Minimal changes** to resolve issue
+4. **Test thoroughly** in staging environment
+5. **Deploy to production** after approval
+6. **Merge back** to main and develop branches
+
+## 📚 **Documentation Requirements**
+
+### **Code Documentation**
+- **PHPDoc blocks** for all public methods
+- **Inline comments** for complex logic
+- **README files** for major components
+- **API documentation** for endpoints
+- **Database schema** documentation
+
+### **Process Documentation**
+- **Setup instructions** for new developers
+- **Deployment procedures** documented
+- **Troubleshooting guides** for common issues
+- **Architecture decisions** recorded
+- **Change logs** maintained
+
+## 🚨 **Violation Consequences**
+
+### **Quality Violations**
+- **Commits blocked** until issues resolved
+- **Pull requests rejected** if quality checks fail
+- **Code review required** for all changes
+- **Additional testing** may be required
+- **Performance impact** on development velocity
+
+### **Repeated Violations**
+- **Additional review** requirements
+- **Mentoring sessions** for improvement
+- **Temporary restrictions** on merge permissions
+- **Performance review** with team lead
+- **Training requirements** for quality tools
+
+## 🎉 **Compliance Benefits**
+
+### **Code Quality**
+- **Reduced bugs** and production issues
+- **Easier maintenance** and refactoring
+- **Better performance** and scalability
+- **Improved security** and reliability
+- **Faster development** velocity
+
+### **Team Benefits**
+- **Consistent codebase** across team
+- **Easier onboarding** for new developers
+- **Better collaboration** and code reviews
+- **Reduced technical debt** over time
+- **Professional development** and growth
 
 ---
 
-**تم التطوير بواسطة فريق SystemHF** 🚀✨
-
-**آخر تحديث:** 24 أغسطس 2025
-**الإصدار:** 2.1.0
+**Last Updated**: January 2025  
+**Version**: 2.0.0  
+**Status**: Active Enforcement  
+**Next Review**: February 2025

@@ -62,6 +62,7 @@ class Shift extends Model
         'updated_by',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'start_time' => 'datetime',
         'end_time' => 'datetime',
@@ -71,6 +72,12 @@ class Shift extends Model
         'branch_id' => 'integer',
         'created_by' => 'integer',
         'updated_by' => 'integer',
+        'name' => 'string',
+        'name_ar' => 'string',
+        'notes' => 'string',
+        'late_threshold_minutes' => 'integer',
+        'overtime_threshold_minutes' => 'integer',
+        'sort_order' => 'integer',
     ];
 
     protected $attributes = [

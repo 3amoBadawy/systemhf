@@ -122,11 +122,11 @@ class ManageSystemVersion extends Command
             $this->info("Version {$version} created successfully!");
 
             return 0;
-        } else {
-            $this->error('Failed to create version');
-
-            return 1;
         }
+
+        $this->error('Failed to create version');
+
+        return 1;
     }
 
     /**
@@ -179,11 +179,11 @@ class ManageSystemVersion extends Command
             $this->info("Version ID {$id} updated successfully!");
 
             return 0;
-        } else {
-            $this->error('Failed to update version');
-
-            return 1;
         }
+
+        $this->error('Failed to update version');
+
+        return 1;
     }
 
     /**
@@ -202,11 +202,11 @@ class ManageSystemVersion extends Command
                 $this->info("Version ID {$id} deleted successfully!");
 
                 return 0;
-            } else {
-                $this->error('Failed to delete version');
-
-                return 1;
             }
+
+            $this->error('Failed to delete version');
+
+            return 1;
         }
 
         $this->info('Operation cancelled');
@@ -222,10 +222,13 @@ class ManageSystemVersion extends Command
         $currentVersion = $this->systemVersionService->getCurrentVersion();
 
         if ($currentVersion) {
-            $this->info("Current system version: {$currentVersion}");
-        } else {
-            $this->info('No current version set');
+            /** @var \App\Models\SystemVersion $currentVersion */
+            $this->info("Current system version: {$currentVersion->version}");
+
+            return 0;
         }
+
+        $this->info('No current version set');
 
         return 0;
     }
@@ -247,6 +250,7 @@ class ManageSystemVersion extends Command
         $this->info('----------------');
 
         foreach ($versions as $version) {
+            /** @var \App\Models\SystemVersion $version */
             $status = $version->is_current ? ' (Current)' : '';
             $this->info("ID: {$version->id}, Version: {$version->version}{$status}");
             $this->info("Description: {$version->description}");
@@ -272,11 +276,11 @@ class ManageSystemVersion extends Command
             $this->info("Version ID {$id} set as current successfully!");
 
             return 0;
-        } else {
-            $this->error('Failed to set version as current');
-
-            return 1;
         }
+
+        $this->error('Failed to set version as current');
+
+        return 1;
     }
 
     /**

@@ -33,6 +33,7 @@ class Handler extends ExceptionHandler
             if (Auth::check()) {
                 $user = Auth::user();
                 if ($user) {
+                    /** @var \App\Models\User $user */
                     $context['user_id'] = Auth::id();
                     $context['user_email'] = $user->email;
                 }

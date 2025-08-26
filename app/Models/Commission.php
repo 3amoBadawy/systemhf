@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -42,10 +43,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Commission wherePaidBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Commission wherePaymentMethod($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Commission whereSalesAmount($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Commission whereStatus($valfinal ue)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Commission whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Commission whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Commission extends Model
 {
@@ -68,6 +69,7 @@ class Commission extends Model
         'is_active',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'commission_date' => 'date',
         'sales_amount' => 'decimal:2',
@@ -76,6 +78,13 @@ class Commission extends Model
         'approved_at' => 'datetime',
         'paid_at' => 'datetime',
         'is_active' => 'boolean',
+        'employee_id' => 'integer',
+        'invoice_id' => 'integer',
+        'status' => 'string',
+        'approved_by' => 'integer',
+        'paid_by' => 'integer',
+        'payment_method' => 'string',
+        'notes' => 'string',
     ];
 
     // العلاقة مع الموظف
@@ -103,10 +112,10 @@ class Commission extends Model
     // إنشاء عمولة جديدة
 
     // اعتماد العمولة
-    public function approve($approverId, $notes = null): static
+    public function approve(int $approverId, ?string $notes = null): static
     {
         if ($this->status !== 'pending') {
-            throw new \Exception('لا يمكن اعتماد العمولة في هذه الحالة');
+            throw new Exception('لا يمكن اعتماد العمولة في هذه الحالة');
         }
 
         $this->status = 'approved';
@@ -124,10 +133,10 @@ class Commission extends Model
     // رفض العمولة
 
     // دفع العمولة
-    public function pay($payerId, $paymentMethod, $notes = null): static
+    public function pay(int $payerId, string $paymentMethod, ?string $notes = null): static
     {
         if ($this->status !== 'approved') {
-            throw new \Exception('يجب اعتماد العمولة قبل الدفع');
+            throw new Exception('يجب اعتماد العمولة قبل الدفع');
         }
 
         $this->status = 'paid';

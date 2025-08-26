@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 /**
  * @property int $id
@@ -30,11 +31,11 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder<static>|Category whereIsActive($value)
  * @method static Builder<static>|Category whereName($value)
  * @method static Builder<static>|Category whereNameAr($value)
- * @method static Builder<static>|Category whereSfinal lug($value)
+ * @method static Builder<static>|Category whereSlug($value)
  * @method static Builder<static>|Category whereSortOrder($value)
  * @method static Builder<static>|Category whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Category extends Model
 {
@@ -49,9 +50,16 @@ class Category extends Model
         'sort_order',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'is_active' => 'boolean',
         'sort_order' => 'integer',
+        'name' => 'string',
+        'name_ar' => 'string',
+        'slug' => 'string',
+        'description' => 'string',
+        'description_ar' => 'string',
+        'image' => 'string',
     ];
 
     /**
@@ -64,7 +72,7 @@ class Category extends Model
 
         static::creating(function ($category) {
             if (empty($category->slug)) {
-                $category->slug = \Str::slug($category->name, '-');
+                $category->slug = Str::slug($category->name, '-');
             }
         });
     }

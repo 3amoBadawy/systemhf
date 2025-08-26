@@ -23,19 +23,26 @@ class InvoiceController extends Controller
 
         // رفع صورة العقد الجديدة
         if ($request->hasFile('contract_image')) {
+            $contractImageFile = $request->file('contract_image');
+
             // حذف الصورة القديمة
             if ($invoice->contract_image) {
                 Storage::disk('public')->delete($invoice->contract_image);
             }
-            $contractImagePath = $request->file('contract_image')->store('contracts', 'public');
-            $invoice->contract_image = $contractImagePath;
+
+            if ($contractImageFile instanceof \Illuminate\Http\UploadedFile) {
+                $contractImagePath = $contractImageFile->store('contracts', 'public');
+                if ($contractImagePath !== false) {
+                    $invoice->contract_image = $contractImagePath;
+                }
+            }
         }
 
         $invoice->update([
-            'customer_id' => $request->customer_id,
-            'sale_date' => $request->sale_date,
-            'contract_number' => $request->contract_number,
-            'notes' => $request->notes,
+            'customer_id' => $request->input('customer_id'),
+            'sale_date' => $request->input('sale_date'),
+            'contract_number' => $request->input('contract_number'),
+            'notes' => $request->input('notes'),
         ]);
 
         return redirect()->route('invoices.show', $invoice)

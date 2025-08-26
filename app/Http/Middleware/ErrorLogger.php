@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -22,7 +23,7 @@ class ErrorLogger
                 'status' => $response->getStatusCode(),
                 'url' => $request->fullUrl(),
                 'method' => $request->method(),
-                'user_id' => auth()->id(),
+                'user_id' => Auth::id(),
                 'ip' => $request->ip(),
                 'user_agent' => $request->userAgent(),
                 'headers' => $request->headers->all(),

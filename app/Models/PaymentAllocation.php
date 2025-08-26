@@ -39,8 +39,12 @@ class PaymentAllocation extends Model
         'notes',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'amount' => 'decimal:2',
+        'payment_id' => 'integer',
+        'invoice_id' => 'integer',
+        'notes' => 'string',
     ];
 
     /**

@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\AttendanceService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
 {
-    protected $attendanceService;
+    protected AttendanceService $attendanceService;
+
+    public function __construct(AttendanceService $attendanceService)
+    {
+        $this->attendanceService = $attendanceService;
+    }
 
     /**
      * تسجيل الانصراف
@@ -21,8 +27,8 @@ class AttendanceController extends Controller
 
         try {
             $attendance = $this->attendanceService->checkOut(
-                $request->attendance_id,
-                $request->method
+                $request->input('attendance_id'),
+                $request->input('method')
             );
 
             return response()->json([
@@ -48,7 +54,7 @@ class AttendanceController extends Controller
         ]);
 
         try {
-            $attendance = $this->attendanceService->startBreak($request->attendance_id);
+            $attendance = $this->attendanceService->startBreak($request->input('attendance_id'));
 
             return response()->json([
                 'success' => true,
@@ -73,7 +79,7 @@ class AttendanceController extends Controller
         ]);
 
         try {
-            $attendance = $this->attendanceService->endBreak($request->attendance_id);
+            $attendance = $this->attendanceService->endBreak($request->input('attendance_id'));
 
             return response()->json([
                 'success' => true,

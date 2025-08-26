@@ -1,282 +1,285 @@
-# نظام إدارة معرض الأثاث - SystemHF
+# SystemHF - Laravel Business Management System
 
-## 📋 **ملخص النظام**
+[![Quality Check & CI/CD](https://github.com/3amoBadawy/systemhf/actions/workflows/quality.yml/badge.svg)](https://github.com/3amoBadawy/systemhf/actions/workflows/quality.yml)
+[![PHPStan](https://img.shields.io/badge/PHPStan-Level%208-brightgreen.svg)](https://phpstan.org/)
+[![Laravel Pint](https://img.shields.io/badge/Laravel%20Pint-PSR--12%20Compliant-brightgreen.svg)](https://laravel.com/docs/pint)
+[![Laravel](https://img.shields.io/badge/Laravel-12.x-red.svg)](https://laravel.com/)
 
-نظام إدارة شامل لمعرض الأثاث يتضمن إدارة العملاء، المنتجات، الفواتير، المدفوعات، الموظفين، الرواتب، والمخزون. النظام مبني على Laravel 11 مع واجهة مستخدم حديثة ومتجاوبة.
+## 🚀 **Project Overview**
 
-## 🚀 **الإصدار 2.1.0 - إصلاح شامل للنظام**
+SystemHF is a comprehensive Laravel 12 business management system designed for Arabic-speaking markets with multi-branch support. The system includes complete user management, product management, customer relationships, invoicing, payments, employee management, and comprehensive reporting.
 
-### ✅ **الإصلاحات الرئيسية:**
+## ✨ **Features**
 
-#### **1. إصلاح جميع أخطاء 500 Server Error:**
-- ✅ إصلاح جميع أخطاء قاعدة البيانات
-- ✅ إصلاح جميع العلاقات بين النماذج
-- ✅ إصلاح جميع متغيرات `$this` في Views
-- ✅ إصلاح جميع Routes والمسارات
+- **🔐 User Management**: Role-based access control with granular permissions
+- **🏢 Multi-Branch Support**: Manage multiple business locations
+- **📦 Product Management**: Complete inventory and product catalog
+- **👥 Customer Management**: CRM with customer notifications
+- **🧾 Invoicing System**: Professional invoice generation and management
+- **💳 Payment Processing**: Multiple payment methods and tracking
+- **👨‍💼 Employee Management**: Attendance, salaries, and commissions
+- **📊 Financial Management**: Accounts, transactions, and expense tracking
+- **📱 Media Management**: Advanced file and image handling
+- **📈 Reporting**: Comprehensive business analytics and reports
 
-#### **2. إصلاح نظام الصلاحيات والأدوار:**
-- ✅ إصلاح نظام RBAC (Role-Based Access Control)
-- ✅ إضافة نظام الصلاحيات المتقدم
-- ✅ إصلاح إدارة المستخدمين والموظفين
-- ✅ إضافة نظام الأدوار المخصصة
+## 🛠️ **Technology Stack**
 
-#### **3. إضافة صفحات مفقودة:**
-- ✅ إضافة صفحة system-settings محسنة
-- ✅ إضافة صفحة business-settings محسنة
-- ✅ إضافة صفحة الأدوات المتقدمة
-- ✅ إضافة صفحة إدارة النشاطات
+- **Backend**: Laravel 12, PHP 8.2+
+- **Database**: MySQL 8.0+ with comprehensive migrations
+- **Frontend**: Blade templates, Tailwind CSS 4.0, Alpine.js
+- **Quality Tools**: PHPStan (Level 8), Laravel Pint, Psalm, PHPMD
+- **CI/CD**: GitHub Actions, Pre-commit hooks, Automated quality gates
+- **Testing**: PHPUnit with comprehensive test coverage
 
-#### **4. إصلاح قاعدة البيانات:**
-- ✅ إصلاح جميع الجداول والعلاقات
-- ✅ إضافة الأعمدة المفقودة
-- ✅ إصلاح البيانات المخزنة
-- ✅ تحسين الأداء
+## 📊 **Current Status**
 
-#### **5. إضافة SystemHelper:**
-- ✅ إضافة دوال مفقودة للنظام
-- ✅ إضافة ValidationHelper
-- ✅ إضافة PermissionHelper
-- ✅ إضافة ConfigurationService
+### ✅ **Completed**
+- **Database Design**: 30+ tables with proper relationships
+- **Models**: 25+ Eloquent models with relationships
+- **Migrations**: All database migrations implemented
+- **Seeders**: Comprehensive data seeding for testing
+- **Routes**: Complete routing structure for all features
+- **Views**: Blade templates for all major features
+- **CI/CD Setup**: Complete GitHub Actions workflow
+- **Quality Tools**: All tools configured and enforced
 
-#### **6. إصلاح جميع العلاقات:**
-- ✅ إصلاح علاقات User-Employee
-- ✅ إصلاح علاقات Invoice-Product
-- ✅ إصلاح علاقات Salary-Employee
-- ✅ إصلاح علاقات Branch-Settings
+### 🔧 **In Progress**
+- **Quality Issues**: Resolving 656 PHPStan errors
+- **Missing Methods**: Implementing missing service methods
+- **Interface Compatibility**: Fixing interface mismatches
+- **Test Coverage**: Expanding test suite coverage
 
-#### **7. إضافة middleware متقدم:**
-- ✅ إضافة ActivityLogger
-- ✅ إضافة ErrorLogger
-- ✅ إضافة PermissionMiddleware
-- ✅ إضافة BranchMiddleware
+### 📋 **Next Steps**
+- Complete quality issue resolution
+- Implement missing controller methods
+- Add comprehensive test coverage
+- Deploy to production environment
 
-#### **8. إصلاح جميع Routes:**
-- ✅ إصلاح route naming conventions
-- ✅ إصلاح جميع المسارات
-- ✅ إضافة المسارات المفقودة
-- ✅ تنظيم المسارات
+## 🚀 **Quick Start**
 
-### 🔧 **الميزات الجديدة:**
-
-#### **صفحة system-settings:**
-- ✅ **تبويبات منظمة:** حسب الفئات
-- ✅ **بحث متقدم:** في جميع الإعدادات
-- ✅ **حقول ذكية:** حسب نوع البيانات
-- ✅ **أدوات متقدمة:** تصدير، استيراد، إعادة تعيين
-- ✅ **روابط سريعة:** إعدادات الأعمال، الأدوات المتقدمة
-
-#### **صفحة business-settings:**
-- ✅ **واجهة محسنة:** تصميم حديث
-- ✅ **حقول شاملة:** جميع إعدادات الأعمال
-- ✅ **إدارة الملفات:** رفع وإدارة الشعار
-- ✅ **التحقق:** قواعد تحقق شاملة
-- ✅ **التحديث:** حفظ فوري
-
-#### **نظام الإعدادات:**
-- ✅ **38 إعداد نظام:** منظمة في 10 فئات
-- ✅ **إعدادات الأعمال:** شاملة ومتطورة
-- ✅ **إدارة ديناميكية:** من خلال لوحة الإدارة
-- ✅ **تخزين مؤقت:** محسن للأداء
-
-### 📊 **إحصائيات النظام:**
-
-- **إعدادات النظام:** 38 إعداد
-- **فئات الإعدادات:** 10 فئات
-- **إعدادات الأعمال:** شاملة
-- **المستخدمين:** 2 مستخدم
-- **الأدوار:** 4 أدوار أساسية
-- **الصلاحيات:** 50+ صلاحية
-
-## 🛠️ **المتطلبات**
-
+### **Prerequisites**
 - PHP 8.2+
-- Laravel 11
 - MySQL 8.0+
-- Composer
-- Node.js & NPM
+- Node.js 18+
+- Composer 2.0+
+- Git
 
-## 🚀 **أدوات التطوير المثبتة**
-
-### **أدوات التحليل الثابت:**
-- ✅ **PHPStan 2.1.22** - تحليل ثابت متقدم للكود
-- ✅ **Larastan 3.6.0** - تكامل PHPStan مع Laravel
-- ✅ **Psalm 6.13.1** - تحليل ثابت متقدم مع دعم TypeScript
-
-### **أدوات جودة الكود:**
-- ✅ **PHPMD 2.15.0** - كاشف رائحة الكود
-- ✅ **Deptrac 2.0.4** - فحص التبعيات والهندسة المعمارية
-- ✅ **Laravel Pint** - تنسيق الكود (مثبت مسبقاً)
-
-### **أوامر Composer السريعة:**
+### **Installation**
 ```bash
-# فحص شامل للجودة
-composer quality
-
-# فحص سريع
-composer check
-
-# تشغيل التحليل الثابت
-composer analyse
-
-# تشغيل Psalm
-composer psalm
-
-# تشغيل PHPMD
-composer phpmd
-
-# تشغيل Deptrac
-composer deptrac
-```
-
-### **تكامل CI/CD:**
-- ✅ **Pre-commit Hook** - فحص الجودة قبل الـ commit
-- ✅ **GitHub Actions** - فحص تلقائي للجودة
-- ✅ **ملفات التكوين** - phpstan.neon, psalm.xml, phpmd.xml, deptrac.yaml
-
-## 📦 **التثبيت**
-
-### 1. استنساخ المشروع
-```bash
-git clone <repository-url>
+# Clone repository
+git clone https://github.com/3amoBadawy/systemhf.git
 cd systemhf
-```
 
-### 2. تثبيت التبعيات
-```bash
+# Install dependencies
 composer install
 npm install
-```
 
-### 3. إعداد البيئة
-```bash
+# Environment setup
 cp .env.example .env
 php artisan key:generate
-```
 
-### 4. إعداد قاعدة البيانات
-```bash
+# Database setup
 php artisan migrate
 php artisan db:seed
+
+# Verify installation
+composer quality
 ```
 
-### 5. بناء الأصول
+### **Development Server**
 ```bash
-npm run build
-```
-
-### 6. تشغيل النظام
-```bash
+# Start development server
 php artisan serve
+
+# Start Vite for frontend
+npm run dev
+
+# Run all services (recommended)
+composer dev
 ```
 
-## 🔐 **بيانات الدخول**
+## 🔧 **Quality Tools & CI/CD**
 
-### المستخدم المدير:
-- **البريد الإلكتروني:** `admin@system.com`
-- **كلمة المرور:** `admin123`
-- **الدور:** `super_admin`
+### **Local Quality Checks**
+```bash
+# Code style
+./vendor/bin/pint                    # Fix code style
+./vendor/bin/pint --test            # Check code style
 
-### المستخدم الإداري:
-- **البريد الإلكتروني:** `admin@systemhf.com`
-- **كلمة المرور:** `admin123`
-- **الدور:** `admin`
+# Static analysis
+./vendor/bin/phpstan analyse        # Run PHPStan (Level 8)
+./vendor/bin/psalm                  # Run Psalm analysis
 
-## 🌐 **المسارات الرئيسية**
+# Testing
+php artisan test                     # Run all tests
+php artisan test --coverage         # Run with coverage
 
-- **لوحة التحكم:** `/dashboard`
-- **إعدادات النظام:** `/system-settings`
-- **إعدادات الأعمال:** `/business-settings`
-- **إدارة المستخدمين:** `/roles`
-- **إدارة الصلاحيات:** `/permissions`
-- **إدارة الرواتب:** `/salary`
+# Comprehensive check
+composer quality                     # Run all quality checks
+```
 
-## 📁 **هيكل المشروع**
+### **Pre-commit Hook (ENFORCED)**
+Quality checks run automatically before each commit:
+1. **Laravel Pint**: Code style validation
+2. **PHPStan**: Static analysis (Level 8)
+3. **Tests**: Full test suite execution
+
+**Commits will fail** if any quality check fails.
+
+### **GitHub Actions**
+Automated CI/CD pipeline runs on every push and pull request:
+- **Quality Checks**: Code style, static analysis, tests
+- **Security Checks**: Dependency scanning, vulnerability detection
+- **Build Process**: Asset compilation and optimization
+- **Quality Gates**: All checks must pass before merge
+
+## 📁 **Project Structure**
 
 ```
 systemhf/
 ├── app/
-│   ├── Http/Controllers/
-│   ├── Models/
-│   ├── Services/
-│   └── Helpers/
+│   ├── Http/Controllers/     # Application controllers
+│   ├── Models/              # Eloquent models
+│   ├── Services/            # Business logic services
+│   ├── Repositories/        # Data access layer
+│   └── Providers/           # Service providers
 ├── database/
-│   ├── migrations/
-│   └── seeders/
+│   ├── migrations/          # Database migrations
+│   ├── seeders/            # Data seeders
+│   └── factories/          # Model factories
 ├── resources/
-│   └── views/
-└── routes/
+│   ├── views/              # Blade templates
+│   ├── css/                # Tailwind CSS
+│   └── js/                 # Alpine.js components
+├── routes/                  # Application routes
+├── tests/                   # PHPUnit tests
+└── .github/workflows/       # GitHub Actions CI/CD
 ```
 
-## 🔧 **الخدمات والمساعدون**
+## 🧪 **Testing**
 
-### ConfigurationService:
-- إدارة إعدادات النظام
-- التخزين المؤقت
-- التصدير والاستيراد
+### **Run Tests**
+```bash
+# All tests
+php artisan test
 
-### BusinessSettingsService:
-- إدارة إعدادات الأعمال
-- تنسيق العملة والتاريخ
-- إدارة الشعار
+# Specific test suite
+php artisan test --testsuite=Feature
+php artisan test --testsuite=Unit
 
-### ValidationHelper:
-- قواعد التحقق للملفات
-- قواعد التحقق للصور
-- قواعد التحقق للمنتجات
+# With coverage
+php artisan test --coverage
 
-### SystemHelper:
-- أسماء الفئات
-- أوصاف الفئات
-- أسماء المجموعات
+# Specific test
+php artisan test --filter=UserTest
+```
 
-### PermissionHelper:
-- فحص الصلاحيات
-- إدارة المستخدمين
-- إدارة النظام
+### **Test Coverage Requirements**
+- **Minimum 80% coverage** required
+- **All public methods** must have tests
+- **Edge cases** must be covered
+- **Error conditions** must be tested
 
-## 📈 **الأداء**
+## 📚 **Documentation**
 
-- **وقت الاستجابة:** < 500ms
-- **استخدام الذاكرة:** محسن
-- **قاعدة البيانات:** محسنة
-- **التخزين المؤقت:** فعال
+- **[System Documentation](SYSTEM_DOCUMENTATION.md)**: Complete system overview
+- **[Development Guide](DEVELOPMENT.md)**: Development workflow and standards
+- **[GitHub Setup](GITHUB_SETUP.md)**: CI/CD setup and GitHub integration
+- **[Tools Guide](TOOLS.md)**: Quality tools usage and configuration
+- **[Project Rules](RULES.md)**: Coding standards and project rules
 
-## 🔒 **الأمان**
+## 🔍 **Quality Standards**
 
-- **مصادقة قوية:** Laravel Sanctum
-- **صلاحيات متقدمة:** RBAC
-- **تشفير البيانات:** AES-256
-- **حماية CSRF:** مدمجة
-- **تسجيل النشاطات:** شامل
+### **Code Quality Requirements**
+- **PHPStan Level 8**: Maximum static analysis
+- **Laravel Pint**: PSR-12 code style compliance
+- **Test Coverage**: Minimum 80% coverage
+- **Documentation**: PHPDoc for all public methods
 
-## 📝 **التوثيق**
+### **Quality Gates**
+- **Pre-commit**: All quality checks must pass
+- **GitHub Actions**: Automated quality validation
+- **Branch Protection**: Quality checks required before merge
+- **Code Review**: Required for all changes
 
-- **SYSTEM_DOCUMENTATION.md:** وثائق تقنية شاملة
-- **AGENT_GUIDE.md:** دليل المطور
-- **RULES.md:** قواعد التطوير
-- **CHANGELOG.md:** سجل التغييرات
+## 🚨 **Current Issues & Solutions**
 
-## 🤝 **المساهمة**
+### **Quality Issues (656 PHPStan Errors)**
+- **Missing Generic Types**: Add type specifications for Eloquent relationships
+- **Missing Methods**: Implement missing service and model methods
+- **Interface Compatibility**: Fix interface mismatches
+- **Property Access**: Fix undefined property access
 
-1. Fork المشروع
-2. إنشاء فرع للميزة الجديدة
-3. Commit التغييرات
-4. Push للفرع
-5. إنشاء Pull Request
+### **Quick Fixes**
+```bash
+# Fix code style issues
+./vendor/bin/pint
 
-## 📄 **الترخيص**
+# Check static analysis
+./vendor/bin/phpstan analyse --level=8
 
-هذا المشروع مرخص تحت رخصة MIT.
+# Run tests
+php artisan test
+```
 
-## 📞 **الدعم**
+## 🤝 **Contributing**
 
-للحصول على الدعم أو الإبلاغ عن مشاكل:
-- **البريد الإلكتروني:** support@systemhf.com
-- **المساعدة:** راجع ملفات التوثيق
+### **Development Workflow**
+1. **Fork** the repository
+2. **Create** feature branch (`feature/your-feature`)
+3. **Implement** your changes following quality standards
+4. **Run quality checks** locally (`composer quality`)
+5. **Commit** your changes (quality checks run automatically)
+6. **Push** and create pull request
+7. **Wait for CI checks** to pass
+8. **Get code review** and approval
+
+### **Quality Requirements**
+- All quality checks must pass
+- Tests must cover new functionality
+- Code must follow PSR-12 standards
+- Static analysis must pass Level 8
+
+## 📞 **Support & Issues**
+
+- **GitHub Issues**: [Report bugs and feature requests](https://github.com/3amoBadawy/systemhf/issues)
+- **GitHub Actions**: Check CI/CD status in Actions tab
+- **Quality Issues**: Run `composer quality` locally for detailed error information
+- **Documentation**: Check project documentation files
+
+## 📈 **Roadmap**
+
+### **Phase 1: Quality & Stability** (Current)
+- ✅ Complete CI/CD setup
+- 🔧 Resolve quality issues
+- 🔧 Implement missing methods
+- 🔧 Expand test coverage
+
+### **Phase 2: Feature Completion** (Next 2-4 weeks)
+- 🔧 Complete controller implementations
+- 🔧 Add model factories
+- 🔧 Implement authorization policies
+- 🔧 API development
+
+### **Phase 3: Enhancement** (Next 2-3 months)
+- 🔧 Frontend improvements
+- 🔧 Performance optimization
+- 🔧 Security hardening
+- 🔧 Advanced analytics
+
+## 📄 **License**
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 **Acknowledgments**
+
+- **Laravel Team** for the amazing framework
+- **Quality Tool Maintainers** for excellent development tools
+- **Open Source Community** for contributions and feedback
 
 ---
 
-**تم التطوير بواسطة فريق SystemHF** 🚀✨
-
-**آخر تحديث:** 24 أغسطس 2025
-**الإصدار:** 2.1.0
+**Last Updated**: January 2025  
+**Version**: 1.0.0  
+**Status**: Development (Quality Issues Being Resolved)  
+**CI/CD**: ✅ Fully Configured and Enforced

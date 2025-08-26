@@ -22,10 +22,10 @@ use Illuminate\Support\Facades\Cache;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BranchSetting whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BranchSetting whereSettingKey($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BranchSetting whereSettingValue($value)
- * @method static \Illuminate\Database\Eloquent\Builder<stfinal atic>|BranchSetting whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BranchSetting whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BranchSetting whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class BranchSetting extends Model
 {
@@ -36,10 +36,18 @@ class BranchSetting extends Model
         'type',
     ];
 
+    /** @var array<string, string> */
+    protected $casts = [
+        'branch_id' => 'integer',
+        'setting_key' => 'string',
+        'setting_value' => 'string',
+        'type' => 'string',
+    ];
+
     /**
      * الحصول على قيمة إعداد للفرع
      */
-    public static function get($branchId, $key, $default = null)
+    public static function get(int $branchId, string $key, mixed $default = null): mixed
     {
         $cacheKey = "branch_setting_{$branchId}_{$key}";
 
@@ -59,12 +67,9 @@ class BranchSetting extends Model
     /**
      * تعيين قيمة إعداد للفرع
      *
-     * @param  (int|string)  $key
-     *
-     * @psalm-param array-key $key
-     * @psalm-param 'boolean'|'number'|'string' $type
+     * @param  'boolean'|'number'|'string'  $type
      */
-    public static function set($branchId, $key, $value, string $type = 'string')
+    public static function set(int $branchId, string $key, mixed $value, string $type = 'string'): static
     {
         $setting = static::updateOrCreate(
             [
@@ -86,7 +91,7 @@ class BranchSetting extends Model
     /**
      * تحويل القيمة حسب النوع
      */
-    protected static function castValue($value, $type)
+    protected static function castValue(mixed $value, string $type): mixed
     {
         switch ($type) {
             case 'boolean':
@@ -108,7 +113,7 @@ class BranchSetting extends Model
     /**
      * مسح كاش إعدادات الفرع
      */
-    public static function clearBranchCache($branchId): void
+    public static function clearBranchCache(int $branchId): void
     {
         Cache::forget("all_branch_settings_{$branchId}");
 

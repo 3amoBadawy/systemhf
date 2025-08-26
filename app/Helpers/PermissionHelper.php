@@ -2,7 +2,8 @@
 
 namespace App\Helpers;
 
-use Illuminate\Support\Facades\Auth;
+use App\Services\BusinessPermissionService;
+use App\Services\UserPermissionService;
 
 class PermissionHelper
 {
@@ -11,33 +12,7 @@ class PermissionHelper
      */
     public static function hasPermission(string $permission): bool
     {
-        $user = Auth::user();
-
-        if (! $user) {
-            return false;
-        }
-
-        // المدير لديه جميع الصلاحيات
-        if ($user->role === 'admin' || $user->role === 'super_admin') {
-            return true;
-        }
-
-        // التحقق من الصلاحيات المباشرة
-        if ($user->permissions && is_array($user->permissions)) {
-            if (in_array($permission, $user->permissions) || in_array('*', $user->permissions)) {
-                return true;
-            }
-        }
-
-        // التحقق من صلاحيات الدور
-        if ($user->role_id && $user->role) {
-            if ($user->role->hasPermission($permission)) {
-                return true;
-            }
-        }
-
-        // التحقق من الصلاحيات المجمعة
-        return self::checkWildcardPermission($user, $permission);
+        return UserPermissionService::hasPermission($permission);
     }
 
     /**
@@ -45,13 +20,7 @@ class PermissionHelper
      */
     public static function hasAnyPermission(array $permissions): bool
     {
-        foreach ($permissions as $permission) {
-            if (self::hasPermission($permission)) {
-                return true;
-            }
-        }
-
-        return false;
+        return UserPermissionService::hasAnyPermission($permissions);
     }
 
     /**
@@ -69,56 +38,11 @@ class PermissionHelper
     }
 
     /**
-     * التحقق من الصلاحيات المجمعة
-     */
-    private static function checkWildcardPermission(\Illuminate\Contracts\Auth\Authenticatable $user, string $permission): bool
-    {
-        $parts = explode('.', $permission);
-        if (count($parts) < 2) {
-            return false;
-        }
-
-        $module = $parts[0];
-        $modulePermission = $module.'.*';
-
-        // التحقق من الصلاحيات المباشرة
-        if ($user->permissions && in_array($modulePermission, $user->permissions)) {
-            return true;
-        }
-
-        // التحقق من صلاحيات الدور
-        if ($user->role && $user->role->hasPermission($modulePermission)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * الحصول على الصلاحيات المتاحة للمستخدم
      */
     public static function getUserPermissions(): array
     {
-        $user = Auth::user();
-
-        if (! $user) {
-            return [];
-        }
-
-        $permissions = [];
-
-        // إضافة الصلاحيات المباشرة
-        if ($user->permissions && is_array($user->permissions)) {
-            $permissions = array_merge($permissions, $user->permissions);
-        }
-
-        // إضافة صلاحيات الدور
-        if ($user->role_id && $user->role) {
-            $rolePermissions = $user->role->permissions ?? [];
-            $permissions = array_merge($permissions, $rolePermissions);
-        }
-
-        return array_unique($permissions);
+        return UserPermissionService::getUserPermissions();
     }
 
     /**
@@ -126,16 +50,7 @@ class PermissionHelper
      */
     public static function getGroupedPermissions(): array
     {
-        $permissions = self::getUserPermissions();
-        $grouped = [];
-
-        foreach ($permissions as $permission) {
-            $parts = explode('.', $permission);
-            $group = $parts[0] ?? 'general';
-            $grouped[$group][] = $permission;
-        }
-
-        return $grouped;
+        return UserPermissionService::getGroupedPermissions();
     }
 
     /**
@@ -143,19 +58,7 @@ class PermissionHelper
      */
     public static function canAccessBranch(int $branchId): bool
     {
-        $user = Auth::user();
-
-        if (! $user) {
-            return false;
-        }
-
-        // المدير لديه وصول لجميع الفروع
-        if ($user->role === 'admin' || $user->role === 'super_admin') {
-            return true;
-        }
-
-        // المستخدم يمكنه الوصول لفرعه فقط
-        return $user->branch_id === $branchId;
+        return UserPermissionService::canAccessBranch($branchId);
     }
 
     /**
@@ -163,18 +66,7 @@ class PermissionHelper
      */
     public static function getCurrentBranchId(): ?int
     {
-        $user = Auth::user();
-
-        if (! $user) {
-            return null;
-        }
-
-        // المدير يمكنه الوصول لجميع الفروع
-        if ($user->role === 'admin' || $user->role === 'super_admin') {
-            return session('current_branch_id', $user->branch_id);
-        }
-
-        return $user->branch_id;
+        return UserPermissionService::getCurrentBranchId();
     }
 
     /**
@@ -182,13 +74,7 @@ class PermissionHelper
      */
     public static function isUserActive(): bool
     {
-        $user = Auth::user();
-
-        if (! $user) {
-            return false;
-        }
-
-        return $user->is_active;
+        return UserPermissionService::isUserActive();
     }
 
     /**
@@ -196,13 +82,7 @@ class PermissionHelper
      */
     public static function getUserRole(): ?string
     {
-        $user = Auth::user();
-
-        if (! $user) {
-            return null;
-        }
-
-        return $user->role;
+        return UserPermissionService::getUserRole();
     }
 
     /**
@@ -210,9 +90,7 @@ class PermissionHelper
      */
     public static function isAdmin(): bool
     {
-        $role = self::getUserRole();
-
-        return $role === 'admin' || $role === 'super_admin';
+        return UserPermissionService::isAdmin();
     }
 
     /**
@@ -220,7 +98,7 @@ class PermissionHelper
      */
     public static function isSuperAdmin(): bool
     {
-        return self::getUserRole() === 'super_admin';
+        return UserPermissionService::isSuperAdmin();
     }
 
     /**
@@ -228,13 +106,7 @@ class PermissionHelper
      */
     public static function getUserName(): ?string
     {
-        $user = Auth::user();
-
-        if (! $user) {
-            return null;
-        }
-
-        return $user->name;
+        return UserPermissionService::getUserName();
     }
 
     /**
@@ -242,13 +114,7 @@ class PermissionHelper
      */
     public static function getUserId(): ?int
     {
-        $user = Auth::user();
-
-        if (! $user) {
-            return null;
-        }
-
-        return $user->id;
+        return UserPermissionService::getUserId();
     }
 
     /**
@@ -283,12 +149,7 @@ class PermissionHelper
      */
     public static function canManageProducts(): bool
     {
-        return self::hasAnyPermission([
-            'products.create',
-            'products.edit',
-            'products.delete',
-            'products.inventory',
-        ]);
+        return BusinessPermissionService::canManageProducts();
     }
 
     /**
@@ -296,12 +157,7 @@ class PermissionHelper
      */
     public static function canManageCustomers(): bool
     {
-        return self::hasAnyPermission([
-            'customers.create',
-            'customers.edit',
-            'customers.delete',
-            'customers.credit',
-        ]);
+        return BusinessPermissionService::canManageCustomers();
     }
 
     /**
@@ -309,13 +165,7 @@ class PermissionHelper
      */
     public static function canManageInvoices(): bool
     {
-        return self::hasAnyPermission([
-            'invoices.create',
-            'invoices.edit',
-            'invoices.delete',
-            'invoices.approve',
-            'invoices.cancel',
-        ]);
+        return BusinessPermissionService::canManageInvoices();
     }
 
     /**
@@ -323,12 +173,7 @@ class PermissionHelper
      */
     public static function canManagePayments(): bool
     {
-        return self::hasAnyPermission([
-            'payments.create',
-            'payments.edit',
-            'payments.delete',
-            'payments.refund',
-        ]);
+        return BusinessPermissionService::canManagePayments();
     }
 
     /**
@@ -336,12 +181,7 @@ class PermissionHelper
      */
     public static function canManageExpenses(): bool
     {
-        return self::hasAnyPermission([
-            'expenses.create',
-            'expenses.edit',
-            'expenses.delete',
-            'expenses.approve',
-        ]);
+        return BusinessPermissionService::canManageExpenses();
     }
 
     /**
@@ -349,7 +189,7 @@ class PermissionHelper
      */
     public static function canViewReports(): bool
     {
-        return self::hasPermission('reports.view');
+        return BusinessPermissionService::canViewReports();
     }
 
     /**
@@ -357,7 +197,7 @@ class PermissionHelper
      */
     public static function canExportReports(): bool
     {
-        return self::hasPermission('reports.export');
+        return BusinessPermissionService::canExportReports();
     }
 
     /**
@@ -365,12 +205,7 @@ class PermissionHelper
      */
     public static function canManageSettings(): bool
     {
-        return self::hasAnyPermission([
-            'settings.edit',
-            'settings.business',
-            'settings.system',
-            'settings.branches',
-        ]);
+        return BusinessPermissionService::canManageSettings();
     }
 
     /**
@@ -378,11 +213,6 @@ class PermissionHelper
      */
     public static function canManageSystem(): bool
     {
-        return self::hasAnyPermission([
-            'system.admin',
-            'system.maintenance',
-            'system.backup',
-            'system.logs',
-        ]);
+        return BusinessPermissionService::canManageSystem();
     }
 }

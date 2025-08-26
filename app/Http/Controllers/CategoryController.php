@@ -22,18 +22,25 @@ class CategoryController extends Controller
 
         // رفع صورة الفئة الجديدة
         if ($request->hasFile('image')) {
+            $imageFile = $request->file('image');
+
             // حذف الصورة القديمة
             if ($category->image) {
                 Storage::disk('public')->delete($category->image);
             }
-            $imagePath = $request->file('image')->store('categories', 'public');
-            $category->image = $imagePath;
+
+            if ($imageFile instanceof \Illuminate\Http\UploadedFile) {
+                $imagePath = $imageFile->store('categories', 'public');
+                if ($imagePath !== false) {
+                    $category->image = $imagePath;
+                }
+            }
         }
 
         $category->update([
-            'name' => $request->name,
-            'description' => $request->description,
-            'sort_order' => $request->sort_order ?? 0,
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+            'sort_order' => $request->input('sort_order') ?? 0,
         ]);
 
         return redirect()->route('categories.index')

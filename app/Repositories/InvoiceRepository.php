@@ -50,7 +50,7 @@ class InvoiceRepository extends BaseRepository implements InvoiceRepositoryInter
     {
         $result = $this->model->query()->whereBetween('invoice_date', [$startDate, $endDate])->get();
 
-        return $result instanceof Collection ? $result : new \Illuminate\Database\Eloquent\Collection;
+        return $result instanceof Collection ? $result : new Collection;
     }
 
     /**

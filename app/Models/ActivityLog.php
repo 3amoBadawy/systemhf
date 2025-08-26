@@ -37,10 +37,10 @@ use Illuminate\Support\Facades\Request;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ActivityLog whereNewValues($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ActivityLog whereOldValues($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ActivityLog whereUpdatedAt($value)
- * @method staticfinal \Illuminate\Database\Eloquent\Builder<static>|ActivityLog whereUserAgent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ActivityLog whereUserAgent($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ActivityLog whereUserId($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class ActivityLog extends Model
 {
@@ -58,27 +58,37 @@ class ActivityLog extends Model
         'description',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'old_values' => 'array',
         'new_values' => 'array',
+        'user_id' => 'integer',
+        'employee_id' => 'integer',
+        'branch_id' => 'integer',
+        'action' => 'string',
+        'model_type' => 'string',
+        'model_id' => 'integer',
+        'ip_address' => 'string',
+        'user_agent' => 'string',
+        'description' => 'string',
     ];
 
     /**
      * تسجيل نشاط جديد
      */
-    public static function log(string $action, Payment|Invoice|Product|null $model = null, ?string $description = null, $oldValues = null, ?array $newValues = null)
+    public static function log(string $action, Payment|Invoice|Product|null $model = null, ?string $description = null, mixed $oldValues = null, ?array $newValues = null): static
     {
         $user = Auth::user();
-        $employee = $user && $user->employee ? $user->employee : null;
-        $branch = $employee ? $employee->branch : ($user && $user->branch ? $user->branch : null);
+        $employee = self::getEmployeeFromUser($user);
+        $branch = self::getBranchFromUserOrEmployee($user, $employee);
 
         return static::create([
-            'user_id' => $user ? $user->id : null,
-            'employee_id' => $employee ? $employee->id : null,
-            'branch_id' => $branch ? $branch->id : null,
+            'user_id' => $user?->id,
+            'employee_id' => $employee?->id,
+            'branch_id' => $branch?->id,
             'action' => $action,
             'model_type' => $model ? get_class($model) : null,
-            'model_id' => $model ? $model->id : null,
+            'model_id' => $model?->id,
             'old_values' => $oldValues,
             'new_values' => $newValues,
             'ip_address' => Request::ip(),
@@ -88,9 +98,60 @@ class ActivityLog extends Model
     }
 
     /**
+     * الحصول على الموظف من المستخدم
+     */
+    private static function getEmployeeFromUser($user): ?object
+    {
+        if (! $user || ! property_exists($user, 'employee') || ! $user->employee) {
+            return null;
+        }
+
+        return $user->employee;
+    }
+
+    /**
+     * الحصول على الفرع من المستخدم أو الموظف
+     */
+    private static function getBranchFromUserOrEmployee($user, $employee): ?object
+    {
+        $branch = self::getBranchFromEmployee($employee);
+        if ($branch) {
+            return $branch;
+        }
+
+        return self::getBranchFromUser($user);
+    }
+
+    /**
+     * الحصول على الفرع من الموظف
+     */
+    private static function getBranchFromEmployee($employee): ?object
+    {
+        if (! $employee || ! method_exists($employee, 'branch')) {
+            return null;
+        }
+
+        $branch = $employee->branch;
+
+        return $branch ?: null;
+    }
+
+    /**
+     * الحصول على الفرع من المستخدم
+     */
+    private static function getBranchFromUser($user): ?object
+    {
+        if (! $user || ! property_exists($user, 'branch') || ! $user->branch) {
+            return null;
+        }
+
+        return $user->branch;
+    }
+
+    /**
      * تسجيل إنشاء سجل
      */
-    public static function logCreated(Invoice|Payment $model, ?string $description = null)
+    public static function logCreated(Invoice|Payment $model, ?string $description = null): static
     {
         return static::log('created', $model, $description, null, $model->toArray());
     }
@@ -101,7 +162,7 @@ class ActivityLog extends Model
      * @psalm-param 'inventory_update'|'low_stock_alert' $action
      * @psalm-param array{old_quantity?: mixed, new_quantity?: mixed, change_type?: mixed, current_stock?: mixed, min_level?: mixed}|null $data
      */
-    public static function logCustom(string $action, string $description, ?Product $model = null, ?array $data = null)
+    public static function logCustom(string $action, string $description, ?Product $model = null, ?array $data = null): static
     {
         return static::log($action, $model, $description, null, $data);
     }

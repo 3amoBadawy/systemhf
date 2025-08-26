@@ -62,10 +62,21 @@ class SystemSetting extends Model
         'sort_order',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'is_editable' => 'boolean',
         'requires_restart' => 'boolean',
         'sort_order' => 'integer',
+        'category' => 'string',
+        'key' => 'string',
+        'value' => 'string',
+        'type' => 'string',
+        'name_ar' => 'string',
+        'name_en' => 'string',
+        'description_ar' => 'string',
+        'description_en' => 'string',
+        'validation_rules' => 'string',
+        'default_value' => 'string',
     ];
 
     /**

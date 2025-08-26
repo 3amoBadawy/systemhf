@@ -24,6 +24,12 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $user_id
  * @property numeric $base_salary
  * @property numeric $commission_rate
+ * @property float $overtime_rate
+ * @property float $basic_allowances
+ * @property float $monthly_allowances
+ * @property float $special_allowances
+ * @property float $basic_deductions
+ * @property float $other_deductions
  * @property string|null $bank_name
  * @property string|null $bank_account
  * @property string|null $iban
@@ -43,6 +49,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read mixed $monthly_commission
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Invoice> $invoices
  * @property-read int|null $invoices_count
+ * @property-read \App\Models\User|null $user
+ * @property-read \App\Models\Role|null $role
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Salary> $salaries
  * @property-read int|null $salaries_count
  *
@@ -104,6 +112,12 @@ class Employee extends Model
         'user_id',
         'base_salary',
         'commission_rate',
+        'overtime_rate',
+        'basic_allowances',
+        'monthly_allowances',
+        'special_allowances',
+        'basic_deductions',
+        'other_deductions',
         'bank_name',
         'bank_account',
         'iban',
@@ -116,13 +130,41 @@ class Employee extends Model
         'is_active',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'birth_date' => 'date',
         'hire_date' => 'date',
         'termination_date' => 'date',
         'base_salary' => 'decimal:2',
         'commission_rate' => 'decimal:2',
+        'overtime_rate' => 'decimal:2',
+        'basic_allowances' => 'decimal:2',
+        'monthly_allowances' => 'decimal:2',
+        'special_allowances' => 'decimal:2',
+        'basic_deductions' => 'decimal:2',
+        'other_deductions' => 'decimal:2',
         'is_active' => 'boolean',
+        'employee_number' => 'string',
+        'name' => 'string',
+        'name_ar' => 'string',
+        'national_id' => 'string',
+        'phone' => 'string',
+        'email' => 'string',
+        'position' => 'string',
+        'position_ar' => 'string',
+        'department' => 'string',
+        'department_ar' => 'string',
+        'branch_id' => 'integer',
+        'role_id' => 'integer',
+        'user_id' => 'integer',
+        'bank_name' => 'string',
+        'bank_account' => 'string',
+        'iban' => 'string',
+        'address' => 'string',
+        'emergency_contact' => 'string',
+        'status' => 'string',
+        'termination_reason' => 'string',
+        'notes' => 'string',
     ];
 
     /**

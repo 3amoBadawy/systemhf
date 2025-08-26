@@ -4,14 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateMediaRequest;
 use App\Models\Media;
+use App\Services\MediaService;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\View\View;
 
 class MediaController extends Controller
 {
-    protected $mediaService;
+    protected MediaService $mediaService;
+
+    public function __construct(MediaService $mediaService)
+    {
+        $this->mediaService = $mediaService;
+    }
 
     /**
      * Display media index
@@ -19,7 +24,8 @@ class MediaController extends Controller
     public function index(): View
     {
         try {
-            $media = Media::latest()->paginate(20);
+            // @psalm-suppress UndefinedMagicMethod
+            $media = Media::query()->latest()->paginate(20);
         } catch (\Exception $e) {
             $media = new LengthAwarePaginator([], 0, 20, 1);
         }
@@ -33,7 +39,8 @@ class MediaController extends Controller
     public function gallery(): View
     {
         try {
-            $media = Media::latest()->paginate(20);
+            // @psalm-suppress UndefinedMagicMethod
+            $media = Media::query()->latest()->paginate(20);
         } catch (\Exception $e) {
             $media = new LengthAwarePaginator([], 0, 20, 1);
         }
@@ -44,7 +51,7 @@ class MediaController extends Controller
     /**
      * Store new media
      */
-    public function store(Request $request): JsonResponse
+    public function store(): JsonResponse
     {
         try {
             // Basic media upload logic
@@ -116,7 +123,7 @@ class MediaController extends Controller
     /**
      * Bulk upload media
      */
-    public function bulkUpload(Request $request): JsonResponse
+    public function bulkUpload(): JsonResponse
     {
         try {
             // Basic bulk upload logic
@@ -135,7 +142,7 @@ class MediaController extends Controller
     /**
      * Download media from URL
      */
-    public function downloadFromUrl(Request $request): JsonResponse
+    public function downloadFromUrl(): JsonResponse
     {
         try {
             // Basic download from URL logic
@@ -154,7 +161,7 @@ class MediaController extends Controller
     /**
      * Optimize images
      */
-    public function optimizeImages(Request $request): JsonResponse
+    public function optimizeImages(): JsonResponse
     {
         try {
             // Basic image optimization logic
@@ -173,7 +180,7 @@ class MediaController extends Controller
     /**
      * Reorder media
      */
-    public function reorder(Request $request): JsonResponse
+    public function reorder(): JsonResponse
     {
         try {
             // Basic reordering logic

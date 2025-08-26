@@ -54,35 +54,42 @@ class ConfigurationServiceProvider extends ServiceProvider
             $configService = app(ConfigurationService::class);
 
             // إعدادات الجلسة
-            if ($sessionLifetime = $configService->get('session_lifetime')) {
+            $sessionLifetime = $configService->get('session_lifetime');
+            if ($sessionLifetime) {
                 Config::set('session.lifetime', $sessionLifetime);
             }
 
             // إعدادات الأمان
-            if ($maxAttempts = $configService->get('max_login_attempts')) {
+            $maxAttempts = $configService->get('max_login_attempts');
+            if ($maxAttempts) {
                 Config::set('auth.throttle.max_attempts', $maxAttempts);
             }
 
             // إعدادات الملفات
-            if ($maxFileSize = $configService->get('max_file_size')) {
+            $maxFileSize = $configService->get('max_file_size');
+            if ($maxFileSize) {
                 Config::set('filesystems.max_file_size', $maxFileSize * 1024); // تحويل إلى بايت
             }
 
             // إعدادات التطبيق
-            if ($appName = $configService->get('app_name')) {
+            $appName = $configService->get('app_name');
+            if ($appName) {
                 Config::set('app.name', $appName);
             }
 
-            if ($defaultLang = $configService->get('default_language')) {
+            $defaultLang = $configService->get('default_language');
+            if ($defaultLang) {
                 Config::set('app.locale', $defaultLang);
             }
 
             // إعدادات قاعدة البيانات للنسخ الاحتياطي
-            if ($backupEnabled = $configService->get('auto_backup_enabled')) {
+            $backupEnabled = $configService->get('auto_backup_enabled');
+            if ($backupEnabled) {
                 Config::set('backup.enabled', $backupEnabled);
             }
 
-            if ($backupFrequency = $configService->get('backup_frequency')) {
+            $backupFrequency = $configService->get('backup_frequency');
+            if ($backupFrequency) {
                 Config::set('backup.frequency', $backupFrequency);
             }
         } catch (\Exception $e) {
@@ -97,62 +104,198 @@ class ConfigurationServiceProvider extends ServiceProvider
     {
         View::composer('*', function ($view) {
             try {
-                $configService = app(ConfigurationService::class);
-                $businessSettingRepository = app(BusinessSettingRepositoryInterface::class);
-
-                // إعدادات الأعمال - فقط إذا لم تكن موجودة بالفعل
-                if (! $view->offsetExists('businessSettings')) {
-                    $businessSettings = $businessSettingRepository->getInstance();
-
-                    $view->with([
-                        'businessName' => $businessSettings->business_name_ar ?: $businessSettings->business_name ?: 'نظام إدارة الأعمال',
-                        'businessEmail' => $businessSettings->business_email ?: 'info@example.com',
-                        'businessPhone' => $businessSettings->business_phone ?: '+966 50 000 0000',
-                        'businessAddress' => $businessSettings->business_address_ar ?: $businessSettings->business_address ?: 'العنوان',
-                        'businessLogo' => $businessSettings->business_logo ?: '/images/default-logo.png',
-                        'businessFavicon' => $businessSettings->business_favicon ?: '/images/default-favicon.ico',
-                        'currency' => $businessSettings->currency ?: 'SAR',
-                        'currencySymbol' => $businessSettings->currency_symbol ?: 'ر.س',
-                        'timezone' => $businessSettings->timezone ?: 'Asia/Riyadh',
-                        'dateFormat' => $businessSettings->date_format ?: 'Y-m-d',
-                        'timeFormat' => $businessSettings->time_format ?: 'H:i',
-                    ]);
-                } else {
-                    // إذا كانت businessSettings موجودة بالفعل، شارك فقط الإعدادات العامة
-                    $view->with([
-                        'dateFormat' => $configService->get('date_format', 'd-m-Y'),
-                        'timeFormat' => $configService->get('time_format', 'H:i'),
-                        'recordsPerPage' => $configService->get('records_per_page', 25),
-                        'systemVersion' => $configService->get('app_version', '1.0.0'),
-                        'maintenanceMode' => $configService->get('maintenance_mode', false),
-                    ]);
-                }
+                $this->shareBusinessSettings($view);
             } catch (\Exception $e) {
-                // في حالة عدم وجود قاعدة البيانات، استخدم القيم الافتراضية
-                if (! $view->offsetExists('businessSettings')) {
-                    $view->with([
-                        'businessName' => 'نظام إدارة معرض الأثاث',
-                        'businessNameEn' => 'Furniture Gallery Management System',
-                        'currencySymbol' => 'ج.م',
-                        'defaultProfitPercent' => 30,
-                        'logoUrl' => null,
-                        'timezone' => 'Africa/Cairo',
-                        'dateFormat' => 'd-m-Y',
-                        'timeFormat' => 'H:i',
-                        'recordsPerPage' => 25,
-                        'systemVersion' => '1.0.0',
-                        'maintenanceMode' => false,
-                    ]);
-                } else {
-                    $view->with([
-                        'dateFormat' => 'd-m-Y',
-                        'timeFormat' => 'H:i',
-                        'recordsPerPage' => 25,
-                        'systemVersion' => '1.0.0',
-                        'maintenanceMode' => false,
-                    ]);
-                }
+                $this->shareDefaultSettings($view);
             }
         });
+    }
+
+    /**
+     * مشاركة إعدادات الأعمال
+     */
+    private function shareBusinessSettings($view): void
+    {
+        $configService = app(ConfigurationService::class);
+        $businessRepo = app(BusinessSettingRepositoryInterface::class);
+
+        if (! $view->offsetExists('businessSettings')) {
+            $businessSettings = $businessRepo->getInstance();
+            $view->with($this->getBusinessSettingsData($businessSettings));
+
+            return;
+        }
+
+        $view->with($this->getGeneralSettingsData($configService));
+    }
+
+    /**
+     * مشاركة الإعدادات الافتراضية
+     */
+    private function shareDefaultSettings($view): void
+    {
+        if (! $view->offsetExists('businessSettings')) {
+            $view->with($this->getDefaultBusinessSettings());
+
+            return;
+        }
+
+        $view->with($this->getDefaultGeneralSettings());
+    }
+
+    /**
+     * الحصول على بيانات إعدادات الأعمال
+     */
+    private function getBusinessSettingsData($businessSettings): array
+    {
+        return [
+            'businessName' => $this->getBusinessName($businessSettings),
+            'businessEmail' => $this->getBusinessEmail($businessSettings),
+            'businessPhone' => $this->getBusinessPhone($businessSettings),
+            'businessAddress' => $this->getBusinessAddress($businessSettings),
+            'businessLogo' => $this->getBusinessLogo($businessSettings),
+            'businessFavicon' => $this->getBusinessFavicon($businessSettings),
+            'currency' => $this->getBusinessCurrency($businessSettings),
+            'currencySymbol' => $this->getBusinessCurrencySymbol($businessSettings),
+            'timezone' => $this->getBusinessTimezone($businessSettings),
+            'dateFormat' => $this->getBusinessDateFormat($businessSettings),
+            'timeFormat' => $this->getBusinessTimeFormat($businessSettings),
+        ];
+    }
+
+    /**
+     * الحصول على بريد الأعمال
+     */
+    private function getBusinessEmail($businessSettings): string
+    {
+        return $businessSettings->business_email ?: 'info@example.com';
+    }
+
+    /**
+     * الحصول على هاتف الأعمال
+     */
+    private function getBusinessPhone($businessSettings): string
+    {
+        return $businessSettings->business_phone ?: '+966 50 000 0000';
+    }
+
+    /**
+     * الحصول على شعار الأعمال
+     */
+    private function getBusinessLogo($businessSettings): string
+    {
+        return $businessSettings->business_logo ?: '/images/default-logo.png';
+    }
+
+    /**
+     * الحصول على أيقونة الأعمال
+     */
+    private function getBusinessFavicon($businessSettings): string
+    {
+        return $businessSettings->business_favicon ?: '/images/default-favicon.ico';
+    }
+
+    /**
+     * الحصول على عملة الأعمال
+     */
+    private function getBusinessCurrency($businessSettings): string
+    {
+        return $businessSettings->currency ?: 'SAR';
+    }
+
+    /**
+     * الحصول على رمز عملة الأعمال
+     */
+    private function getBusinessCurrencySymbol($businessSettings): string
+    {
+        return $businessSettings->currency_symbol ?: 'ر.س';
+    }
+
+    /**
+     * الحصول على المنطقة الزمنية للأعمال
+     */
+    private function getBusinessTimezone($businessSettings): string
+    {
+        return $businessSettings->timezone ?: 'Asia/Riyadh';
+    }
+
+    /**
+     * الحصول على تنسيق التاريخ للأعمال
+     */
+    private function getBusinessDateFormat($businessSettings): string
+    {
+        return $businessSettings->date_format ?: 'Y-m-d';
+    }
+
+    /**
+     * الحصول على تنسيق الوقت للأعمال
+     */
+    private function getBusinessTimeFormat($businessSettings): string
+    {
+        return $businessSettings->time_format ?: 'H:i';
+    }
+
+    /**
+     * الحصول على اسم الأعمال
+     */
+    private function getBusinessName($businessSettings): string
+    {
+        return $businessSettings->business_name_ar ?: $businessSettings->business_name ?: 'نظام إدارة الأعمال';
+    }
+
+    /**
+     * الحصول على عنوان الأعمال
+     */
+    private function getBusinessAddress($businessSettings): string
+    {
+        return $businessSettings->business_address_ar ?: $businessSettings->business_address ?: 'العنوان';
+    }
+
+    /**
+     * الحصول على بيانات الإعدادات العامة
+     */
+    private function getGeneralSettingsData($configService): array
+    {
+        return [
+            'dateFormat' => $configService->get('date_format', 'd-m-Y'),
+            'timeFormat' => $configService->get('time_format', 'H:i'),
+            'recordsPerPage' => $configService->get('records_per_page', 25),
+            'systemVersion' => $configService->get('app_version', '1.0.0'),
+            'maintenanceMode' => $configService->get('maintenance_mode', false),
+        ];
+    }
+
+    /**
+     * الحصول على الإعدادات الافتراضية للأعمال
+     */
+    private function getDefaultBusinessSettings(): array
+    {
+        return [
+            'businessName' => 'نظام إدارة معرض الأثاث',
+            'businessNameEn' => 'Furniture Gallery Management System',
+            'currencySymbol' => 'ج.م',
+            'defaultProfitPercent' => 30,
+            'logoUrl' => null,
+            'timezone' => 'Africa/Cairo',
+            'dateFormat' => 'd-m-Y',
+            'timeFormat' => 'H:i',
+            'recordsPerPage' => 25,
+            'systemVersion' => '1.0.0',
+            'maintenanceMode' => false,
+        ];
+    }
+
+    /**
+     * الحصول على الإعدادات العامة الافتراضية
+     */
+    private function getDefaultGeneralSettings(): array
+    {
+        return [
+            'dateFormat' => 'd-m-Y',
+            'timeFormat' => 'H:i',
+            'recordsPerPage' => 25,
+            'systemVersion' => '1.0.0',
+            'maintenanceMode' => false,
+        ];
     }
 }

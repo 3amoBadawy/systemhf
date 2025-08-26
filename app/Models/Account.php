@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $branch_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read float $current_balance
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Expense> $expenses
  * @property-read int|null $expenses_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Payment> $payments
@@ -34,10 +35,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Account whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Account whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Account whereNameAr($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Account whereType($final value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Account whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Account whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Account extends Model
 {
@@ -53,9 +54,13 @@ class Account extends Model
         'branch_id',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'balance' => 'decimal:2',
         'is_active' => 'boolean',
+        'type' => 'string',
+        'description' => 'string',
+        'branch_id' => 'integer',
     ];
 
     // العلاقة مع الفرع
@@ -63,7 +68,7 @@ class Account extends Model
     // العلاقة مع طريقة الدفع (إذا كان الحساب مرتبط بطريقة دفع)
 
     // العلاقة مع المعاملات (إيرادات ومصروفات)
-    public function transactions()
+    public function transactions(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Transaction::class);
     }
@@ -75,7 +80,7 @@ class Account extends Model
     // الحصول على الرصيد الحالي
 
     // الحصول على الرصيد حسب الفرع
-    public function getBalanceByBranch($branchId)
+    public function getBalanceByBranch(int $branchId): float
     {
         $debits = $this->transactions()
             ->where('type', 'debit')
@@ -89,22 +94,23 @@ class Account extends Model
 
         if ($this->type === 'income' || $this->type === 'liability') {
             return $credits - $debits;
-        } else {
-            return $debits - $credits;
         }
+
+        return $debits - $credits;
     }
 
     // الحصول على إحصائيات حسب الفرع
 
     // الحصول على إحصائيات جميع الفروع
     /**
-     * @return array[]
+     * Get statistics for all branches
      *
-     * @psalm-return array<array{branch_name: mixed, branch_id: mixed, balance: mixed, transaction_count: mixed, last_transaction: mixed}>
+     * @return array<int, array{branch_name: string, branch_id: int, balance: float, transaction_count: int, last_transaction: mixed}>
      */
     public function getAllBranchesStats(): array
     {
-        $branches = \App\Models\Branch::active()->get();
+        // @phpstan-ignore-next-line
+        $branches = Branch::query()->active()->get();
         $stats = [];
 
         foreach ($branches as $branch) {
@@ -121,10 +127,11 @@ class Account extends Model
     }
 
     // الحصول على الرصيد الإجمالي من جميع الفروع
-    public function getTotalBalanceFromAllBranches()
+    public function getTotalBalanceFromAllBranches(): float
     {
         $totalBalance = 0;
-        $branches = \App\Models\Branch::active()->get();
+        // @phpstan-ignore-next-line
+        $branches = Branch::query()->active()->get();
 
         foreach ($branches as $branch) {
             $totalBalance += $this->getBalanceByBranch($branch->id);
@@ -166,4 +173,18 @@ class Account extends Model
 
     // الحصول على ملخص الحساب
 
+    /**
+     * الحصول على الرصيد الحالي
+     */
+    public function getCurrentBalanceAttribute(): float
+    {
+        $debits = $this->transactions()->where('type', 'debit')->sum('amount');
+        $credits = $this->transactions()->where('type', 'credit')->sum('amount');
+
+        if ($this->type === 'income' || $this->type === 'liability') {
+            return $credits - $debits;
+        }
+
+        return $debits - $credits;
+    }
 }

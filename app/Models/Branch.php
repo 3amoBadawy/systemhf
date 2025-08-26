@@ -48,10 +48,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch whereNameAr($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch whereNotes($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch wherePhone($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch whereSortOrder(final $value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch whereSortOrder($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Branch whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Branch extends Model
 {
@@ -70,9 +70,20 @@ class Branch extends Model
         'notes',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'is_active' => 'boolean',
         'sort_order' => 'integer',
+        'name' => 'string',
+        'name_ar' => 'string',
+        'code' => 'string',
+        'address' => 'string',
+        'address_ar' => 'string',
+        'phone' => 'string',
+        'email' => 'string',
+        'manager_id' => 'integer',
+        'created_by' => 'integer',
+        'updated_by' => 'integer',
     ];
 
     // العلاقة مع العملاء
@@ -105,6 +116,16 @@ class Branch extends Model
     public function isActive(): bool
     {
         return $this->is_active;
+    }
+
+    /**
+     * Scope for active branches
+     *
+     * @phpstan-ignore-next-line
+     */
+    public function scopeActive(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
+    {
+        return $query->where('is_active', true);
     }
 
     // إحصائيات الفرع

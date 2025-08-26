@@ -30,4 +30,9 @@ interface CustomerRepositoryInterface extends BaseRepositoryInterface
      * Check if customer can be deleted
      */
     public function canDelete(Customer $customer): bool;
+
+    /**
+     * Get customer statistics
+     */
+    public function getStatistics(): array;
 }

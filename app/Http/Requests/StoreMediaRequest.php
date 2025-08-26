@@ -46,23 +46,4 @@ class StoreMediaRequest extends FormRequest
             'order' => 'الترتيب',
         ];
     }
-
-    /**
-     * الحصول على اسم الجدول حسب نوع الكائن
-     */
-    private function getTableName(): string
-    {
-        $type = $this->input('mediaable_type');
-
-        switch ($type) {
-            case 'App\Models\Product':
-                return 'products';
-            case 'App\Models\Category':
-                return 'categories';
-            case 'App\Models\Supplier':
-                return 'suppliers';
-            default:
-                return 'products';
-        }
-    }
 }

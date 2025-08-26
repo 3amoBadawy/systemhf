@@ -36,7 +36,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @mefinal thod static \Illuminate\Database\Eloquent\Builder<static>|CustomerNotification whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class CustomerNotification extends Model
 {
@@ -54,9 +54,17 @@ class CustomerNotification extends Model
         'read_at',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'amount' => 'decimal:2',
         'read_at' => 'datetime',
+        'customer_id' => 'integer',
+        'payment_id' => 'integer',
+        'invoice_id' => 'integer',
+        'type' => 'string',
+        'title' => 'string',
+        'message' => 'string',
+        'status' => 'string',
     ];
 
     // العلاقة مع العميل

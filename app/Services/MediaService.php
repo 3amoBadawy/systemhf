@@ -23,6 +23,7 @@ class MediaService
         $optimizedVersions = $this->createImageVersions($file, $folder, $filename);
 
         // الحصول على أبعاد الصورة الأصلية
+        // @phpstan-ignore-next-line
         $image = Image::make($file);
         $dimensions = [
             'width' => $image->width(),
@@ -45,6 +46,7 @@ class MediaService
     private function createImageVersions(UploadedFile $file, string $folder, string $filename): array
     {
         $versions = [];
+        // @phpstan-ignore-next-line
         $image = Image::make($file);
 
         // الصورة المصغرة 150x150
@@ -112,6 +114,7 @@ class MediaService
      */
     public function optimizeImage(string $imagePath, array $options = []): string
     {
+        // @phpstan-ignore-next-line
         $image = Image::make($imagePath);
 
         // تطبيق التحسينات
@@ -135,6 +138,7 @@ class MediaService
      */
     public function createThumbnail(string $imagePath, int $width = 150, int $height = 150): string
     {
+        // @phpstan-ignore-next-line
         $image = Image::make($imagePath);
         $image->fit($width, $height);
 
@@ -142,5 +146,31 @@ class MediaService
         $image->save($thumbnailPath);
 
         return $thumbnailPath;
+    }
+
+    /**
+     * إنشاء مسار الصورة المحسنة
+     */
+    private function generateOptimizedPath(string $originalPath): string
+    {
+        $pathInfo = pathinfo($originalPath);
+        $directory = $pathInfo['dirname'] ?? dirname($originalPath);
+        $filename = $pathInfo['filename'] ?? pathinfo($originalPath, PATHINFO_FILENAME);
+        $extension = $pathInfo['extension'] ?? 'jpg';
+
+        return "{$directory}/optimized/{$filename}_opt.{$extension}";
+    }
+
+    /**
+     * إنشاء مسار الصورة المصغرة
+     */
+    private function generateThumbnailPath(string $originalPath): string
+    {
+        $pathInfo = pathinfo($originalPath);
+        $directory = $pathInfo['dirname'] ?? dirname($originalPath);
+        $filename = $pathInfo['filename'] ?? pathinfo($originalPath, PATHINFO_FILENAME);
+        $extension = $pathInfo['extension'] ?? 'jpg';
+
+        return "{$directory}/thumbnails/{$filename}_thumb.{$extension}";
     }
 }

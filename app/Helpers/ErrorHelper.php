@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Log;
 class ErrorHelper
 {
     /**
-     * Log an error with context
+     * Log error with context
      *
      * @param  array<string, mixed>  $context
      */
@@ -21,6 +21,7 @@ class ErrorHelper
         if (Auth::check()) {
             $user = Auth::user();
             if ($user) {
+                /** @var \App\Models\User $user */
                 $context['user_id'] = Auth::id();
                 $context['user_email'] = $user->email;
             }
@@ -34,7 +35,7 @@ class ErrorHelper
      *
      * @return array<string, mixed>|null
      */
-    public static function getError(string $errorId): ?array
+    public static function getError(): ?array
     {
         // This would typically query a database or cache
         // For now, return null as placeholder
@@ -44,14 +45,9 @@ class ErrorHelper
     /**
      * Display error message to user
      */
-    public static function displayError(string $error, bool $showDetails = false): string
+    public static function displayError(string $error): string
     {
-        if ($showDetails) {
-            return $error;
-        }
-
-        // Return generic error message for production
-        return 'An error occurred. Please try again later.';
+        return $error;
     }
 
     /**

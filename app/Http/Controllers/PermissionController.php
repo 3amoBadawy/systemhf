@@ -17,10 +17,10 @@ class PermissionController extends Controller
         ]);
 
         $permission->update([
-            'name' => $request->name,
-            'name_ar' => $request->name_ar,
-            'description' => $request->description,
-            'module' => $request->module,
+            'name' => $request->input('name'),
+            'name_ar' => $request->input('name_ar'),
+            'description' => $request->input('description'),
+            'module' => $request->input('module'),
         ]);
 
         return redirect()->route('permissions.index')->with('success', 'تم تحديث الصلاحية بنجاح');

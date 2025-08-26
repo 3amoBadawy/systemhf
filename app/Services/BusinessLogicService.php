@@ -11,11 +11,16 @@ use App\Models\Payment;
 use App\Models\PaymentAllocation;
 use App\Models\Product;
 use App\Models\Transaction;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class BusinessLogicService
 {
+    public function __construct(
+        private ConfigurationService $configurationService
+    ) {}
+
     /**
      * إنشاء فاتورة جديدة مع معالجة كاملة للأعمال
      */
@@ -49,9 +54,9 @@ class BusinessLogicService
                 $product = Product::findOrFail($itemData['product_id']);
 
                 // التحقق من توفر المخزون
-                if (ConfigurationService::get('auto_adjust_stock', true)) {
+                if ($this->configurationService->get('auto_adjust_stock', true)) {
                     if ($product->stock_quantity < $itemData['quantity']) {
-                        throw new \Exception("المنتج {$product->display_name} غير متوفر بالكمية المطلوبة");
+                        throw new Exception("المنتج {$product->display_name} غير متوفر بالكمية المطلوبة");
                     }
                 }
 
@@ -73,7 +78,7 @@ class BusinessLogicService
                 $subtotal += $itemTotal;
 
                 // تحديث المخزون
-                if (ConfigurationService::get('auto_adjust_stock', true)) {
+                if ($this->configurationService->get('auto_adjust_stock', true)) {
                     $product->decrement('stock_quantity', $quantity);
 
                     // تحقق من المخزون المنخفض
@@ -84,8 +89,8 @@ class BusinessLogicService
             }
 
             // حساب الضريبة
-            if (ConfigurationService::get('enable_tax_calculation', true)) {
-                $taxRate = $data['tax_rate'] ?? ConfigurationService::get('default_tax_rate', 14);
+            if ($this->configurationService->get('enable_tax_calculation', true)) {
+                $taxRate = $data['tax_rate'] ?? $this->configurationService->get('default_tax_rate', 14);
                 $taxAmount = ($subtotal * $taxRate) / 100;
             }
 
@@ -243,16 +248,16 @@ class BusinessLogicService
     protected function validateInvoiceData(array $data)
     {
         if (empty($data['customer_id'])) {
-            throw new \Exception('يجب تحديد العميل');
+            throw new Exception('يجب تحديد العميل');
         }
 
         if (empty($data['items']) || ! is_array($data['items'])) {
-            throw new \Exception('يجب إضافة منتجات للفاتورة');
+            throw new Exception('يجب إضافة منتجات للفاتورة');
         }
 
         $customer = Customer::find($data['customer_id']);
         if (! $customer || ! $customer->is_active) {
-            throw new \Exception('العميل غير موجود أو غير نشط');
+            throw new Exception('العميل غير موجود أو غير نشط');
         }
     }
 
@@ -332,15 +337,25 @@ class BusinessLogicService
         $totalPaid = $invoice->total_paid;
         $total = $invoice->total;
 
-        if ($totalPaid >= $total) {
-            $status = 'paid';
-        } elseif ($totalPaid > 0) {
-            $status = 'partial';
-        } else {
-            $status = 'unpaid';
-        }
+        $status = $this->determinePaymentStatus($totalPaid, $total);
 
         $invoice->update(['payment_status' => $status]);
+    }
+
+    /**
+     * تحديد حالة الدفع
+     */
+    private function determinePaymentStatus(float $totalPaid, float $total): string
+    {
+        if ($totalPaid >= $total) {
+            return 'paid';
+        }
+
+        if ($totalPaid > 0) {
+            return 'partial';
+        }
+
+        return 'unpaid';
     }
 
     /**

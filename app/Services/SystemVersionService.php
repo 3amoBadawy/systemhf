@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Log;
 
 class SystemVersionService
 {
-    protected SystemVersionRepositoryInterface $systemVersionRepository;
+    protected SystemVersionRepositoryInterface $versionRepo;
 
-    public function __construct(SystemVersionRepositoryInterface $systemVersionRepository)
+    public function __construct(SystemVersionRepositoryInterface $versionRepo)
     {
-        $this->systemVersionRepository = $systemVersionRepository;
+        $this->versionRepo = $versionRepo;
     }
 
     /**
@@ -22,7 +22,7 @@ class SystemVersionService
     {
         try {
             return Cache::remember('current_system_version', 3600, function () {
-                $version = $this->systemVersionRepository->getCurrentVersion();
+                $version = $this->versionRepo->getCurrentVersion();
 
                 return $version ?: $this->getDefaultVersion();
             });
@@ -41,7 +41,7 @@ class SystemVersionService
      */
     public function getAllVersions(): \Illuminate\Database\Eloquent\Collection
     {
-        return $this->systemVersionRepository->getAll();
+        return $this->versionRepo->all();
     }
 
     /**
@@ -50,7 +50,7 @@ class SystemVersionService
     public function createVersion(array $data): bool
     {
         try {
-            $this->systemVersionRepository->create($data);
+            $this->versionRepo->create($data);
             $this->clearCache();
 
             return true;
@@ -70,7 +70,7 @@ class SystemVersionService
     public function updateVersion(int $id, array $data): bool
     {
         try {
-            $updated = $this->systemVersionRepository->update($id, $data);
+            $updated = $this->versionRepo->update($id, $data);
 
             if ($updated) {
                 $this->clearCache();
@@ -95,7 +95,7 @@ class SystemVersionService
     public function deleteVersion(int $id): bool
     {
         try {
-            $deleted = $this->systemVersionRepository->delete($id);
+            $deleted = $this->versionRepo->delete($id);
 
             if ($deleted) {
                 $this->clearCache();
@@ -121,10 +121,10 @@ class SystemVersionService
     {
         try {
             // First, unset all current versions
-            $this->systemVersionRepository->unsetAllCurrent();
+            $this->versionRepo->unsetAllCurrent();
 
             // Then set the specified version as current
-            $updated = $this->systemVersionRepository->update($id, ['is_current' => true]);
+            $updated = $this->versionRepo->update($id, ['is_current' => true]);
 
             if ($updated) {
                 $this->clearCache();

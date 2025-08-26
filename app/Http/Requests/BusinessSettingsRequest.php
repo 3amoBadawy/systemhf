@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class BusinessSettingsRequest extends FormRequest
 {
@@ -11,7 +12,9 @@ class BusinessSettingsRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->check() && auth()->user()->hasPermission('manage_business_settings');
+        $user = Auth::user();
+
+        return Auth::check() && $user && method_exists($user, 'hasPermission') && $user->hasPermission('manage_business_settings');
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Expense;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ExpenseController extends Controller
 {
@@ -45,7 +46,12 @@ class ExpenseController extends Controller
                 ->with('error', 'المصروف معتمد بالفعل!');
         }
 
-        $expense->approve(auth()->id());
+        $userId = Auth::id();
+        if ($userId === null) {
+            return redirect()->route('expenses.show', $expense)
+                ->with('error', 'يجب تسجيل الدخول أولاً!');
+        }
+        $expense->approve((int) $userId);
 
         return redirect()->route('expenses.show', $expense)
             ->with('success', 'تم اعتماد المصروف بنجاح!');

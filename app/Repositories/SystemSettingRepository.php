@@ -41,11 +41,11 @@ class SystemSettingRepository extends BaseRepository implements SystemSettingRep
      * Get multiple settings by keys
      */
     #[\Override]
-    public function getMultiple(array $keys): \Illuminate\Database\Eloquent\Collection
+    public function getMultiple(array $keys): Collection
     {
         $result = $this->model->query()->whereIn('key', $keys)->get();
 
-        return $result instanceof \Illuminate\Database\Eloquent\Collection ? $result : new \Illuminate\Database\Eloquent\Collection;
+        return $result instanceof Collection ? $result : new Collection;
     }
 
     /**

@@ -20,6 +20,12 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $email
  * @property string|null $address
  * @property string|null $description
+ * @property string|null $business_email
+ * @property string|null $business_phone
+ * @property string|null $business_address
+ * @property string|null $business_address_ar
+ * @property string|null $business_logo
+ * @property string|null $business_favicon
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  *
@@ -42,9 +48,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BusinessSetting wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BusinessSetting whereTimeFormat($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|BusinessSetting whereTimezone($value)
- * @method statifinal c \Illuminate\Database\Eloquent\Builder<static>|BusinessSetting whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|BusinessSetting whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class BusinessSetting extends Model
 {
@@ -63,16 +69,42 @@ class BusinessSetting extends Model
         'email',
         'address',
         'description',
+        'business_email',
+        'business_phone',
+        'business_address',
+        'business_address_ar',
+        'business_logo',
+        'business_favicon',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'default_profit_percent' => 'decimal:2',
+        'business_name' => 'string',
+        'business_name_ar' => 'string',
+        'currency' => 'string',
+        'currency_symbol' => 'string',
+        'currency_symbol_placement' => 'string',
+        'timezone' => 'string',
+        'logo' => 'string',
+        'date_format' => 'string',
+        'time_format' => 'string',
+        'phone' => 'string',
+        'email' => 'string',
+        'address' => 'string',
+        'description' => 'string',
+        'business_email' => 'string',
+        'business_phone' => 'string',
+        'business_address' => 'string',
+        'business_address_ar' => 'string',
+        'business_logo' => 'string',
+        'business_favicon' => 'string',
     ];
 
     /**
      * Get the singleton instance of business settings
      */
-    public static function getInstance()
+    public static function getInstance(): static
     {
         return static::firstOrCreate([]);
     }
@@ -80,7 +112,7 @@ class BusinessSetting extends Model
     /**
      * Get formatted currency
      */
-    public function formatCurrency($amount): string
+    public function formatCurrency(float $amount): string
     {
         $formatted = number_format($amount, 2);
 

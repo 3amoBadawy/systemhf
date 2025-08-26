@@ -85,6 +85,7 @@ class Media extends Model
         'is_featured',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'metadata' => 'array',
         'dimensions' => 'array',
@@ -94,8 +95,21 @@ class Media extends Model
         'size' => 'integer',
         'duration' => 'integer',
         'order' => 'integer',
+        'filename' => 'string',
+        'original_name' => 'string',
+        'mime_type' => 'string',
+        'path' => 'string',
+        'disk' => 'string',
+        'alt_text' => 'string',
+        'caption' => 'string',
+        'description' => 'string',
+        'media_type' => 'string',
+        'thumbnail_path' => 'string',
+        'mediaable_type' => 'string',
+        'mediaable_id' => 'integer',
     ];
 
+    /** @var array<string> */
     protected $appends = [
         'url',
         'thumbnail_url',

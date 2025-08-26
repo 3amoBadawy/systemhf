@@ -45,7 +45,7 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
     public function searchByTerm(string $term, int $limit = 20): Collection
     {
         if (strlen($term) < 2) {
-            return new \Illuminate\Database\Eloquent\Collection;
+            return new Collection;
         }
 
         $result = $this->model->query()->where(function ($query) use ($term) {
@@ -59,7 +59,7 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
             ->limit($limit)
             ->get(['id', 'name', 'phone', 'phone2', 'governorate', 'address', 'country']);
 
-        return $result instanceof Collection ? $result : new \Illuminate\Database\Eloquent\Collection;
+        return $result instanceof Collection ? $result : new Collection;
     }
 
     /**
@@ -88,15 +88,25 @@ class CustomerRepository extends BaseRepository implements CustomerRepositoryInt
 
     /**
      * تطبيق البحث على الاستعلام
+     *
+     * @phpstan-ignore-next-line
      */
-    private function applySearch(\Illuminate\Database\Eloquent\Builder $query, string $searchTerm): \Illuminate\Database\Eloquent\Builder
+    private function applySearch(\Illuminate\Database\Eloquent\Builder $query, string $searchTerm, string $searchType = 'all'): \Illuminate\Database\Eloquent\Builder
     {
-        return $query->where(function ($q) use ($searchTerm) {
-            $q->where('name', 'like', "%{$searchTerm}%")
-                ->orWhere('name_ar', 'like', "%{$searchTerm}%")
-                ->orWhere('phone', 'like', "%{$searchTerm}%")
-                ->orWhere('email', 'like', "%{$searchTerm}%")
-                ->orWhere('national_id', 'like', "%{$searchTerm}%");
+        return $query->where(function ($q) use ($searchTerm, $searchType) {
+            if ($searchType === 'name' || $searchType === 'all') {
+                $q->where('name', 'like', "%{$searchTerm}%")
+                    ->orWhere('name_ar', 'like', "%{$searchTerm}%");
+            }
+            if ($searchType === 'phone' || $searchType === 'all') {
+                $q->orWhere('phone', 'like', "%{$searchTerm}%");
+            }
+            if ($searchType === 'email' || $searchType === 'all') {
+                $q->orWhere('email', 'like', "%{$searchTerm}%");
+            }
+            if ($searchType === 'national_id' || $searchType === 'all') {
+                $q->orWhere('national_id', 'like', "%{$searchTerm}%");
+            }
         });
     }
 }

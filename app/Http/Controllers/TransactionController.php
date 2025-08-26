@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 class TransactionController extends Controller
 {
     /**
@@ -25,7 +23,7 @@ class TransactionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): void
+    public function store(): void
     {
         //
     }
@@ -33,7 +31,7 @@ class TransactionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id): void
+    public function show(): void
     {
         //
     }
@@ -41,7 +39,7 @@ class TransactionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id): void
+    public function edit(): void
     {
         //
     }
@@ -49,7 +47,7 @@ class TransactionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id): void
+    public function update(): void
     {
         //
     }
@@ -57,7 +55,7 @@ class TransactionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id): void
+    public function destroy(): void
     {
         //
     }

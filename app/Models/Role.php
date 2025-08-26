@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
  * @property string $name_ar
  * @property string $description
  * @property string $description_ar
+ * @property array<string>|null $permissions
  * @property bool $is_system
  * @property int $sort_order
  * @property bool $is_active
@@ -60,6 +62,7 @@ class Role extends Model
         'updated_by',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'permissions' => 'array',
         'is_active' => 'boolean',
@@ -68,6 +71,11 @@ class Role extends Model
         'branch_id' => 'integer',
         'created_by' => 'integer',
         'updated_by' => 'integer',
+        'name' => 'string',
+        'name_ar' => 'string',
+        'key' => 'string',
+        'description' => 'string',
+        'description_ar' => 'string',
     ];
 
     protected $attributes = [
@@ -161,7 +169,7 @@ class Role extends Model
 
         static::deleting(function ($role) {
             if (! $role->canBeDeleted()) {
-                throw new \Exception('لا يمكن حذف هذا الدور لأنه مستخدم أو دور نظامي');
+                throw new Exception('لا يمكن حذف هذا الدور لأنه مستخدم أو دور نظامي');
             }
         });
     }

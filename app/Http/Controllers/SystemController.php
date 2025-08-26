@@ -2,395 +2,121 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Artisan;
+use App\Services\SystemHealthService;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 
 class SystemController extends Controller
 {
     /**
-     * @return string[][]
+     * Get system health status
+     */
+    public function health(): array
+    {
+        return [
+            'controllers' => $this->checkControllers(),
+            'models' => $this->checkModels(),
+            'routes' => $this->checkRoutes(),
+            'views' => $this->checkViews(),
+            'database' => $this->checkDatabase(),
+            'files' => $this->checkFiles(),
+            'permissions' => $this->checkPermissions(),
+            'php_extensions' => $this->checkPhpExtensions(),
+            'env' => $this->checkEnv(),
+            'migrations' => $this->checkMigrations(),
+            'services' => $this->checkServices(),
+            'system_info' => [
+                'database_version' => $this->getDatabaseVersion(),
+                'disk_space' => $this->getDiskSpace(),
+                'memory_usage' => $this->getMemoryUsage(),
+                'uptime' => $this->getUptime(),
+            ],
+        ];
+    }
+
+    /**
+     * Check if all controllers exist and are working
      *
-     * @psalm-return array{DashboardController: array{status: 'error'|'warning'|'working', message: 'الملف مفقود'|'الملف موجود لكن الكلاس غير موجود'|'يعمل بشكل صحيح'}, CustomerController: array{status: 'error'|'warning'|'working', message: 'الملف مفقود'|'الملف موجود لكن الكلاس غير موجود'|'يعمل بشكل صحيح'}, InvoiceController: array{status: 'error'|'warning'|'working', message: 'الملف مفقود'|'الملف موجود لكن الكلاس غير موجود'|'يعمل بشكل صحيح'}, PaymentController: array{status: 'error'|'warning'|'working', message: 'الملف مفقود'|'الملف موجود لكن الكلاس غير موجود'|'يعمل بشكل صحيح'}, ProductController: array{status: 'error'|'warning'|'working', message: 'الملف مفقود'|'الملف موجود لكن الكلاس غير موجود'|'يعمل بشكل صحيح'}, CategoryController: array{status: 'error'|'warning'|'working', message: 'الملف مفقود'|'الملف موجود لكن الكلاس غير موجود'|'يعمل بشكل صحيح'}, BranchController: array{status: 'error'|'warning'|'working', message: 'الملف مفقود'|'الملف موجود لكن الكلاس غير موجود'|'يعمل بشكل صحيح'}, PaymentMethodController: array{status: 'error'|'warning'|'working', message: 'الملف مفقود'|'الملف موجود لكن الكلاس غير موجود'|'يعمل بشكل صحيح'}, AccountController: array{status: 'error'|'warning'|'working', message: 'الملف مفقود'|'الملف موجود لكن الكلاس غير موجود'|'يعمل بشكل صحيح'}, ExpenseController: array{status: 'error'|'warning'|'working', message: 'الملف مفقود'|'الملف موجود لكن الكلاس غير موجود'|'يعمل بشكل صحيح'}, EmployeeController: array{status: 'error'|'warning'|'working', message: 'الملف مفقود'|'الملف موجود لكن الكلاس غير موجود'|'يعمل بشكل صحيح'}, SystemController: array{status: 'error'|'warning'|'working', message: 'الملف مفقود'|'الملف موجود لكن الكلاس غير موجود'|'يعمل بشكل صحيح'}, AuthController: array{status: 'error'|'warning'|'working', message: 'الملف مفقود'|'الملف موجود لكن الكلاس غير موجود'|'يعمل بشكل صحيح'}}
+     * @return array<string, array{status: string, message: string}>
      */
     private function checkControllers(): array
     {
-        $controllers = [
-            'DashboardController' => 'app/Http/Controllers/DashboardController.php',
-            'CustomerController' => 'app/Http/Controllers/CustomerController.php',
-            'InvoiceController' => 'app/Http/Controllers/InvoiceController.php',
-            'PaymentController' => 'app/Http/Controllers/PaymentController.php',
-            'ProductController' => 'app/Http/Controllers/ProductController.php',
-            'CategoryController' => 'app/Http/Controllers/CategoryController.php',
-            'BranchController' => 'app/Http/Controllers/BranchController.php',
-            'PaymentMethodController' => 'app/Http/Controllers/PaymentMethodController.php',
-            'AccountController' => 'app/Http/Controllers/AccountController.php',
-            'ExpenseController' => 'app/Http/Controllers/ExpenseController.php',
-            'EmployeeController' => 'app/Http/Controllers/EmployeeController.php',
-            'SystemController' => 'app/Http/Controllers/SystemController.php',
-            'AuthController' => 'app/Http/Controllers/AuthController.php',
-        ];
-
-        $results = [];
-        foreach ($controllers as $name => $path) {
-            $fileExists = File::exists(base_path($path));
-            $classExists = class_exists("App\\Http\\Controllers\\{$name}");
-
-            if ($fileExists && $classExists) {
-                $results[$name] = [
-                    'status' => 'working',
-                    'message' => 'يعمل بشكل صحيح',
-                ];
-            } elseif ($fileExists && ! $classExists) {
-                $results[$name] = [
-                    'status' => 'warning',
-                    'message' => 'الملف موجود لكن الكلاس غير موجود',
-                ];
-            } else {
-                $results[$name] = [
-                    'status' => 'error',
-                    'message' => 'الملف مفقود',
-                ];
-            }
-        }
-
-        return $results;
+        return SystemHealthService::checkControllers();
     }
 
     /**
-     * @return string[][]
+     * Check if all models exist and are working
      *
-     * @psalm-return array{User: array{status: 'error'|'warning'|'working', message: 'الملف مفقود'|'الملف موجود لكن الكلاس غير موجود'|'يعمل بشكل صحيح'}, Customer: array{status: 'error'|'warning'|'working', message: 'الملف مفقود'|'الملف موجود لكن الكلاس غير موجود'|'يعمل بشكل صحيح'}, Invoice: array{status: 'error'|'warning'|'working', message: 'الملف مفقود'|'الملف موجود لكن الكلاس غير موجود'|'يعمل بشكل صحيح'}, Payment: array{status: 'error'|'warning'|'working', message: 'الملف مفقود'|'الملف موجود لكن الكلاس غير موجود'|'يعمل بشكل صحيح'}, Product: array{status: 'error'|'warning'|'working', message: 'الملف مفقود'|'الملف موجود لكن الكلاس غير موجود'|'يعمل بشكل صحيح'}, Category: array{status: 'error'|'warning'|'working', message: 'الملف مفقود'|'الملف موجود لكن الكلاس غير موجود'|'يعمل بشكل صحيح'}, Branch: array{status: 'error'|'warning'|'working', message: 'الملف مفقود'|'الملف موجود لكن الكلاس غير موجود'|'يعمل بشكل صحيح'}, PaymentMethod: array{status: 'error'|'warning'|'working', message: 'الملف مفقود'|'الملف موجود لكن الكلاس غير موجود'|'يعمل بشكل صحيح'}, Account: array{status: 'error'|'warning'|'working', message: 'الملف مفقود'|'الملف موجود لكن الكلاس غير موجود'|'يعمل بشكل صحيح'}, Expense: array{status: 'error'|'warning'|'working', message: 'الملف مفقود'|'الملف موجود لكن الكلاس غير موجود'|'يعمل بشكل صحيح'}, Employee: array{status: 'error'|'warning'|'working', message: 'الملف مفقود'|'الملف موجود لكن الكلاس غير موجود'|'يعمل بشكل صحيح'}, Role: array{status: 'error'|'warning'|'working', message: 'الملف مفقود'|'الملف موجود لكن الكلاس غير موجود'|'يعمل بشكل صحيح'}, Permission: array{status: 'error'|'warning'|'working', message: 'الملف مفقود'|'الملف موجود لكن الكلاس غير موجود'|'يعمل بشكل صحيح'}}
+     * @return array<string, array{status: string, message: string}>
      */
     private function checkModels(): array
     {
-        $models = [
-            'User' => 'app/Models/User.php',
-            'Customer' => 'app/Models/Customer.php',
-            'Invoice' => 'app/Models/Invoice.php',
-            'Payment' => 'app/Models/Payment.php',
-            'Product' => 'app/Models/Product.php',
-            'Category' => 'app/Models/Category.php',
-            'Branch' => 'app/Models/Branch.php',
-            'PaymentMethod' => 'app/Models/PaymentMethod.php',
-            'Account' => 'app/Models/Account.php',
-            'Expense' => 'app/Models/Expense.php',
-            'Employee' => 'app/Models/Employee.php',
-            'Role' => 'app/Models/Role.php',
-            'Permission' => 'app/Models/Permission.php',
-        ];
-
-        $results = [];
-        foreach ($models as $name => $path) {
-            $fileExists = File::exists(base_path($path));
-            $classExists = class_exists("App\\Models\\{$name}");
-
-            if ($fileExists && $classExists) {
-                $results[$name] = [
-                    'status' => 'working',
-                    'message' => 'يعمل بشكل صحيح',
-                ];
-            } elseif ($fileExists && ! $classExists) {
-                $results[$name] = [
-                    'status' => 'warning',
-                    'message' => 'الملف موجود لكن الكلاس غير موجود',
-                ];
-            } else {
-                $results[$name] = [
-                    'status' => 'error',
-                    'message' => 'الملف مفقود',
-                ];
-            }
-        }
-
-        return $results;
+        return SystemHealthService::checkModels();
     }
 
     /**
-     * @return string[][]
+     * Check if all expected routes exist
      *
-     * @psalm-return array{dashboard: array{status: 'error'|'working', message: string}, 'customers.index': array{status: 'error'|'working', message: string}, 'customers.create': array{status: 'error'|'working', message: string}, 'customers.store': array{status: 'error'|'working', message: string}, 'invoices.index': array{status: 'error'|'working', message: string}, 'invoices.create': array{status: 'error'|'working', message: string}, 'invoices.store': array{status: 'error'|'working', message: string}, 'payments.index': array{status: 'error'|'working', message: string}, 'payments.create': array{status: 'error'|'working', message: string}, 'payments.store': array{status: 'error'|'working', message: string}, 'products.index': array{status: 'error'|'working', message: string}, 'categories.index': array{status: 'error'|'working', message: string}, 'branches.index': array{status: 'error'|'working', message: string}, 'payment-methods.index': array{status: 'error'|'working', message: string}, 'accounts.index': array{status: 'error'|'working', message: string}, 'expenses.index': array{status: 'error'|'working', message: string}, 'employees.index': array{status: 'error'|'working', message: string}, 'system.status': array{status: 'error'|'working', message: string}}
+     * @return array<string, array{status: string, message: string}>
      */
     private function checkRoutes(): array
     {
-        $expectedRoutes = [
-            'dashboard' => 'GET',
-            'customers.index' => 'GET',
-            'customers.create' => 'GET',
-            'customers.store' => 'POST',
-            'invoices.index' => 'GET',
-            'invoices.create' => 'GET',
-            'invoices.store' => 'POST',
-            'payments.index' => 'GET',
-            'payments.create' => 'GET',
-            'payments.store' => 'POST',
-            'products.index' => 'GET',
-            'categories.index' => 'GET',
-            'branches.index' => 'GET',
-            'payment-methods.index' => 'GET',
-            'accounts.index' => 'GET',
-            'expenses.index' => 'GET',
-            'employees.index' => 'GET',
-            'system.status' => 'GET',
-        ];
-
-        $results = [];
-        foreach ($expectedRoutes as $route => $method) {
-            try {
-                $routeExists = Route::has($route);
-                if ($routeExists) {
-                    $results[$route] = [
-                        'status' => 'working',
-                        'message' => 'المسار يعمل',
-                    ];
-                } else {
-                    $results[$route] = [
-                        'status' => 'error',
-                        'message' => 'المسار مفقود',
-                    ];
-                }
-            } catch (\Exception $e) {
-                $results[$route] = [
-                    'status' => 'error',
-                    'message' => 'خطأ في المسار: '.$e->getMessage(),
-                ];
-            }
-        }
-
-        return $results;
+        return SystemHealthService::checkRoutes();
     }
 
     /**
-     * @return string[][]
+     * Check if all expected views exist
      *
-     * @psalm-return array{'dashboard.index': array{status: 'error'|'working', message: 'الصفحة مفقودة'|'الصفحة موجودة'}, 'customers.index': array{status: 'error'|'working', message: 'الصفحة مفقودة'|'الصفحة موجودة'}, 'customers.create': array{status: 'error'|'working', message: 'الصفحة مفقودة'|'الصفحة موجودة'}, 'invoices.index': array{status: 'error'|'working', message: 'الصفحة مفقودة'|'الصفحة موجودة'}, 'invoices.create': array{status: 'error'|'working', message: 'الصفحة مفقودة'|'الصفحة موجودة'}, 'payments.index': array{status: 'error'|'working', message: 'الصفحة مفقودة'|'الصفحة موجودة'}, 'payments.create': array{status: 'error'|'working', message: 'الصفحة مفقودة'|'الصفحة موجودة'}, 'products.index': array{status: 'error'|'working', message: 'الصفحة مفقودة'|'الصفحة موجودة'}, 'categories.index': array{status: 'error'|'working', message: 'الصفحة مفقودة'|'الصفحة موجودة'}, 'branches.index': array{status: 'error'|'working', message: 'الصفحة مفقودة'|'الصفحة موجودة'}, 'payment-methods.index': array{status: 'error'|'working', message: 'الصفحة مفقودة'|'الصفحة موجودة'}, 'accounts.index': array{status: 'error'|'working', message: 'الصفحة مفقودة'|'الصفحة موجودة'}, 'expenses.index': array{status: 'error'|'working', message: 'الصفحة مفقودة'|'الصفحة موجودة'}, 'employees.index': array{status: 'error'|'working', message: 'الصفحة مفقودة'|'الصفحة موجودة'}, 'system.status': array{status: 'error'|'working', message: 'الصفحة مفقودة'|'الصفحة موجودة'}, 'layouts.app': array{status: 'error'|'working', message: 'الصفحة مفقودة'|'الصفحة موجودة'}}
+     * @return array<string, array{status: string, message: string}>
      */
     private function checkViews(): array
     {
-        $expectedViews = [
-            'dashboard.index' => 'resources/views/dashboard/index.blade.php',
-            'customers.index' => 'resources/views/customers/index.blade.php',
-            'customers.create' => 'resources/views/customers/create.blade.php',
-            'invoices.index' => 'resources/views/invoices/index.blade.php',
-            'invoices.create' => 'resources/views/invoices/create.blade.php',
-            'payments.index' => 'resources/views/payments/index.blade.php',
-            'payments.create' => 'resources/views/payments/create.blade.php',
-            'products.index' => 'resources/views/products/index.blade.php',
-            'categories.index' => 'resources/views/categories/index.blade.php',
-            'branches.index' => 'resources/views/branches/index.blade.php',
-            'payment-methods.index' => 'resources/views/payment-methods/index.blade.php',
-            'accounts.index' => 'resources/views/accounts/index.blade.php',
-            'expenses.index' => 'resources/views/expenses/index.blade.php',
-            'employees.index' => 'resources/views/employees/index.blade.php',
-            'system.status' => 'resources/views/system/status.blade.php',
-            'layouts.app' => 'resources/views/layouts/app.blade.php',
-        ];
-
-        $results = [];
-        foreach ($expectedViews as $view => $path) {
-            $fileExists = File::exists(base_path($path));
-
-            if ($fileExists) {
-                $results[$view] = [
-                    'status' => 'working',
-                    'message' => 'الصفحة موجودة',
-                ];
-            } else {
-                $results[$view] = [
-                    'status' => 'error',
-                    'message' => 'الصفحة مفقودة',
-                ];
-            }
-        }
-
-        return $results;
+        return SystemHealthService::checkViews();
     }
 
     /**
-     * @return string[][]
+     * Check if all expected database tables exist
      *
-     * @psalm-return array{salaries: array{status: 'error'|'working', message: string}, commissions: array{status: 'error'|'working', message: string}, attendance: array{status: 'error'|'working', message: string}, role_permission: array{status: 'error'|'working', message: string}, permissions: array{status: 'error'|'working', message: string}, roles: array{status: 'error'|'working', message: string}, employees: array{status: 'error'|'working', message: string}, expenses: array{status: 'error'|'working', message: string}, accounts: array{status: 'error'|'working', message: string}, payment_methods: array{status: 'error'|'working', message: string}, branches: array{status: 'error'|'working', message: string}, categories: array{status: 'error'|'working', message: string}, products: array{status: 'error'|'working', message: string}, payments: array{status: 'error'|'working', message: string}, invoices: array{status: 'error'|'working', message: string}, customers: array{status: 'error'|'working', message: string}, users: array{status: 'error'|'working', message: string}}
+     * @return array<string, array{status: string, message: string}>
      */
     private function checkDatabase(): array
     {
-        $expectedTables = [
-            'users',
-            'customers',
-            'invoices',
-            'payments',
-            'products',
-            'categories',
-            'branches',
-            'payment_methods',
-            'accounts',
-            'expenses',
-            'employees',
-            'roles',
-            'permissions',
-            'role_permission',
-            'attendance',
-            'commissions',
-            'salaries',
-        ];
-
-        $results = [];
-        foreach ($expectedTables as $table) {
-            try {
-                $tableExists = Schema::hasTable($table);
-                if ($tableExists) {
-                    $results[$table] = [
-                        'status' => 'working',
-                        'message' => 'الجدول موجود',
-                    ];
-                } else {
-                    $results[$table] = [
-                        'status' => 'error',
-                        'message' => 'الجدول مفقود',
-                    ];
-                }
-            } catch (\Exception $e) {
-                $results[$table] = [
-                    'status' => 'error',
-                    'message' => 'خطأ في فحص الجدول: '.$e->getMessage(),
-                ];
-            }
-        }
-
-        return $results;
+        return SystemHealthService::checkDatabase();
     }
 
     /**
-     * @return string[][]
+     * Check if all required files and directories exist
      *
-     * @psalm-return array{'مجلد Cache': array{status: 'warning'|'working', message: 'الملف مفقود'|'الملف موجود'}, 'ملف السجلات': array{status: 'warning'|'working', message: 'الملف مفقود'|'الملف موجود'}, 'قواعد .htaccess': array{status: 'warning'|'working', message: 'الملف مفقود'|'الملف موجود'}, 'ملف Index الرئيسي': array{status: 'warning'|'working', message: 'الملف مفقود'|'الملف موجود'}, 'ملف Artisan': array{status: 'warning'|'working', message: 'الملف مفقود'|'الملف موجود'}, 'ملف Webpack': array{status: 'warning'|'working', message: 'الملف مفقود'|'الملف موجود'}, 'ملف NPM': array{status: 'warning'|'working', message: 'الملف مفقود'|'الملف موجود'}, 'ملف Autoload': array{status: 'warning'|'working', message: 'الملف مفقود'|'الملف موجود'}, 'ملف Composer': array{status: 'warning'|'working', message: 'الملف مفقود'|'الملف موجود'}, 'ملف البيئة': array{status: 'warning'|'working', message: 'الملف مفقود'|'الملف موجود'}}
+     * @return array<string, array{status: string, message: string}>
      */
     private function checkFiles(): array
     {
-        $expectedFiles = [
-            '.env' => 'ملف البيئة',
-            'composer.json' => 'ملف Composer',
-            'vendor/autoload.php' => 'ملف Autoload',
-            'package.json' => 'ملف NPM',
-            'webpack.mix.js' => 'ملف Webpack',
-            'artisan' => 'ملف Artisan',
-            'public/index.php' => 'ملف Index الرئيسي',
-            'public/.htaccess' => 'قواعد .htaccess',
-            'storage/logs/laravel.log' => 'ملف السجلات',
-            'bootstrap/cache' => 'مجلد Cache',
-        ];
-
-        $results = [];
-        foreach ($expectedFiles as $file => $description) {
-            try {
-                if (str_starts_with($file, 'public/')) {
-                    $absolutePath = public_path(substr($file, 7));
-                } elseif (str_starts_with($file, 'storage/')) {
-                    $absolutePath = storage_path(substr($file, 8));
-                } else {
-                    $absolutePath = base_path($file);
-                }
-            } catch (\Throwable $e) {
-                $absolutePath = base_path($file);
-            }
-
-            $fileExists = File::exists($absolutePath);
-
-            if ($fileExists) {
-                $results[$description] = [
-                    'status' => 'working',
-                    'message' => 'الملف موجود',
-                ];
-            } else {
-                $results[$description] = [
-                    'status' => 'warning',
-                    'message' => 'الملف مفقود',
-                ];
-            }
-        }
-
-        return $results;
+        return SystemHealthService::checkFiles();
     }
 
     /**
-     * @return string[][]
+     * Check if all required directories have proper permissions
      *
-     * @psalm-return array{storage: array{status: 'error'|'warning'|'working', message: 'المجلد غير قابل للكتابة'|'المجلد مفقود'|'المجلد موجود وقابل للكتابة'}, 'storage/logs': array{status: 'error'|'warning'|'working', message: 'المجلد غير قابل للكتابة'|'المجلد مفقود'|'المجلد موجود وقابل للكتابة'}, 'storage/framework': array{status: 'error'|'warning'|'working', message: 'المجلد غير قابل للكتابة'|'المجلد مفقود'|'المجلد موجود وقابل للكتابة'}, 'storage/framework/cache': array{status: 'error'|'warning'|'working', message: 'المجلد غير قابل للكتابة'|'المجلد مفقود'|'المجلد موجود وقابل للكتابة'}, 'storage/framework/sessions': array{status: 'error'|'warning'|'working', message: 'المجلد غير قابل للكتابة'|'المجلد مفقود'|'المجلد موجود وقابل للكتابة'}, 'storage/framework/views': array{status: 'error'|'warning'|'working', message: 'المجلد غير قابل للكتابة'|'المجلد مفقود'|'المجلد موجود وقابل للكتابة'}, 'bootstrap/cache': array{status: 'error'|'warning'|'working', message: 'المجلد غير قابل للكتابة'|'المجلد مفقود'|'المجلد موجود وقابل للكتابة'}}
+     * @return array<string, array{status: string, message: string}>
      */
     private function checkPermissions(): array
     {
-        $paths = [
-            'storage' => storage_path(),
-            'storage/logs' => storage_path('logs'),
-            'storage/framework' => storage_path('framework'),
-            'storage/framework/cache' => storage_path('framework/cache'),
-            'storage/framework/sessions' => storage_path('framework/sessions'),
-            'storage/framework/views' => storage_path('framework/views'),
-            'bootstrap/cache' => base_path('bootstrap/cache'),
-        ];
-
-        $results = [];
-        foreach ($paths as $label => $absolutePath) {
-            $exists = File::exists($absolutePath);
-            $isDir = File::isDirectory($absolutePath);
-            $writable = @is_writable($absolutePath);
-
-            if ($exists && $isDir && $writable) {
-                $results[$label] = [
-                    'status' => 'working',
-                    'message' => 'المجلد موجود وقابل للكتابة',
-                ];
-            } elseif ($exists && $isDir && ! $writable) {
-                $results[$label] = [
-                    'status' => 'warning',
-                    'message' => 'المجلد غير قابل للكتابة',
-                ];
-            } else {
-                $results[$label] = [
-                    'status' => 'error',
-                    'message' => 'المجلد مفقود',
-                ];
-            }
-        }
-
-        return $results;
+        return SystemHealthService::checkPermissions();
     }
 
     /**
-     * @return string[][]
+     * Check PHP extensions
      *
-     * @psalm-return array{exif: array{status: 'error'|'working', message: 'امتداد غير مثبت/غير مفعّل'|'امتداد محمّل'}, gd: array{status: 'error'|'working', message: 'امتداد غير مثبت/غير مفعّل'|'امتداد محمّل'}, fileinfo: array{status: 'error'|'working', message: 'امتداد غير مثبت/غير مفعّل'|'امتداد محمّل'}, curl: array{status: 'error'|'working', message: 'امتداد غير مثبت/غير مفعّل'|'امتداد محمّل'}, pdo_mysql: array{status: 'error'|'working', message: 'امتداد غير مثبت/غير مفعّل'|'امتداد محمّل'}, pdo: array{status: 'error'|'working', message: 'امتداد غير مثبت/غير مفعّل'|'امتداد محمّل'}, openssl: array{status: 'error'|'working', message: 'امتداد غير مثبت/غير مفعّل'|'امتداد محمّل'}, mbstring: array{status: 'error'|'working', message: 'امتداد غير مثبت/غير مفعّل'|'امتداد محمّل'}, json: array{status: 'error'|'working', message: 'امتداد غير مثبت/غير مفعّل'|'امتداد محمّل'}}
+     * @return array<string, array{status: string, message: string}>
      */
     private function checkPhpExtensions(): array
     {
-        $requiredExtensions = [
-            'json', 'mbstring', 'openssl', 'pdo', 'pdo_mysql', 'curl', 'fileinfo', 'gd', 'exif',
-        ];
-
-        $results = [];
-        foreach ($requiredExtensions as $ext) {
-            if (extension_loaded($ext)) {
-                $results[$ext] = [
-                    'status' => 'working',
-                    'message' => 'امتداد محمّل',
-                ];
-            } else {
-                $results[$ext] = [
-                    'status' => 'error',
-                    'message' => 'امتداد غير مثبت/غير مفعّل',
-                ];
-            }
-        }
-
-        return $results;
+        return SystemHealthService::checkPhpExtensions();
     }
 
     /**
-     * @return string[][]
-     *
-     * @psalm-return array{QUEUE_CONNECTION: array{status: 'warning'|'working', message: 'غير مُعرّف'|'مُعرّف'}, SESSION_DRIVER: array{status: 'warning'|'working', message: 'غير مُعرّف'|'مُعرّف'}, CACHE_DRIVER: array{status: 'warning'|'working', message: 'غير مُعرّف'|'مُعرّف'}, DB_USERNAME: array{status: 'warning'|'working', message: 'غير مُعرّف'|'مُعرّف'}, DB_DATABASE: array{status: 'warning'|'working', message: 'غير مُعرّف'|'مُعرّف'}, DB_HOST: array{status: 'warning'|'working', message: 'غير مُعرّف'|'مُعرّف'}, DB_CONNECTION: array{status: 'warning'|'working', message: 'غير مُعرّف'|'مُعرّف'}, APP_URL: array{status: 'warning'|'working', message: 'غير مُعرّف'|'مُعرّف'}, APP_KEY: array{status: 'warning'|'working', message: 'غير مُعرّف'|'مُعرّف'}, APP_ENV: array{status: 'warning'|'working', message: 'غير مُعرّف'|'مُعرّف'}, APP_NAME: array{status: 'warning'|'working', message: 'غير مُعرّف'|'مُعرّف'}, APP_KEY_FORMAT: array{status: 'error'|'working', message: 'APP_KEY غير مضبوط'|'مفتاح التطبيق مضبوط'}}
+     * @return array<string, array{status: string, message: string}>
      */
     private function checkEnv(): array
     {
@@ -408,12 +134,14 @@ class SystemController extends Controller
                     'status' => 'working',
                     'message' => 'مُعرّف',
                 ];
-            } else {
-                $results[$key] = [
-                    'status' => 'warning',
-                    'message' => 'غير مُعرّف',
-                ];
+
+                continue;
             }
+
+            $results[$key] = [
+                'status' => 'warning',
+                'message' => 'غير مُعرّف',
+            ];
         }
 
         // تحقق خاص بـ APP_KEY
@@ -423,20 +151,20 @@ class SystemController extends Controller
                 'status' => 'working',
                 'message' => 'مفتاح التطبيق مضبوط',
             ];
-        } else {
-            $results['APP_KEY_FORMAT'] = [
-                'status' => 'error',
-                'message' => 'APP_KEY غير مضبوط',
-            ];
+
+            return $results;
         }
+
+        $results['APP_KEY_FORMAT'] = [
+            'status' => 'error',
+            'message' => 'APP_KEY غير مضبوط',
+        ];
 
         return $results;
     }
 
     /**
-     * @return string[][]
-     *
-     * @psalm-return array{migrations_table?: array{status: 'error'|'working', message: 'جدول الهجرات مفقود'|'جدول الهجرات موجود'}, migrations_status: array{status: 'error'|'warning'|'working', message: string}}
+     * @return array<string, array{status: string, message: string}>
      */
     private function checkMigrations(): array
     {
@@ -468,9 +196,6 @@ class SystemController extends Controller
         return $results;
     }
 
-    /**
-     * @psalm-return array{'Database Connection': mixed, 'Cache Service': mixed, 'Session Service': mixed, 'Queue Service': mixed, 'Mail Service': mixed, 'Storage Service': mixed}
-     */
     private function checkServices(): array
     {
         $services = [
@@ -487,8 +212,6 @@ class SystemController extends Controller
 
     /**
      * @return string[]
-     *
-     * @psalm-return array{status: 'error'|'working', message: string}
      */
     private function checkDatabaseConnection(): array
     {
@@ -509,8 +232,6 @@ class SystemController extends Controller
 
     /**
      * @return string[]
-     *
-     * @psalm-return array{status: 'error'|'warning'|'working', message: string}
      */
     private function checkCacheService(): array
     {
@@ -525,12 +246,12 @@ class SystemController extends Controller
                     'status' => 'working',
                     'message' => 'خدمة Cache تعمل',
                 ];
-            } else {
-                return [
-                    'status' => 'warning',
-                    'message' => 'خدمة Cache تعمل جزئياً',
-                ];
             }
+
+            return [
+                'status' => 'warning',
+                'message' => 'خدمة Cache تعمل جزئياً',
+            ];
         } catch (\Exception $e) {
             return [
                 'status' => 'error',
@@ -541,8 +262,6 @@ class SystemController extends Controller
 
     /**
      * @return string[]
-     *
-     * @psalm-return array{status: 'error'|'warning'|'working', message: string}
      */
     private function checkSessionService(): array
     {
@@ -556,12 +275,12 @@ class SystemController extends Controller
                     'status' => 'working',
                     'message' => 'خدمة Session تعمل',
                 ];
-            } else {
-                return [
-                    'status' => 'warning',
-                    'message' => 'خدمة Session تعمل جزئياً',
-                ];
             }
+
+            return [
+                'status' => 'warning',
+                'message' => 'خدمة Session تعمل جزئياً',
+            ];
         } catch (\Exception $e) {
             return [
                 'status' => 'error',
@@ -572,48 +291,28 @@ class SystemController extends Controller
 
     /**
      * @return string[]
-     *
-     * @psalm-return array{status: 'warning'|'working', message: string}
      */
     private function checkQueueService(): array
     {
-        try {
-            return [
-                'status' => 'working',
-                'message' => 'خدمة Queue متاحة',
-            ];
-        } catch (\Exception $e) {
-            return [
-                'status' => 'warning',
-                'message' => 'خدمة Queue غير متاحة: '.$e->getMessage(),
-            ];
-        }
+        return [
+            'status' => 'working',
+            'message' => 'خدمة Queue متاحة',
+        ];
     }
 
     /**
      * @return string[]
-     *
-     * @psalm-return array{status: 'warning'|'working', message: string}
      */
     private function checkMailService(): array
     {
-        try {
-            return [
-                'status' => 'working',
-                'message' => 'خدمة Mail متاحة',
-            ];
-        } catch (\Exception $e) {
-            return [
-                'status' => 'warning',
-                'message' => 'خدمة Mail غير متاحة: '.$e->getMessage(),
-            ];
-        }
+        return [
+            'status' => 'working',
+            'message' => 'خدمة Mail متاحة',
+        ];
     }
 
     /**
      * @return string[]
-     *
-     * @psalm-return array{status: 'error'|'warning'|'working', message: string}
      */
     private function checkStorageService(): array
     {
@@ -628,12 +327,12 @@ class SystemController extends Controller
                     'status' => 'working',
                     'message' => 'خدمة Storage تعمل',
                 ];
-            } else {
-                return [
-                    'status' => 'warning',
-                    'message' => 'خدمة Storage تعمل جزئياً',
-                ];
             }
+
+            return [
+                'status' => 'warning',
+                'message' => 'خدمة Storage تعمل جزئياً',
+            ];
         } catch (\Exception $e) {
             return [
                 'status' => 'error',
@@ -642,7 +341,7 @@ class SystemController extends Controller
         }
     }
 
-    private function getDatabaseVersion()
+    private function getDatabaseVersion(): string
     {
         try {
             $version = DB::select('SELECT VERSION() as version')[0]->version;
@@ -689,11 +388,13 @@ class SystemController extends Controller
 
             if ($days > 0) {
                 return $days.' يوم '.$hours.' ساعة '.$minutes.' دقيقة';
-            } elseif ($hours > 0) {
-                return $hours.' ساعة '.$minutes.' دقيقة';
-            } else {
-                return $minutes.' دقيقة';
             }
+
+            if ($hours > 0) {
+                return $hours.' ساعة '.$minutes.' دقيقة';
+            }
+
+            return $minutes.' دقيقة';
         } catch (\Exception $e) {
             return 'غير متاح';
         }

@@ -18,54 +18,126 @@ class CheckBranchAccess
     {
         $guard = $guard ?: config('auth.defaults.guard');
 
-        if (! Auth::guard($guard)->check()) {
-            if ($request->expectsJson()) {
-                return response()->json(['error' => 'غير مصرح لك بالوصول'], 403);
-            }
-
-            return redirect()->route('login');
+        if (! $this->isUserAuthenticated($guard)) {
+            return $this->handleUnauthenticated($request);
         }
 
         $user = Auth::guard($guard)->user();
 
         // المدير لديه وصول لجميع الفروع
-        if ($user->role === 'admin' || $user->role === 'super_admin') {
+        if ($this->isAdminUser($user)) {
             return $next($request);
         }
 
         // التحقق من أن المستخدم مرتبط بفرع
-        if (! $user->branch_id) {
-            if ($request->expectsJson()) {
-                return response()->json(['error' => 'لم يتم تعيين فرع لك'], 403);
-            }
-
-            abort(403, 'لم يتم تعيين فرع لك');
+        if (! $this->hasUserBranch($user)) {
+            return $this->handleNoBranchAssigned($request);
         }
 
         // التحقق من أن الفرع نشط
-        if (! $user->branch || ! $user->branch->is_active) {
-            if ($request->expectsJson()) {
-                return response()->json(['error' => 'الفرع غير نشط'], 403);
-            }
-
-            abort(403, 'الفرع غير نشط');
+        if (! $this->isUserBranchActive($user)) {
+            return $this->handleInactiveBranch($request);
         }
 
         // تعيين الفرع في الجلسة
         session(['current_branch_id' => $user->branch_id]);
 
         // التحقق من أن المستخدم يطلب بيانات من فرعه فقط
-        $requestedBranchId = $this->getRequestedBranchId($request);
-
-        if ($requestedBranchId && $requestedBranchId != $user->branch_id) {
-            if ($request->expectsJson()) {
-                return response()->json(['error' => 'لا يمكنك الوصول لبيانات فرع آخر'], 403);
-            }
-
-            abort(403, 'لا يمكنك الوصول لبيانات فرع آخر');
+        if (! $this->canAccessRequestedBranch($request, $user->branch_id)) {
+            return $this->handleBranchAccessDenied($request);
         }
 
         return $next($request);
+    }
+
+    /**
+     * التحقق من أن المستخدم مسجل دخول
+     */
+    private function isUserAuthenticated(string $guard): bool
+    {
+        return Auth::guard($guard)->check();
+    }
+
+    /**
+     * معالجة المستخدم غير المسجل دخول
+     */
+    private function handleUnauthenticated(Request $request): Response
+    {
+        if ($request->expectsJson()) {
+            return response()->json(['error' => 'غير مصرح لك بالوصول'], 403);
+        }
+
+        return redirect()->route('login');
+    }
+
+    /**
+     * التحقق من أن المستخدم مدير
+     */
+    private function isAdminUser($user): bool
+    {
+        return $user && property_exists($user, 'role') && ($user->role === 'admin' || $user->role === 'super_admin');
+    }
+
+    /**
+     * التحقق من أن المستخدم مرتبط بفرع
+     */
+    private function hasUserBranch($user): bool
+    {
+        return $user && property_exists($user, 'branch_id') && $user->branch_id;
+    }
+
+    /**
+     * معالجة المستخدم بدون فرع
+     */
+    private function handleNoBranchAssigned(Request $request): Response
+    {
+        if ($request->expectsJson()) {
+            return response()->json(['error' => 'لم يتم تعيين فرع لك'], 403);
+        }
+
+        abort(403, 'لم يتم تعيين فرع لك');
+    }
+
+    /**
+     * التحقق من أن فرع المستخدم نشط
+     */
+    private function isUserBranchActive($user): bool
+    {
+        return $user && property_exists($user, 'branch') && $user->branch && property_exists($user->branch, 'is_active') && $user->branch->is_active;
+    }
+
+    /**
+     * معالجة الفرع غير النشط
+     */
+    private function handleInactiveBranch(Request $request): Response
+    {
+        if ($request->expectsJson()) {
+            return response()->json(['error' => 'الفرع غير نشط'], 403);
+        }
+
+        abort(403, 'الفرع غير نشط');
+    }
+
+    /**
+     * التحقق من إمكانية الوصول للفرع المطلوب
+     */
+    private function canAccessRequestedBranch(Request $request, int $userBranchId): bool
+    {
+        $requestedBranchId = $this->getRequestedBranchId($request);
+
+        return $requestedBranchId === null || $requestedBranchId === $userBranchId;
+    }
+
+    /**
+     * معالجة رفض الوصول للفرع
+     */
+    private function handleBranchAccessDenied(Request $request): Response
+    {
+        if ($request->expectsJson()) {
+            return response()->json(['error' => 'لا يمكنك الوصول لبيانات فرع آخر'], 403);
+        }
+
+        abort(403, 'لا يمكنك الوصول لبيانات فرع آخر');
     }
 
     /**
@@ -73,30 +145,28 @@ class CheckBranchAccess
      */
     private function getRequestedBranchId(Request $request): ?int
     {
-        // من URL parameters
-        if ($request->route('branch')) {
-            return (int) $request->route('branch');
-        }
+        $branchSources = [
+            'route_branch' => $request->route('branch'),
+            'route_branchId' => $request->route('branchId'),
+            'query_branch_id' => $request->get('branch_id'),
+            'body_branch_id' => $request->input('branch_id'),
+            'header_branch_id' => $request->header('X-Branch-ID'),
+        ];
 
-        if ($request->route('branchId')) {
-            return (int) $request->route('branchId');
-        }
-
-        // من query parameters
-        if ($request->has('branch_id')) {
-            return (int) $request->get('branch_id');
-        }
-
-        // من request body
-        if ($request->has('branch_id')) {
-            return (int) $request->input('branch_id');
-        }
-
-        // من headers
-        if ($request->header('X-Branch-ID')) {
-            return (int) $request->header('X-Branch-ID');
+        foreach ($branchSources as $value) {
+            if ($this->isValidBranchId($value)) {
+                return (int) $value;
+            }
         }
 
         return null;
+    }
+
+    /**
+     * التحقق من صحة معرف الفرع
+     */
+    private function isValidBranchId($value): bool
+    {
+        return $value && is_numeric($value);
     }
 }

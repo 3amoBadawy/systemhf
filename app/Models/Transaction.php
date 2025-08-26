@@ -56,9 +56,18 @@ class Transaction extends Model
         'notes',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'amount' => 'decimal:2',
         'date' => 'date',
+        'account_id' => 'integer',
+        'type' => 'string',
+        'description' => 'string',
+        'reference_type' => 'string',
+        'reference_id' => 'integer',
+        'branch_id' => 'integer',
+        'user_id' => 'integer',
+        'notes' => 'string',
     ];
 
     // العلاقة مع الحساب

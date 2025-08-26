@@ -26,23 +26,36 @@ class PaymentController extends Controller
 
         // رفع صورة الإيصال الجديدة
         if ($request->hasFile('receipt_image')) {
+            $receiptImageFile = $request->file('receipt_image');
+
             // حذف الصورة القديمة
             if ($payment->receipt_image) {
                 Storage::disk('public')->delete($payment->receipt_image);
             }
-            $receiptImagePath = $request->file('receipt_image')->store('receipts', 'public');
-            $payment->receipt_image = $receiptImagePath;
+
+            if ($receiptImageFile instanceof \Illuminate\Http\UploadedFile) {
+                $receiptImagePath = $receiptImageFile->store('receipts', 'public');
+                if ($receiptImagePath !== false) {
+                    $receiptImage = $receiptImagePath;
+                }
+            }
         }
 
-        $payment->update([
-            'customer_id' => $request->customer_id,
-            'amount' => $request->amount,
-            'payment_method' => $request->payment_method,
-            'payment_status' => $request->payment_status,
-            'payment_date' => $request->payment_date,
-            'reference_number' => $request->reference_number,
-            'notes' => $request->notes,
-        ]);
+        $updateData = [
+            'customer_id' => $request->input('customer_id'),
+            'amount' => $request->input('amount'),
+            'payment_method' => $request->input('payment_method'),
+            'payment_status' => $request->input('payment_status'),
+            'payment_date' => $request->input('payment_date'),
+            'reference_number' => $request->input('reference_number'),
+            'notes' => $request->input('notes'),
+        ];
+
+        if (isset($receiptImage)) {
+            $updateData['receipt_image'] = $receiptImage;
+        }
+
+        $payment->update($updateData);
 
         return redirect()->route('payments.index')
             ->with('success', 'تم تحديث الدفعة بنجاح!');

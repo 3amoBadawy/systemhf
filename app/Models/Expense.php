@@ -71,11 +71,23 @@ class Expense extends Model
         'notes',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'amount' => 'decimal:2',
         'date' => 'date',
         'is_approved' => 'boolean',
         'approved_at' => 'datetime',
+        'branch_id' => 'integer',
+        'user_id' => 'integer',
+        'payment_method_id' => 'integer',
+        'account_id' => 'integer',
+        'title' => 'string',
+        'title_ar' => 'string',
+        'category' => 'string',
+        'description' => 'string',
+        'receipt_image' => 'string',
+        'approved_by' => 'integer',
+        'notes' => 'string',
     ];
 
     // العلاقة مع الفرع

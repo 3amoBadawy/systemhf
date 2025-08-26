@@ -26,11 +26,12 @@ class CheckPermission
             return redirect()->route('login');
         }
 
+        /** @var \App\Models\User $user */
         $user = Auth::guard($guard)->user();
 
         // التحقق من أن المستخدم نشط
         if (! $user->is_active) {
-            Auth::guard($guard)->logout();
+            Auth::logout();
 
             if ($request->expectsJson()) {
                 return response()->json(['error' => 'حسابك معطل'], 403);
@@ -54,39 +55,65 @@ class CheckPermission
     /**
      * التحقق من وجود صلاحية معينة
      */
-    private function hasPermission(?\Illuminate\Contracts\Auth\Authenticatable $user, string $permission): bool
+    private function hasPermission(?\App\Models\User $user, string $permission): bool
     {
         // المدير لديه جميع الصلاحيات
-        if ($user->role === 'admin' || $user->role === 'super_admin') {
+        if ($this->isAdminUser($user)) {
             return true;
         }
 
         // التحقق من الصلاحيات المباشرة للمستخدم
-        if ($user->permissions && is_array($user->permissions)) {
-            if (in_array($permission, $user->permissions) || in_array('*', $user->permissions)) {
-                return true;
-            }
-        }
-
-        // التحقق من صلاحيات الدور
-        if ($user->role_id && $user->role) {
-            if ($user->role->hasPermission($permission)) {
-                return true;
-            }
-        }
-
-        // التحقق من الصلاحيات المجمعة
-        if ($this->checkWildcardPermission($user, $permission)) {
+        if ($this->hasDirectPermission($user, $permission)) {
             return true;
         }
 
-        return false;
+        // التحقق من صلاحيات الدور
+        if ($this->hasRolePermission($user, $permission)) {
+            return true;
+        }
+
+        // التحقق من الصلاحيات المجمعة
+        return $this->checkWildcardPermission($user, $permission);
+    }
+
+    /**
+     * التحقق من أن المستخدم مدير
+     */
+    private function isAdminUser(?\App\Models\User $user): bool
+    {
+        return $user && property_exists($user, 'role_id') && ($user->role_id === 1 || $user->role_id === 2);
+    }
+
+    /**
+     * التحقق من الصلاحيات المباشرة للمستخدم
+     */
+    private function hasDirectPermission(?\App\Models\User $user, string $permission): bool
+    {
+        if (! $user || ! property_exists($user, 'permissions') || ! $user->permissions || ! is_array($user->permissions)) {
+            return false;
+        }
+
+        return in_array($permission, $user->permissions) || in_array('*', $user->permissions);
+    }
+
+    /**
+     * التحقق من صلاحيات الدور
+     */
+    private function hasRolePermission(?\App\Models\User $user, string $permission): bool
+    {
+        if (! $user || ! property_exists($user, 'role_id') || ! $user->role_id) {
+            return false;
+        }
+
+        $role = $user->role()->first();
+
+        return $role && method_exists($role, 'hasPermission') && $role->hasPermission($permission);
     }
 
     /**
      * التحقق من الصلاحيات المجمعة
      */
-    private function checkWildcardPermission(?\Illuminate\Contracts\Auth\Authenticatable $user, string $permission): bool
+    private function checkWildcardPermission(?\App\Models\User $user, string $permission): bool
     {
         $parts = explode('.', $permission);
         if (count($parts) < 2) {
@@ -94,19 +121,46 @@ class CheckPermission
         }
 
         $module = $parts[0];
-        $parts[1] ?? '*';
-
-        // التحقق من صلاحية الوصول للموديول كاملاً
         $modulePermission = $module.'.*';
 
-        if ($user->permissions && in_array($modulePermission, $user->permissions)) {
+        return $this->hasModulePermission($user, $modulePermission);
+    }
+
+    /**
+     * التحقق من صلاحية الوصول للموديول
+     */
+    private function hasModulePermission(?\App\Models\User $user, string $modulePermission): bool
+    {
+        if ($this->hasUserModulePermission($user, $modulePermission)) {
             return true;
         }
 
-        if ($user->role && $user->role->hasPermission($modulePermission)) {
-            return true;
+        return $this->hasRoleModulePermission($user, $modulePermission);
+    }
+
+    /**
+     * التحقق من صلاحية المستخدم للموديول
+     */
+    private function hasUserModulePermission(?\App\Models\User $user, string $modulePermission): bool
+    {
+        if (! $user || ! property_exists($user, 'permissions') || ! $user->permissions) {
+            return false;
         }
 
-        return false;
+        return in_array($modulePermission, $user->permissions);
+    }
+
+    /**
+     * التحقق من صلاحية الدور للموديول
+     */
+    private function hasRoleModulePermission(?\App\Models\User $user, string $modulePermission): bool
+    {
+        if (! $user) {
+            return false;
+        }
+
+        $role = $user->role()->first();
+
+        return $role && method_exists($role, 'hasPermission') && $role->hasPermission($modulePermission);
     }
 }

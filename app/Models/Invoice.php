@@ -31,6 +31,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int|null $employee_id
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Payment> $payments
  * @property-read int|null $payments_count
+ * @property-read float $total_paid
  *
  * @method static Builder<static>|Invoice newModelQuery()
  * @method static Builder<static>|Invoice newQuery()
@@ -76,11 +77,25 @@ class Invoice extends Model
         'notes',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'sale_date' => 'date',
         'subtotal' => 'decimal:2',
         'discount' => 'decimal:2',
         'total' => 'decimal:2',
+        'customer_id' => 'integer',
+        'user_id' => 'integer',
+        'branch_id' => 'integer',
+        'employee_id' => 'integer',
+        'invoice_number' => 'string',
+        'delivery_date' => 'string',
+        'contract_number' => 'string',
+        'contract_image' => 'string',
+        'tax_rate' => 'string',
+        'tax_amount' => 'string',
+        'status' => 'string',
+        'payment_status' => 'string',
+        'notes' => 'string',
     ];
 
     /**
@@ -129,5 +144,13 @@ class Invoice extends Model
     public function items(): HasMany
     {
         return $this->hasMany(InvoiceItem::class);
+    }
+
+    /**
+     * الحصول على إجمالي المدفوع
+     */
+    public function getTotalPaidAttribute(): float
+    {
+        return $this->payments()->where('status', 'confirmed')->sum('amount');
     }
 }

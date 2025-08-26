@@ -50,7 +50,29 @@ class Supplier extends Model
         'is_active',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'is_active' => 'boolean',
+        'name' => 'string',
+        'name_ar' => 'string',
+        'code' => 'string',
+        'contact_person' => 'string',
+        'phone' => 'string',
+        'phone2' => 'string',
+        'email' => 'string',
+        'website' => 'string',
+        'address' => 'string',
+        'address_ar' => 'string',
+        'country' => 'string',
+        'governorate' => 'string',
+        'city' => 'string',
+        'postal_code' => 'string',
+        'tax_number' => 'string',
+        'commercial_record' => 'string',
+        'payment_terms' => 'string',
+        'credit_limit' => 'decimal:2',
+        'branch_id' => 'integer',
+        'created_by' => 'integer',
+        'updated_by' => 'integer',
     ];
 }

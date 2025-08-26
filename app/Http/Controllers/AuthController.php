@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
 
 class AuthController extends Controller
 {
     /**
      * Show the login form
      */
-    public function showLogin(): View
+    public function showLogin(): \Illuminate\Contracts\View\View
     {
         return view('auth.login');
     }
@@ -19,7 +19,7 @@ class AuthController extends Controller
     /**
      * Handle login attempt
      */
-    public function login(Request $request)
+    public function login(Request $request): RedirectResponse
     {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
@@ -34,13 +34,13 @@ class AuthController extends Controller
 
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+        ])->withInput($request->only('email'));
     }
 
     /**
      * Logout the user
      */
-    public function logout(Request $request)
+    public function logout(Request $request): RedirectResponse
     {
         Auth::logout();
 

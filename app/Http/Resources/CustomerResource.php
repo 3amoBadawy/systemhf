@@ -17,31 +17,49 @@ class CustomerResource extends JsonResource
     #[\Override]
     public function toArray(Request $request): array
     {
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'phone' => $this->phone,
-            'phone2' => $this->phone2,
-            'country' => $this->country,
-            'governorate' => $this->governorate,
-            'address' => $this->address,
-            'notes' => $this->notes,
-            'is_active' => $this->is_active,
-            'branch' => $this->whenLoaded('branch', function () {
+        /** @var \App\Models\Customer $customer */
+        $customer = $this->resource;
+
+        $includeDetails = $request->boolean('include_details', false);
+        $includeTimestamps = $request->boolean('include_timestamps', true);
+
+        $data = [
+            'id' => $customer->id,
+            'name' => $customer->name,
+            'phone' => $customer->phone,
+            'phone2' => $customer->phone2,
+            'country' => $customer->country,
+            'governorate' => $customer->governorate,
+            'address' => $customer->address,
+            'notes' => $customer->notes,
+            'is_active' => $customer->is_active,
+            'branch' => $this->whenLoaded('branch', function () use ($customer) {
                 return [
-                    'id' => $this->branch->id,
-                    'name' => $this->branch->name,
+                    'id' => $customer->branch?->id,
+                    'name' => $customer->branch?->name,
                 ];
             }),
-            'total_invoiced' => $this->total_invoiced,
-            'total_paid' => $this->total_paid,
-            'remaining_balance' => $this->remaining_balance,
-            'payment_status' => $this->payment_status,
-            'payment_status_text' => $this->payment_status_text,
-            'has_outstanding_balance' => $this->hasOutstandingBalance(),
-            'unread_notifications_count' => $this->unread_notifications_count,
-            'created_at' => $this->created_at?->toISOString(),
-            'updated_at' => $this->updated_at?->toISOString(),
+            'total_invoiced' => $customer->total_invoiced,
+            'total_paid' => $customer->total_paid,
+            'remaining_balance' => $customer->remaining_balance,
+            'payment_status' => $customer->payment_status,
+            'payment_status_text' => $customer->payment_status_text,
+            'has_outstanding_balance' => $customer->hasOutstandingBalance(),
+            'unread_notifications_count' => $customer->unread_notifications_count,
         ];
+
+        if ($includeDetails) {
+            $data['additional_info'] = [
+                'registration_date' => $customer->created_at?->format('Y-m-d'),
+                'last_updated' => $customer->updated_at?->format('Y-m-d'),
+            ];
+        }
+
+        if ($includeTimestamps) {
+            $data['created_at'] = $customer->created_at?->toISOString();
+            $data['updated_at'] = $customer->updated_at?->toISOString();
+        }
+
+        return $data;
     }
 }

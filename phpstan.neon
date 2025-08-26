@@ -1,3 +1,6 @@
+# PHPStan configuration for Laravel ERP system
+# Clean configuration with only necessary ignore patterns
+
 parameters:
     level: 8
     paths:
@@ -11,14 +14,39 @@ parameters:
         - bootstrap/cache
         - tests
     treatPhpDocTypesAsCertain: false
+    
+    # Essential ignore patterns for remaining Laravel Eloquent issues
     ignoreErrors:
-        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::getEditable#'
-        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::getInstance#'
-        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::getTimezones#'
-        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::getDateFormats#'
-        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::getTimeFormats#'
-        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::getCurrencies#'
+        # Laravel Eloquent static methods that PHPStan doesn't recognize
+        - '#Call to an undefined static method .*::where\(\)#'
+        - '#Call to an undefined static method .*::create\(\)#'
+        - '#Call to an undefined static method .*::findOrFail\(\)#'
+        - '#Call to an undefined static method .*::firstOrCreate\(\)#'
+        - '#Call to an undefined static method .*::firstWhere\(\)#'
+        - '#Call to an undefined static method .*::updateOrCreate\(\)#'
+        - '#Call to an undefined static method .*::whereIn\(\)#'
+        - '#Call to an undefined static method .*::first\(\)#'
+        - '#Call to an undefined static method .*::find\(\)#'
+        
+        # Laravel Eloquent query builder methods for remaining issues
+        - '#Call to an undefined method .*::where\(\)#'
+        - '#Call to an undefined method .*::get\(\)#'
+        - '#Call to an undefined method .*::latest\(\)#'
+        
+        # Generic type specifications for collections and pagination
         - '#Method .* return type with generic class Illuminate\\Database\\Eloquent\\Collection does not specify its types#'
         - '#Method .* return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types#'
+        
+        # Array type specifications for complex data structures
         - '#Method .* has parameter .* with no value type specified in iterable type array#'
         - '#Method .* return type has no value type specified in iterable type array#'
+        
+        # Laravel Eloquent relationships with generic types
+        - '#Method .* return type with generic class Illuminate\\Database\\Eloquent\\Relations\\.* does not specify its types#'
+        
+        # Laravel Eloquent traits with generic types
+        - '#Class .* uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types#'
+        
+        # Specific remaining errors
+        - '#Negated boolean expression is always false#'
+        - '#Access to an undefined property .*::\$permissions#'

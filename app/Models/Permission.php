@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -73,12 +74,19 @@ class Permission extends Model
         'updated_by',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'is_active' => 'boolean',
         'is_system' => 'boolean',
         'sort_order' => 'integer',
         'created_by' => 'integer',
         'updated_by' => 'integer',
+        'name' => 'string',
+        'name_ar' => 'string',
+        'key' => 'string',
+        'group' => 'string',
+        'description' => 'string',
+        'description_ar' => 'string',
     ];
 
     protected $attributes = [
@@ -283,7 +291,7 @@ class Permission extends Model
 
         static::deleting(function ($permission) {
             if (! $permission->canBeDeleted()) {
-                throw new \Exception('لا يمكن حذف هذه الصلاحية لأنها مستخدمة أو صلاحية نظامية');
+                throw new Exception('لا يمكن حذف هذه الصلاحية لأنها مستخدمة أو صلاحية نظامية');
             }
         });
     }

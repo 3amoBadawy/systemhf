@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Repositories\Contracts\CustomerRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class CustomerService
@@ -44,12 +45,13 @@ class CustomerService
     public function createCustomer(array $data): Customer
     {
         $customer = $this->customerRepository->create($data);
+        assert($customer instanceof Customer);
 
         // Log the creation
         Log::info('Customer created', [
             'customer_id' => $customer->id,
             'customer_name' => $customer->name,
-            'created_by' => auth()->id(),
+            'created_by' => Auth::id(),
         ]);
 
         return $customer;
@@ -66,15 +68,16 @@ class CustomerService
             return null;
         }
 
-        $customer = $this->customerRepository->update($id, $data);
+        $updatedCustomer = $this->customerRepository->update($id, $data);
+        assert($updatedCustomer instanceof Customer);
 
         // Log the update
         Log::info('Customer updated', [
             'customer_id' => $id,
-            'updated_by' => auth()->id(),
+            'updated_by' => Auth::id(),
         ]);
 
-        return $customer;
+        return $updatedCustomer;
     }
 
     /**
@@ -94,11 +97,11 @@ class CustomerService
             // Log the deletion
             Log::info('Customer deleted', [
                 'customer_id' => $id,
-                'deleted_by' => auth()->id(),
+                'deleted_by' => Auth::id() ?? 0,
             ]);
         }
 
-        return $result;
+        return (bool) $result;
     }
 
     /**

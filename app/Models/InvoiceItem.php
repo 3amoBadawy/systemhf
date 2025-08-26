@@ -54,12 +54,17 @@ class InvoiceItem extends Model
         'items_data',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'quantity' => 'integer',
         'unit_price' => 'decimal:2',
         'discount' => 'decimal:2',
         'total_price' => 'decimal:2',
         'items_data' => 'array',
+        'invoice_id' => 'integer',
+        'product_id' => 'integer',
+        'product_name' => 'string',
+        'notes' => 'string',
     ];
 
     /**

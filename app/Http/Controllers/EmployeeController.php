@@ -41,9 +41,11 @@ class EmployeeController extends Controller
 
         // تحديث بيانات المستخدم
         if ($employee->user) {
-            $employee->user->update([
-                'name' => $request->name,
-                'email' => $request->email,
+            /** @var \App\Models\User $user */
+            $user = $employee->user;
+            $user->update([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
             ]);
         }
 

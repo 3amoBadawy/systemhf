@@ -5,6 +5,8 @@ namespace App\Http\Middleware;
 use App\Models\ActivityLog;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class ActivityLogger
@@ -20,7 +22,7 @@ class ActivityLogger
 
         // تسجيل النشاط فقط للطلبات المُرسلة للـ Controllers
         if ($this->shouldLog($request, $response)) {
-            $this->logActivity($request, $response);
+            $this->logActivity($request);
         }
 
         return $response;
@@ -46,7 +48,7 @@ class ActivityLogger
             return false;
         }
 
-        return auth()->check();
+        return Auth::check();
     }
 
     /**
@@ -69,7 +71,7 @@ class ActivityLogger
     /**
      * تسجيل النشاط
      */
-    protected function logActivity(Request $request, Response $response): void
+    protected function logActivity(Request $request): void
     {
         try {
             $action = $this->getActionFromRequest($request);
@@ -79,7 +81,7 @@ class ActivityLogger
 
         } catch (\Exception $e) {
             // تجاهل أخطاء تسجيل النشاط لتجنب تعطيل التطبيق
-            \Log::error('Failed to log activity: '.$e->getMessage());
+            Log::error('Failed to log activity: '.$e->getMessage());
         }
     }
 
@@ -99,35 +101,68 @@ class ActivityLogger
         $action = $route->getActionMethod();
 
         // تحديد الإجراء بناءً على اسم الـ Route
-        if ($routeName) {
-            if (str_contains($routeName, '.create') || str_contains($routeName, '.store')) {
-                return 'created';
-            }
-            if (str_contains($routeName, '.edit') || str_contains($routeName, '.update')) {
-                return 'updated';
-            }
-            if (str_contains($routeName, '.destroy') || str_contains($routeName, '.delete')) {
-                return 'deleted';
-            }
-            if (str_contains($routeName, '.show') || str_contains($routeName, '.index')) {
-                return 'viewed';
-            }
+        $routeAction = $this->getActionFromRouteName($routeName);
+        if ($routeAction) {
+            return $routeAction;
         }
 
         // تحديد الإجراء بناءً على method الـ Controller
-        switch ($action) {
-            case 'store':
-                return 'created';
-            case 'update':
-                return 'updated';
-            case 'destroy':
-                return 'deleted';
-            case 'show':
-            case 'index':
-                return 'viewed';
-            default:
-                return strtolower($method);
+        return $this->getActionFromControllerMethod($action, $method);
+    }
+
+    /**
+     * الحصول على الإجراء من اسم الـ Route
+     */
+    private function getActionFromRouteName(?string $routeName): ?string
+    {
+        if (! $routeName) {
+            return null;
         }
+
+        $routeActionMap = [
+            'created' => ['.create', '.store'],
+            'updated' => ['.edit', '.update'],
+            'deleted' => ['.destroy', '.delete'],
+            'viewed' => ['.show', '.index'],
+        ];
+
+        foreach ($routeActionMap as $action => $patterns) {
+            if ($this->containsAnyPattern($routeName, $patterns)) {
+                return $action;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * التحقق من وجود أي من الأنماط في النص
+     */
+    private function containsAnyPattern(string $text, array $patterns): bool
+    {
+        foreach ($patterns as $pattern) {
+            if (str_contains($text, $pattern)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * الحصول على الإجراء من method الـ Controller
+     */
+    private function getActionFromControllerMethod(string $action, string $method): string
+    {
+        $actionMap = [
+            'store' => 'created',
+            'update' => 'updated',
+            'destroy' => 'deleted',
+            'show' => 'viewed',
+            'index' => 'viewed',
+        ];
+
+        return $actionMap[$action] ?? strtolower($method);
     }
 
     /**

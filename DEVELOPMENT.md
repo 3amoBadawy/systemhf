@@ -1,449 +1,438 @@
-# 🚀 **دليل التطوير - SystemHF**
+# Development Guide - SystemHF
 
-## 📋 **متطلبات النظام**
+## 🚀 **Getting Started**
 
-- **PHP:** 8.2+
-- **Laravel:** 11.x
-- **Composer:** 2.x
-- **Node.js:** 18+ (لـ Vite)
-- **Database:** MySQL 8.0+ أو PostgreSQL 13+
+### **Prerequisites**
+- PHP 8.2+
+- MySQL 8.0+
+- Node.js 18+
+- Composer 2.0+
+- Git
 
----
-
-## 🛠️ **أدوات التطوير المثبتة**
-
-### **1. أدوات التحليل الثابت**
+### **Initial Setup**
 ```bash
-# PHPStan - تحليل ثابت متقدم
-./vendor/bin/phpstan analyse
+# Clone repository
+git clone https://github.com/3amoBadawy/systemhf.git
+cd systemhf
 
-# Larastan - تكامل PHPStan مع Laravel
-./vendor/bin/phpstan analyse --configuration=phpstan.neon
+# Install dependencies
+composer install
+npm install
 
-# Psalm - تحليل ثابت متقدم مع دعم TypeScript
-./vendor/bin/psalm
+# Environment setup
+cp .env.example .env
+php artisan key:generate
+
+# Database setup
+php artisan migrate
+php artisan db:seed
+
+# Verify setup
+composer quality
 ```
 
-### **2. أدوات جودة الكود**
+## 🔧 **Quality Tools & CI/CD**
+
+### **Current Setup Status**
+- ✅ **GitHub Actions**: Complete CI/CD workflow
+- ✅ **Pre-commit Hooks**: Quality gates enforced
+- ✅ **Quality Tools**: All tools configured and working
+- ⚠️ **Quality Issues**: 656 PHPStan errors (being resolved)
+
+### **Quality Tools Available**
 ```bash
-# Laravel Pint - تنسيق الكود
-./vendor/bin/pint
+# Code style
+./vendor/bin/pint                    # Fix code style
+./vendor/bin/pint --test            # Check code style
 
-# PHPMD - كاشف رائحة الكود
-./vendor/bin/phpmd app text phpmd.xml
+# Static analysis
+./vendor/bin/phpstan analyse        # Run PHPStan (Level 8)
+./vendor/bin/psalm                  # Run Psalm analysis
+./vendor/bin/phpmd app text phpmd.xml  # Run PHPMD
 
-# Deptrac - فحص التبعيات والهندسة المعمارية
-./vendor/bin/deptrac analyse deptrac.yaml
+# Testing
+php artisan test                     # Run all tests
+php artisan test --coverage         # Run with coverage
+
+# Comprehensive check
+composer quality                     # Run all quality checks
 ```
 
-### **3. أوامر Composer السريعة**
+### **Pre-commit Hook (ENFORCED)**
+The pre-commit hook automatically runs before each commit:
+1. **Laravel Pint**: Code style check
+2. **PHPStan**: Static analysis (Level 8)
+3. **Tests**: Full test suite execution
+
+**Commits will fail** if any quality check fails.
+
+## 📋 **Development Workflow**
+
+### **Daily Development Process**
 ```bash
-# فحص شامل للجودة
+# 1. Start work
+git pull origin main
+composer install
+npm install
+
+# 2. Create feature branch
+git checkout -b feature/your-feature-name
+
+# 3. Make changes
+# ... edit files ...
+
+# 4. Quality checks (before committing)
 composer quality
 
-# فحص سريع
-composer check
+# 5. Fix any issues found
+./vendor/bin/pint                    # Fix code style
+./vendor/bin/phpstan analyse        # Fix static analysis
+php artisan test                     # Fix test failures
 
-# تشغيل التحليل الثابت
-composer analyse
+# 6. Commit (quality checks run automatically)
+git add .
+git commit -m "feat: your feature description"
 
-# تشغيل Psalm
-composer psalm
-
-# تشغيل PHPMD
-composer phpmd
-
-# تشغيل Deptrac
-composer deptrac
-
-# تشغيل الاختبارات
-composer test
+# 7. Push and create PR
+git push origin feature/your-feature-name
 ```
 
----
-
-## 🏗️ **الهندسة المعمارية**
-
-### **1. طبقات النظام**
-```
-┌─────────────────────────────────────┐
-│              HTTP Layer             │
-│        (Controllers, Middleware)    │
-├─────────────────────────────────────┤
-│           Application Layer         │
-│         (Services, Use Cases)       │
-├─────────────────────────────────────┤
-│             Domain Layer            │
-│           (Models, Entities)        │
-├─────────────────────────────────────┤
-│         Infrastructure Layer        │
-│      (Repositories, Providers)      │
-└─────────────────────────────────────┘
-```
-
-### **2. قواعد التبعيات**
-- **Domain** → لا يعتمد على أي طبقة أخرى
-- **Application** → يعتمد على Domain فقط
-- **Infrastructure** → يعتمد على Domain و Application
-- **HTTP** → يعتمد على جميع الطبقات
-
-### **3. نمط التصميم**
-- **Controllers** → تستدعي Services فقط
-- **Services** → تستدعي Repositories أو Models
-- **Models** → تحتوي على العلاقات والمنطق الأساسي
-- **Repositories** → تتعامل مع قاعدة البيانات
-
----
-
-## 📝 **معايير الكود**
-
-### **1. تسمية الملفات والفئات**
-```php
-// Controllers
-UserController.php
-UserProfileController.php
-
-// Services
-UserService.php
-AuthenticationService.php
-
-// Models
-User.php
-UserProfile.php
-
-// Repositories
-UserRepository.php
-UserProfileRepository.php
-```
-
-### **2. تسمية الدوال**
-```php
-// Controllers
-public function index()      // عرض القائمة
-public function show($id)    // عرض عنصر واحد
-public function create()     // نموذج الإنشاء
-public function store()      // حفظ العنصر
-public function edit($id)    // نموذج التعديل
-public function update($id)  // تحديث العنصر
-public function destroy($id) // حذف العنصر
-
-// Services
-public function createUser(array $data): User
-public function updateUser(int $id, array $data): User
-public function deleteUser(int $id): bool
-public function getUserById(int $id): ?User
-```
-
-### **3. تسمية المتغيرات**
-```php
-// متغيرات قاعدة البيانات
-$user = User::find($id);
-$users = User::all();
-$userCount = User::count();
-
-// متغيرات الخدمات
-$userService = app(UserService::class);
-$result = $userService->createUser($data);
-
-// متغيرات الطلبات
-$requestData = $request->validated();
-$userId = $request->route('user');
-```
-
----
-
-## 🔒 **نظام الصلاحيات والأدوار**
-
-### **1. الأدوار الأساسية**
-- **Super Admin** - صلاحيات كاملة
-- **Admin** - إدارة الفرع
-- **Manager** - إدارة الفريق
-- **Employee** - صلاحيات محدودة
-- **Customer** - صلاحيات العميل
-
-### **2. الصلاحيات المتاحة**
-```php
-// إدارة المستخدمين
-'users.view'
-'users.create'
-'users.edit'
-'users.delete'
-
-// إدارة المنتجات
-'products.view'
-'products.create'
-'products.edit'
-'products.delete'
-
-// إدارة الفواتير
-'invoices.view'
-'invoices.create'
-'invoices.edit'
-'invoices.delete'
-'invoices.approve'
-```
-
-### **3. فحص الصلاحيات**
-```php
-// في Controllers
-if (!auth()->user()->can('users.create')) {
-    abort(403, 'غير مصرح لك بإنشاء مستخدمين');
-}
-
-// في Views
-@can('users.edit')
-    <a href="{{ route('users.edit', $user) }}">تعديل</a>
-@endcan
-
-// في Middleware
-Route::middleware(['auth', 'can:users.view'])->group(function () {
-    Route::get('/users', [UserController::class, 'index']);
-});
-```
-
----
-
-## 🗄️ **قاعدة البيانات**
-
-### **1. العلاقات الأساسية**
-```php
-// User - Employee (One-to-One)
-class User extends Authenticatable
-{
-    public function employee()
-    {
-        return $this->hasOne(Employee::class);
-    }
-}
-
-// Branch - Employees (One-to-Many)
-class Branch extends Model
-{
-    public function employees()
-    {
-        return $this->hasMany(Employee::class);
-    }
-}
-
-// Invoice - Products (Many-to-Many)
-class Invoice extends Model
-{
-    public function products()
-    {
-        return $this->belongsToMany(Product::class, 'invoice_products')
-                    ->withPivot('quantity', 'price', 'total');
-    }
-}
-```
-
-### **2. Migrations**
-```php
-// إنشاء جدول جديد
-php artisan make:migration create_table_name_table
-
-// تشغيل Migrations
-php artisan migrate
-
-// التراجع عن Migration
-php artisan migrate:rollback
-
-// إعادة تشغيل Migrations
-php artisan migrate:refresh
-
-// إعادة تشغيل مع Seeders
-php artisan migrate:refresh --seed
-```
-
-### **3. Seeders**
-```php
-// إنشاء Seeder
-php artisan make:seeder TableNameSeeder
-
-// تشغيل Seeder
-php artisan db:seed --class=TableNameSeeder
-
-// تشغيل جميع Seeders
-php artisan db:seed
-```
-
----
-
-## 🧪 **الاختبارات**
-
-### **1. أنواع الاختبارات**
+### **Quality Check Commands**
 ```bash
-# اختبارات الوحدات
-./vendor/bin/phpunit --testsuite=Unit
+# Quick style fix
+./vendor/bin/pint
 
-# اختبارات الميزات
-./vendor/bin/phpunit --testsuite=Feature
+# Check static analysis
+./vendor/bin/phpstan analyse --level=8
 
-# اختبارات الدخان
-./vendor/bin/phpunit --testsuite=Smoke
+# Run specific tests
+php artisan test --filter=UserTest
 
-# جميع الاختبارات
-./vendor/bin/phpunit
+# Full quality check
+composer quality
 ```
 
-### **2. إنشاء الاختبارات**
-```bash
-# اختبار Controller
-php artisan make:test UserControllerTest
+## 🏗️ **Architecture Guidelines**
 
-# اختبار Service
-php artisan make:test UserServiceTest
-
-# اختبار Feature
-php artisan make:test CreateUserTest
-```
-
-### **3. أمثلة الاختبارات**
+### **Model Standards**
 ```php
-class UserControllerTest extends TestCase
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+/**
+ * @property int $id
+ * @property string $name
+ * @property \Carbon\Carbon $created_at
+ */
+class YourModel extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'description',
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+    ];
+
+    /**
+     * Relationship to parent model
+     */
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(ParentModel::class);
+    }
+
+    /**
+     * Relationship to child models
+     */
+    public function children(): HasMany
+    {
+        return $this->hasMany(ChildModel::class);
+    }
+}
+```
+
+### **Service Layer Standards**
+```php
+<?php
+
+namespace App\Services;
+
+use App\Models\YourModel;
+use App\Repositories\YourModelRepository;
+use Illuminate\Database\Eloquent\Collection;
+
+class YourModelService
+{
+    public function __construct(
+        private YourModelRepository $repository
+    ) {}
+
+    /**
+     * Get all models with pagination
+     */
+    public function getAllPaginated(int $perPage = 15): \Illuminate\Pagination\LengthAwarePaginator
+    {
+        return $this->repository->paginate($perPage);
+    }
+
+    /**
+     * Create new model
+     */
+    public function create(array $data): YourModel
+    {
+        // Validation
+        $this->validateData($data);
+
+        // Business logic
+        $processedData = $this->processData($data);
+
+        // Create model
+        return $this->repository->create($processedData);
+    }
+
+    /**
+     * Validate input data
+     */
+    private function validateData(array $data): void
+    {
+        // Add validation logic
+    }
+
+    /**
+     * Process data before creation
+     */
+    private function processData(array $data): array
+    {
+        // Add processing logic
+        return $data;
+    }
+}
+```
+
+### **Controller Standards**
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\YourModelRequest;
+use App\Services\YourModelService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+
+class YourModelController extends Controller
+{
+    public function __construct(
+        private YourModelService $service
+    ) {}
+
+    /**
+     * Display a listing of models
+     */
+    public function index(): View
+    {
+        $models = $this->service->getAllPaginated();
+        
+        return view('your-models.index', compact('models'));
+    }
+
+    /**
+     * Store a newly created model
+     */
+    public function store(YourModelRequest $request): RedirectResponse
+    {
+        $model = $this->service->create($request->validated());
+
+        return redirect()
+            ->route('your-models.show', $model)
+            ->with('success', 'Model created successfully.');
+    }
+}
+```
+
+## 🧪 **Testing Standards**
+
+### **Test Structure**
+```php
+<?php
+
+namespace Tests\Feature;
+
+use App\Models\User;
+use App\Models\YourModel;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class YourModelTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_can_view_users_list()
+    private User $user;
+
+    protected function setUp(): void
     {
-        $user = User::factory()->create(['role' => 'admin']);
-        
-        $response = $this->actingAs($user)
-                        ->get(route('users.index'));
-        
-        $response->assertStatus(200);
-        $response->assertViewIs('users.index');
+        parent::setUp();
+        $this->user = User::factory()->create();
     }
 
-    public function test_cannot_create_user_without_permission()
+    /**
+     * Test model creation
+     */
+    public function test_can_create_model(): void
     {
-        $user = User::factory()->create(['role' => 'employee']);
-        
-        $response = $this->actingAs($user)
-                        ->post(route('users.store'), []);
-        
-        $response->assertStatus(403);
+        $data = [
+            'name' => 'Test Model',
+            'description' => 'Test Description',
+        ];
+
+        $response = $this->actingAs($this->user)
+            ->post(route('your-models.store'), $data);
+
+        $response->assertRedirect();
+        $this->assertDatabaseHas('your_models', $data);
+    }
+
+    /**
+     * Test validation errors
+     */
+    public function test_validation_errors_on_create(): void
+    {
+        $response = $this->actingAs($this->user)
+            ->post(route('your-models.store'), []);
+
+        $response->assertSessionHasErrors(['name']);
     }
 }
 ```
 
----
+### **Test Coverage Requirements**
+- **Minimum 80% coverage** required
+- **All public methods** must have tests
+- **Edge cases** must be covered
+- **Error conditions** must be tested
+- **Integration tests** for complex workflows
 
-## 🚀 **النشر والإنتاج**
+## 🔍 **Quality Issue Resolution**
 
-### **1. إعدادات الإنتاج**
-```bash
-# تنظيف الكاش
-php artisan config:clear
-php artisan cache:clear
-php artisan view:clear
-php artisan route:clear
+### **Common PHPStan Errors & Fixes**
 
-# تحسين الأداء
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
+#### **1. Missing Generic Types**
+```php
+// ❌ Wrong
+public function users(): HasMany
+{
+    return $this->hasMany(User::class);
+}
 
-# إعادة تشغيل الخدمات
-sudo systemctl restart nginx
-sudo systemctl restart php8.3-fpm
+// ✅ Correct
+public function users(): HasMany<User>
+{
+    return $this->hasMany(User::class);
+}
 ```
 
-### **2. مراقبة الأداء**
-```bash
-# مراقبة السجلات
-tail -f storage/logs/laravel.log
+#### **2. Missing Static Methods**
+```php
+// ❌ Wrong - calling static method that doesn't exist
+$user = User::findOrFail($id);
 
-# مراقبة الأداء
-php artisan queue:work --verbose
-
-# تنظيف الملفات المؤقتة
-php artisan storage:clear
+// ✅ Correct - use Eloquent methods
+$user = User::query()->findOrFail($id);
 ```
+
+#### **3. Property Access Issues**
+```php
+// ❌ Wrong - accessing undefined property
+$name = $this->user->name;
+
+// ✅ Correct - check if property exists
+$name = $this->user?->name ?? 'Unknown';
+```
+
+### **Code Style Issues**
+```bash
+# Fix all code style issues automatically
+./vendor/bin/pint
+
+# Check what would be fixed
+./vendor/bin/pint --test
+```
+
+## 📊 **Performance Guidelines**
+
+### **Database Optimization**
+```php
+// ❌ Wrong - N+1 query problem
+foreach ($users as $user) {
+    echo $user->profile->name; // Query for each user
+}
+
+// ✅ Correct - Eager loading
+$users = User::with('profile')->get();
+foreach ($users as $user) {
+    echo $user->profile->name; // No additional queries
+}
+```
+
+### **Caching Strategies**
+```php
+// Cache expensive operations
+public function getExpensiveData(): array
+{
+    return Cache::remember('expensive_data', 3600, function () {
+        return $this->repository->getExpensiveData();
+    });
+}
+```
+
+## 🚨 **Common Pitfalls & Solutions**
+
+### **Quality Check Failures**
+1. **PHPStan Errors**: Fix static analysis issues first
+2. **Code Style**: Run `./vendor/bin/pint` to fix
+3. **Test Failures**: Fix failing tests before committing
+4. **Coverage Issues**: Add tests for uncovered code
+
+### **Development Blockers**
+1. **Pre-commit Hook Failing**: Fix quality issues locally
+2. **GitHub Actions Failing**: Check Actions tab for details
+3. **Merge Conflicts**: Resolve conflicts and re-run quality checks
+4. **Branch Protection**: Ensure quality checks pass before merge
+
+## 📚 **Resources & References**
+
+### **Quality Tools Documentation**
+- **Laravel Pint**: [https://laravel.com/docs/pint](https://laravel.com/docs/pint)
+- **PHPStan**: [https://phpstan.org/](https://phpstan.org/)
+- **Psalm**: [https://psalm.dev/](https://psalm.dev/)
+- **PHPMD**: [https://phpmd.org/](https://phpmd.org/)
+
+### **Laravel Best Practices**
+- **Eloquent Relationships**: [https://laravel.com/docs/eloquent-relationships](https://laravel.com/docs/eloquent-relationships)
+- **Testing**: [https://laravel.com/docs/testing](https://laravel.com/docs/testing)
+- **Validation**: [https://laravel.com/docs/validation](https://laravel.com/docs/validation)
+
+### **Team Resources**
+- **GitHub Repository**: [https://github.com/3amoBadawy/systemhf](https://github.com/3amoBadawy/systemhf)
+- **GitHub Actions**: Check Actions tab for CI/CD status
+- **Issues**: Report bugs and feature requests via GitHub Issues
 
 ---
 
-## 📚 **الموارد المفيدة**
-
-### **1. وثائق Laravel**
-- [Laravel Documentation](https://laravel.com/docs)
-- [Laravel API Reference](https://laravel.com/api)
-- [Laravel GitHub](https://github.com/laravel/laravel)
-
-### **2. أدوات التطوير**
-- [PHPStan Documentation](https://phpstan.org/)
-- [Psalm Documentation](https://psalm.dev/)
-- [PHPMD Documentation](https://phpmd.org/)
-- [Deptrac Documentation](https://deptrac.readthedocs.io/)
-
-### **3. أفضل الممارسات**
-- [Laravel Best Practices](https://github.com/alexeymezenin/laravel-best-practices)
-- [PHP The Right Way](https://phptherightway.com/)
-- [SOLID Principles](https://en.wikipedia.org/wiki/SOLID)
-
----
-
-## 🆘 **استكشاف الأخطاء**
-
-### **1. أخطاء شائعة**
-```bash
-# خطأ في قاعدة البيانات
-php artisan migrate:status
-php artisan db:show
-
-# خطأ في الكاش
-php artisan cache:clear
-php artisan config:clear
-
-# خطأ في الصلاحيات
-chmod -R 775 storage bootstrap/cache
-chown -R www-data:www-data storage bootstrap/cache
-```
-
-### **2. فحص الجودة**
-```bash
-# فحص شامل
-composer quality
-
-# فحص محدد
-composer analyse
-composer psalm
-composer phpmd
-```
-
-### **3. إصلاح الأخطاء**
-```bash
-# إصلاح تنسيق الكود
-composer pint
-
-# إصلاح التبعيات
-composer install --no-dev
-composer dump-autoload
-
-# إصلاح قاعدة البيانات
-php artisan migrate:fresh --seed
-```
-
----
-
-## 📞 **الدعم والمساعدة**
-
-### **1. فريق التطوير**
-- **Lead Developer:** [اسم المطور]
-- **Backend Developer:** [اسم المطور]
-- **Frontend Developer:** [اسم المطور]
-- **QA Engineer:** [اسم المطور]
-
-### **2. قنوات التواصل**
-- **Email:** [البريد الإلكتروني]
-- **Slack:** [رابط Slack]
-- **GitHub Issues:** [رابط GitHub]
-- **Documentation:** [رابط الوثائق]
-
----
-
-**آخر تحديث:** 25 أغسطس 2025  
-**الإصدار:** 2.1.0  
-**الحالة:** مستقر ومُختبر ✅
+**Last Updated**: January 2025  
+**Version**: 2.0.0  
+**Status**: Active Development  
+**Next Review**: February 2025
 
 
 

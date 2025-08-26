@@ -54,7 +54,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             ->orWhere('sku', 'like', "%{$query}%")
             ->get();
 
-        return $result instanceof Collection ? $result : new \Illuminate\Database\Eloquent\Collection;
+        return $result instanceof Collection ? $result : new Collection;
     }
 
     /**

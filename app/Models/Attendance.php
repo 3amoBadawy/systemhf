@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -35,6 +36,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property bool $is_verified
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Shift|null $shift
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attendance newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attendance newQuery()
@@ -66,10 +68,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attendance whereShiftId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attendance whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attendance whereTotalBreakMinutes($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Attendance whereUpdatedAt($valfinal ue)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Attendance whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attendance whereWorkHours($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Attendance extends Model
 {
@@ -104,6 +106,7 @@ class Attendance extends Model
         'is_verified',
     ];
 
+    /** @var array<string, string> */
     protected $casts = [
         'date' => 'date',
         'check_in_time' => 'datetime',
@@ -120,6 +123,17 @@ class Attendance extends Model
         'check_out_gps_lng' => 'decimal:8',
         'is_verified' => 'boolean',
         'approved_at' => 'datetime',
+        'employee_id' => 'integer',
+        'shift_id' => 'integer',
+        'check_in_method' => 'string',
+        'check_out_method' => 'string',
+        'check_in_location' => 'string',
+        'check_out_location' => 'string',
+        'check_in_ip' => 'string',
+        'check_out_ip' => 'string',
+        'status' => 'string',
+        'notes' => 'string',
+        'approved_by' => 'integer',
     ];
 
     // العلاقة مع الموظف
@@ -145,15 +159,15 @@ class Attendance extends Model
     // تسجيل الحضور
     public static function checkIn(int $employeeId, int $shiftId, string $method = 'web_kiosk', array $data = []): self
     {
-        $today = now()->toDateString();
+        $today = now()->startOfDay();
 
         // التحقق من عدم وجود تسجيل سابق اليوم
         $existing = self::where('employee_id', $employeeId)
-            ->where('date', $today)
+            ->whereDate('date', $today)
             ->first();
 
         if ($existing) {
-            throw new \Exception('تم تسجيل الحضور مسبقاً لهذا اليوم');
+            throw new Exception('تم تسجيل الحضور مسبقاً لهذا اليوم');
         }
 
         $attendance = new self;
@@ -189,10 +203,10 @@ class Attendance extends Model
     }
 
     // تسجيل الانصراف
-    public function checkOut($method = 'web_kiosk', $data = []): static
+    public function checkOut(string $method = 'web_kiosk', array $data = []): static
     {
         if ($this->check_out_time) {
-            throw new \Exception('تم تسجيل الانصراف مسبقاً');
+            throw new Exception('تم تسجيل الانصراف مسبقاً');
         }
 
         $this->check_out_time = now();
@@ -217,8 +231,10 @@ class Attendance extends Model
         }
 
         // حساب ساعات العمل
-        $this->work_hours = $this->check_in_time->diffInMinutes($this->check_out_time) / 60;
-        $this->work_hours = round($this->work_hours - ($this->total_break_minutes / 60), 2);
+        if ($this->check_in_time && $this->check_out_time) {
+            $this->work_hours = $this->check_in_time->diffInMinutes($this->check_out_time) / 60;
+            $this->work_hours = round($this->work_hours - ($this->total_break_minutes / 60), 2);
+        }
 
         $this->save();
 
@@ -229,7 +245,7 @@ class Attendance extends Model
     public function startBreak(): static
     {
         if ($this->break_start_time) {
-            throw new \Exception('تم بدء الاستراحة مسبقاً');
+            throw new Exception('تم بدء الاستراحة مسبقاً');
         }
 
         $this->break_start_time = now();
@@ -242,14 +258,14 @@ class Attendance extends Model
     public function endBreak(): static
     {
         if (! $this->break_start_time) {
-            throw new \Exception('لم يتم بدء الاستراحة');
+            throw new Exception('لم يتم بدء الاستراحة');
         }
 
         $this->break_end_time = now();
-        $this->total_break_minutes = $this->break_start_time->diffInMinutes($this->break_end_time);
+        $this->total_break_minutes = (int) $this->break_start_time->diffInMinutes($this->break_end_time);
 
         // إعادة حساب ساعات العمل
-        if ($this->check_out_time) {
+        if ($this->check_out_time && $this->check_in_time) {
             $this->work_hours = $this->check_in_time->diffInMinutes($this->check_out_time) / 60;
             $this->work_hours = round($this->work_hours - ($this->total_break_minutes / 60), 2);
         }
@@ -261,23 +277,6 @@ class Attendance extends Model
 
     // التحقق من صحة GPS
 
-    // حساب المسافة بين نقطتين GPS
-    private function calculateDistance($lat1, $lng1, $lat2, $lng2): float
-    {
-        $earthRadius = 6371000; // متر
-
-        $latDelta = deg2rad($lat2 - $lat1);
-        $lngDelta = deg2rad($lng2 - $lng1);
-
-        $a = sin($latDelta / 2) * sin($latDelta / 2) +
-             cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
-             sin($lngDelta / 2) * sin($lngDelta / 2);
-
-        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
-
-        return $earthRadius * $c;
-    }
-
     // الحصول على حالة الحضور
 
     // الحصول على طريقة التسجيل
@@ -286,4 +285,11 @@ class Attendance extends Model
 
     // حساب إجمالي الوقت الفعلي
 
+    /**
+     * علاقة المناوبة
+     */
+    public function shift(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Shift::class);
+    }
 }

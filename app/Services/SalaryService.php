@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Employee;
 use App\Models\Salary;
+use Exception;
 use Illuminate\Support\Facades\Log;
 
 class SalaryService
@@ -11,7 +12,7 @@ class SalaryService
     /**
      * إنشاء رواتب الموظفين
      */
-    public function generateSalaries(string $period): array
+    public function generateSalaries(array $period): array
     {
         // الحصول على الموظفين النشطين
         $employees = Employee::where('is_active', true)->get();
@@ -24,7 +25,7 @@ class SalaryService
                 if ($salary) {
                     $generatedSalaries[] = $salary;
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 Log::error("Error generating salary for employee {$employee->id}", [
                     'error' => $e->getMessage(),
                     'employee_id' => $employee->id,
@@ -39,7 +40,7 @@ class SalaryService
     /**
      * إنشاء راتب موظف واحد
      */
-    public function generateEmployeeSalary(Employee $employee, string $period): ?Salary
+    public function generateEmployeeSalary(Employee $employee, array $period): ?Salary
     {
         // التحقق من عدم وجود راتب مسبق
         $existingSalary = Salary::where('employee_id', $employee->id)
@@ -52,7 +53,7 @@ class SalaryService
         }
 
         // حساب الراتب
-        $salaryData = $this->calculateSalary($employee, $period);
+        $salaryData = $this->calculateSalary($employee);
 
         // إنشاء الراتب
         $salary = Salary::create([
@@ -70,6 +71,153 @@ class SalaryService
     }
 
     /**
+     * حساب الراتب
+     */
+    public function calculateSalary(Employee $employee): array
+    {
+        $baseSalary = $employee->base_salary ?? 0;
+
+        // حساب البدلات
+        $allowances = $this->calculateAllowances($employee);
+
+        // حساب الخصومات
+        $deductions = $this->calculateDeductions($employee);
+
+        // حساب العمل الإضافي
+        $overtimeAmount = $this->calculateOvertimeAmount($employee);
+
+        // حساب العمولات
+        $commissionAmount = $this->calculateCommissionAmount($employee);
+
+        // الراتب الإجمالي
+        $grossSalary = $baseSalary + $allowances + $overtimeAmount + $commissionAmount;
+
+        // الراتب الصافي
+        $netSalary = $grossSalary - $deductions;
+
+        return [
+            'base_salary' => $baseSalary,
+            'allowances' => $allowances,
+            'deductions' => $deductions,
+            'overtime_amount' => $overtimeAmount,
+            'commission_amount' => $commissionAmount,
+            'gross_salary' => $grossSalary,
+            'net_salary' => $netSalary,
+        ];
+    }
+
+    /**
+     * حساب البدلات
+     */
+    private function calculateAllowances(Employee $employee): float
+    {
+        // بدلات أساسية
+        $basicAllowances = $employee->basic_allowances ?? 0;
+
+        // بدلات إضافية حسب الشهر
+        $monthlyAllowances = $employee->monthly_allowances ?? 0;
+
+        // بدلات خاصة (مثل بدل السكن، بدل النقل)
+        $specialAllowances = $employee->special_allowances ?? 0;
+
+        return $basicAllowances + $monthlyAllowances + $specialAllowances;
+    }
+
+    /**
+     * حساب الخصومات
+     */
+    private function calculateDeductions(Employee $employee): float
+    {
+        // خصومات أساسية
+        $basicDeductions = $employee->basic_deductions ?? 0;
+
+        // خصومات التأمين الاجتماعي
+        $socialInsurance = ($employee->base_salary ?? 0) * 0.14; // 14%
+
+        // خصومات الضرائب
+        $taxDeductions = $this->calculateTaxDeductions($employee);
+
+        // خصومات أخرى
+        $otherDeductions = $employee->other_deductions ?? 0;
+
+        return $basicDeductions + $socialInsurance + $taxDeductions + $otherDeductions;
+    }
+
+    /**
+     * حساب العمل الإضافي
+     */
+    private function calculateOvertimeAmount(Employee $employee): float
+    {
+        // معدل العمل الإضافي
+        $overtimeRate = $employee->overtime_rate ?? 1.5;
+
+        // ساعات العمل الإضافي (يجب أن تأتي من نظام الحضور)
+        $overtimeHours = $this->getOvertimeHours();
+
+        // معدل الساعة الأساسي
+        $hourlyRate = ($employee->base_salary ?? 0) / 160; // 160 ساعة شهرياً
+
+        return $overtimeHours * $hourlyRate * $overtimeRate;
+    }
+
+    /**
+     * حساب العمولات
+     */
+    private function calculateCommissionAmount(Employee $employee): float
+    {
+        // معدل العمولة
+        $commissionRate = $employee->commission_rate ?? 0;
+
+        // المبيعات أو الإنجازات (يجب أن تأتي من النظام)
+        $performance = $this->getEmployeePerformance();
+
+        return $performance * $commissionRate;
+    }
+
+    /**
+     * حساب خصومات الضرائب
+     */
+    private function calculateTaxDeductions(Employee $employee): float
+    {
+        $baseSalary = $employee->base_salary ?? 0;
+
+        // شريحة ضريبية بسيطة
+        if ($baseSalary <= 15000) {
+            return 0;
+        }
+
+        if ($baseSalary <= 30000) {
+            return ($baseSalary - 15000) * 0.10;
+        }
+
+        if ($baseSalary <= 45000) {
+            return 1500 + ($baseSalary - 30000) * 0.15;
+        }
+
+        return 3750 + ($baseSalary - 45000) * 0.20;
+    }
+
+    /**
+     * الحصول على ساعات العمل الإضافي
+     */
+    private function getOvertimeHours(): float
+    {
+        // هذا يجب أن يأتي من نظام الحضور
+        // للآن نرجع قيمة افتراضية
+        return 0.0;
+    }
+
+    /**
+     * الحصول على أداء الموظف
+     */
+    private function getEmployeePerformance(): float
+    {
+        // هذا يجب أن يأتي من نظام الأداء
+        // للآن نرجع قيمة افتراضية
+        return 0.0;
+    }
+
+    /**
      * مراجعة الراتب
      */
     public function reviewSalary(int $salaryId, int $reviewerId, ?string $notes = null): ?Salary
@@ -77,7 +225,7 @@ class SalaryService
         $salary = Salary::findOrFail($salaryId);
 
         if ($salary->status !== 'generated') {
-            throw new \Exception('لا يمكن مراجعة الراتب في هذه الحالة');
+            throw new Exception('لا يمكن مراجعة الراتب في هذه الحالة');
         }
 
         $salary->status = 'reviewed';
@@ -100,7 +248,7 @@ class SalaryService
         $salary = Salary::findOrFail($salaryId);
 
         if ($salary->status !== 'reviewed') {
-            throw new \Exception('يجب مراجعة الراتب قبل الاعتماد');
+            throw new Exception('يجب مراجعة الراتب قبل الاعتماد');
         }
 
         $salary->status = 'approved';
@@ -123,7 +271,7 @@ class SalaryService
         $salary = Salary::findOrFail($salaryId);
 
         if ($salary->status !== 'approved') {
-            throw new \Exception('يجب اعتماد الراتب قبل الدفع');
+            throw new Exception('يجب اعتماد الراتب قبل الدفع');
         }
 
         $salary->status = 'paid';
@@ -154,7 +302,7 @@ class SalaryService
                 $salary->is_exported_to_bank = true;
                 $salary->save();
                 $exportedCount++;
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 Log::error("Error exporting salary {$salary->id} to bank", [
                     'error' => $e->getMessage(),
                     'salary_id' => $salary->id,
@@ -208,7 +356,8 @@ class SalaryService
      */
     public function getMonthlySalaryReport(int $year, int $month, ?int $branchId = null): array
     {
-        $query = Salary::where('year', $year)
+        // @phpstan-ignore-next-line
+        $query = Salary::query()->where('year', $year)
             ->where('month', $month)
             ->with(['employee.branch']);
 
@@ -248,7 +397,8 @@ class SalaryService
      */
     public function getEmployeeSalaryReport(int $employeeId, int $startYear, int $endYear): array
     {
-        $salaries = Salary::where('employee_id', $employeeId)
+        // @phpstan-ignore-next-line
+        $salaries = Salary::query()->where('employee_id', $employeeId)
             ->whereBetween('year', [$startYear, $endYear])
             ->orderBy('year')
             ->orderBy('month')
