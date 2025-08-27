@@ -32,11 +32,11 @@ class BusinessSettingRepository extends BaseRepository implements BusinessSettin
     public function getCurrencies(): array
     {
         return [
-            ['code' => 'EGP', 'name' => 'Egyptian Pound', 'symbol' => 'ج.م'],
-            ['code' => 'USD', 'name' => 'US Dollar', 'symbol' => '$'],
-            ['code' => 'EUR', 'name' => 'Euro', 'symbol' => '€'],
-            ['code' => 'SAR', 'name' => 'Saudi Riyal', 'symbol' => 'ر.س'],
-            ['code' => 'AED', 'name' => 'UAE Dirham', 'symbol' => 'د.إ'],
+            'EGP' => ['code' => 'EGP', 'name' => 'Egyptian Pound', 'symbol' => 'ج.م'],
+            'USD' => ['code' => 'USD', 'name' => 'US Dollar', 'symbol' => '$'],
+            'EUR' => ['code' => 'EUR', 'name' => 'Euro', 'symbol' => '€'],
+            'SAR' => ['code' => 'SAR', 'name' => 'Saudi Riyal', 'symbol' => 'ر.س'],
+            'AED' => ['code' => 'AED', 'name' => 'UAE Dirham', 'symbol' => 'د.إ'],
         ];
     }
 
