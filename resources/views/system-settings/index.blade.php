@@ -70,6 +70,14 @@
 
     <!-- تبويبات الإعدادات -->
     <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+        <!-- Debug Test Button -->
+        <div class="p-4 bg-yellow-100 border-b border-yellow-200">
+            <button onclick="testShowCategory()" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded text-sm">
+                🧪 Test Tab Switching (Debug)
+            </button>
+            <span class="ml-4 text-sm text-gray-600">Click this button to test if showCategory function works</span>
+        </div>
+        
         <div class="border-b border-gray-200">
             <nav class="flex space-x-8 space-x-reverse px-6" aria-label="Tabs">
                 <!-- تبويب إعدادات الأعمال -->
@@ -513,11 +521,43 @@ function clearCache() {
 // تفعيل التبويب الأول عند تحميل الصفحة
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOMContentLoaded event fired');
+    
+    // Debug: Check all category content elements
+    const allCategoryContents = document.querySelectorAll('.category-content');
+    console.log('All category-content elements found:', allCategoryContents.length);
+    allCategoryContents.forEach((content, index) => {
+        console.log(`Category content ${index}:`, content.id, 'hidden:', content.classList.contains('hidden'));
+    });
+    
+    // Debug: Check all category tabs
+    const allCategoryTabs = document.querySelectorAll('.category-tab');
+    console.log('All category-tab elements found:', allCategoryTabs.length);
+    allCategoryTabs.forEach((tab, index) => {
+        console.log(`Category tab ${index}:`, tab.getAttribute('data-category'), 'onclick:', tab.getAttribute('onclick'));
+    });
+    
     const firstCategory = '{{ $settingsByCategory->keys()->first() ?? "general" }}';
     console.log('First category from PHP:', firstCategory);
     console.log('Calling showCategory with:', firstCategory);
+    
+    // Ensure the first category is shown
     showCategory(firstCategory);
+    
+    // Debug: Check final state
+    setTimeout(() => {
+        console.log('Final state after showCategory:');
+        allCategoryContents.forEach((content, index) => {
+            console.log(`Category content ${index}:`, content.id, 'hidden:', content.classList.contains('hidden'));
+        });
+    }, 100);
 });
+
+// Debug function for testing tab switching
+function testShowCategory() {
+    const testCategory = 'business'; // Change this to test other categories
+    console.log('Testing showCategory with:', testCategory);
+    showCategory(testCategory);
+}
 </script>
 @endpush
 @endsection
