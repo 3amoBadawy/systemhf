@@ -47,13 +47,24 @@ class SystemSettingsController extends Controller
             $timeFormats = $this->settingRepository->getTimeFormats();
             $currencies = $this->settingRepository->getCurrencies();
 
+            // Prepare category display names and descriptions for the view
+            $categoryNames = [];
+            $categoryDescriptions = [];
+            
+            foreach (array_keys($allConfiguration) as $category) {
+                $categoryNames[$category] = $this->getCategoryDisplayName($category);
+                $categoryDescriptions[$category] = $this->getCategoryDescription($category);
+            }
+
             return view('system-settings.index', compact(
                 'allConfiguration',
                 'businessSettingsModel',
                 'timezones',
                 'dateFormats',
                 'timeFormats',
-                'currencies'
+                'currencies',
+                'categoryNames',
+                'categoryDescriptions'
             ));
         } catch (\Exception $e) {
             return back()->with('error', 'حدث خطأ أثناء تحميل الإعدادات: '.$e->getMessage());

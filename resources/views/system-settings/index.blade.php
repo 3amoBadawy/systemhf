@@ -72,7 +72,7 @@
                         <button onclick="showCategory('{{ $category }}')" 
                                 class="category-tab py-4 px-1 border-b-2 font-medium text-sm transition-colors {{ $firstCategory ? 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}"
                                 data-category="{{ $category }}">
-                            {{ $this->getCategoryDisplayName($category) }}
+                            {{ $categoryNames[$category] ?? ucfirst(str_replace('_', ' ', $category)) }}
                             <span class="ml-2 bg-gray-100 text-gray-900 py-0.5 px-2.5 rounded-full text-xs font-medium">
                                 {{ count($settings) }}
                             </span>
@@ -251,8 +251,8 @@
                 @foreach($allConfiguration as $category => $settings)
                     <div id="category-{{ $category }}" class="category-content hidden">
                         <div class="mb-6">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ $this->getCategoryDisplayName($category) }}</h3>
-                            <p class="text-gray-600">{{ $this->getCategoryDescription($category) }}</p>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ $categoryNames[$category] ?? ucfirst(str_replace('_', ' ', $category)) }}</h3>
+                            <p class="text-gray-600">{{ $categoryDescriptions[$category] ?? 'إعدادات ' . ucfirst(str_replace('_', ' ', $category)) }}</p>
                         </div>
 
                         @if(count($settings) > 0)
