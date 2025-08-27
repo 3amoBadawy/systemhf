@@ -73,15 +73,25 @@ class SystemConfigurationService
         $result = [];
         
         foreach ($settings as $setting) {
-            $result[] = [
-                'key' => $setting->key ?? $setting->getTable() . '_' . $setting->id,
-                'value' => $setting->value ?? $setting->getRawOriginal(),
-                'type' => $this->determineType($setting->value ?? $setting->getRawOriginal()),
-                'description' => $this->getBusinessSettingDescription($setting),
-                'is_editable' => true,
-                'requires_restart' => false,
-                'source' => 'database',
-            ];
+            // Get all attributes and create a setting for each field
+            $attributes = $setting->getAttributes();
+            
+            foreach ($attributes as $fieldName => $fieldValue) {
+                // Skip timestamps and ID
+                if (in_array($fieldName, ['id', 'created_at', 'updated_at'])) {
+                    continue;
+                }
+                
+                $result[] = [
+                    'key' => $fieldName,
+                    'value' => $fieldValue,
+                    'type' => $this->determineType($fieldValue),
+                    'description' => $this->getBusinessSettingDescription($fieldName),
+                    'is_editable' => true,
+                    'requires_restart' => false,
+                    'source' => 'database',
+                ];
+            }
         }
         
         return $result;
@@ -542,7 +552,7 @@ class SystemConfigurationService
     /**
      * Get business setting description
      */
-    private function getBusinessSettingDescription($setting): string
+    private function getBusinessSettingDescription(string $fieldName): string
     {
         $descriptions = [
             'business_name' => 'Business name in English',
@@ -559,9 +569,14 @@ class SystemConfigurationService
             'email' => 'Business email',
             'address' => 'Business address',
             'description' => 'Business description',
+            'business_email' => 'Business email address',
+            'business_phone' => 'Business phone number',
+            'business_address' => 'Business address',
+            'business_address_ar' => 'Business address in Arabic',
+            'business_logo' => 'Business logo file',
+            'business_favicon' => 'Business favicon file',
         ];
 
-        $key = $setting->key ?? $setting->getTable() . '_' . $setting->id;
-        return $descriptions[$key] ?? $key;
+        return $descriptions[$fieldName] ?? ucfirst(str_replace('_', ' ', $fieldName));
     }
 }
