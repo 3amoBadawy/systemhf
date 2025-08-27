@@ -115,38 +115,38 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="bg-gray-50 rounded-lg p-4">
                             <label class="block text-sm font-medium text-gray-900 mb-2">اسم الأعمال (عربي)</label>
-                            <input type="text" name="business_name_ar" value="{{ $businessSettings->business_name_ar ?? '' }}" 
+                            <input type="text" name="business_name_ar" value="{{ $businessSettingsModel->business_name_ar ?? '' }}" 
                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
                         </div>
 
                         <div class="bg-gray-50 rounded-lg p-4">
                             <label class="block text-sm font-medium text-gray-900 mb-2">اسم الأعمال (إنجليزي)</label>
-                            <input type="text" name="business_name" value="{{ $businessSettings->business_name ?? '' }}" 
+                            <input type="text" name="business_name" value="{{ $businessSettingsModel->business_name ?? '' }}" 
                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
                         </div>
 
                         <div class="bg-gray-50 rounded-lg p-4">
                             <label class="block text-sm font-medium text-gray-900 mb-2">رقم الهاتف</label>
-                            <input type="text" name="phone" value="{{ $businessSettings->phone ?? '' }}" 
+                            <input type="text" name="phone" value="{{ $businessSettingsModel->phone ?? '' }}" 
                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                         </div>
 
                         <div class="bg-gray-50 rounded-lg p-4">
                             <label class="block text-sm font-medium text-gray-900 mb-2">البريد الإلكتروني</label>
-                            <input type="email" name="email" value="{{ $businessSettings->email ?? '' }}" 
+                            <input type="email" name="email" value="{{ $businessSettingsModel->email ?? '' }}" 
                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                         </div>
 
                         <div class="bg-gray-50 rounded-lg p-4 md:col-span-2">
                             <label class="block text-sm font-medium text-gray-900 mb-2">العنوان</label>
                             <textarea name="address" rows="2" 
-                                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">{{ $businessSettings->address ?? '' }}</textarea>
+                                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">{{ $businessSettingsModel->address ?? '' }}</textarea>
                         </div>
 
                         <div class="bg-gray-50 rounded-lg p-4 md:col-span-2">
                             <label class="block text-sm font-medium text-gray-900 mb-2">الوصف</label>
                             <textarea name="description" rows="3" 
-                                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">{{ $businessSettings->description ?? '' }}</textarea>
+                                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">{{ $businessSettingsModel->description ?? '' }}</textarea>
                         </div>
                     </div>
 
@@ -158,7 +158,7 @@
                                 <label class="block text-sm font-medium text-gray-900 mb-2">العملة</label>
                                 <select name="currency" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
                                                                     @foreach($currencies as $code => $currency)
-                                    <option value="{{ $code }}" {{ ($businessSettings->currency ?? '') == $code ? 'selected' : '' }}>
+                                    <option value="{{ $code }}" {{ ($businessSettingsModel->currency ?? '') == $code ? 'selected' : '' }}>
                                         {{ $currency['name'] }}
                                     </option>
                                 @endforeach
@@ -167,15 +167,15 @@
 
                             <div class="bg-gray-50 rounded-lg p-4">
                                 <label class="block text-sm font-medium text-gray-900 mb-2">رمز العملة</label>
-                                <input type="text" name="currency_symbol" value="{{ $businessSettings->currency_symbol ?? '' }}" 
+                                <input type="text" name="currency_symbol" value="{{ $businessSettingsModel->currency_symbol ?? '' }}" 
                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
                             </div>
 
                             <div class="bg-gray-50 rounded-lg p-4">
                                 <label class="block text-sm font-medium text-gray-900 mb-2">موضع رمز العملة</label>
                                 <select name="currency_symbol_placement" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
-                                    <option value="before" {{ ($businessSettings->currency_symbol_placement ?? '') == 'before' ? 'selected' : '' }}>قبل الرقم</option>
-                                    <option value="after" {{ ($businessSettings->currency_symbol_placement ?? '') == 'after' ? 'selected' : '' }}>بعد الرقم</option>
+                                    <option value="before" {{ ($businessSettingsModel->currency_symbol_placement ?? '') == 'before' ? 'selected' : '' }}>قبل الرقم</option>
+                                    <option value="after" {{ ($businessSettingsModel->currency_symbol_placement ?? '') == 'after' ? 'selected' : '' }}>بعد الرقم</option>
                                 </select>
                             </div>
                         </div>
@@ -189,7 +189,7 @@
                                 <label class="block text-sm font-medium text-gray-900 mb-2">المنطقة الزمنية</label>
                                 <select name="timezone" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
                                     @foreach($timezones as $timezone)
-                                        <option value="{{ $timezone }}" {{ ($businessSettings->timezone ?? '') == $timezone ? 'selected' : '' }}>
+                                        <option value="{{ $timezone }}" {{ ($businessSettingsModel->timezone ?? '') == $timezone ? 'selected' : '' }}>
                                             {{ $timezone }}
                                         </option>
                                     @endforeach
@@ -200,7 +200,7 @@
                                 <label class="block text-sm font-medium text-gray-900 mb-2">تنسيق التاريخ</label>
                                 <select name="date_format" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
                                     @foreach($dateFormats as $format => $example)
-                                        <option value="{{ $format }}" {{ ($businessSettings->date_format ?? '') == $format ? 'selected' : '' }}>
+                                        <option value="{{ $format }}" {{ ($businessSettingsModel->date_format ?? '') == $format ? 'selected' : '' }}>
                                             {{ $example }}
                                         </option>
                                     @endforeach
@@ -211,7 +211,7 @@
                                 <label class="block text-sm font-medium text-gray-900 mb-2">تنسيق الوقت</label>
                                 <select name="time_format" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
                                     @foreach($timeFormats as $format => $example)
-                                        <option value="{{ $format }}" {{ ($businessSettings->time_format ?? '') == $format ? 'selected' : '' }}>
+                                        <option value="{{ $format }}" {{ ($businessSettingsModel->time_format ?? '') == $format ? 'selected' : '' }}>
                                             {{ $example }}
                                         </option>
                                     @endforeach
@@ -224,9 +224,9 @@
                     <div class="border-t border-gray-200 pt-6">
                         <h4 class="text-md font-semibold text-gray-900 mb-4">شعار الأعمال</h4>
                         <div class="bg-gray-50 rounded-lg p-4">
-                            @if($businessSettings->logo)
+                            @if($businessSettingsModel->logo)
                                 <div class="mb-4">
-                                    <img src="{{ Storage::url($businessSettings->logo) }}" alt="شعار الأعمال" class="h-20 w-auto">
+                                    <img src="{{ Storage::url($businessSettingsModel->logo) }}" alt="شعار الأعمال" class="h-20 w-auto">
                                 </div>
                             @endif
                             
@@ -234,7 +234,7 @@
                                 <input type="file" name="logo" accept="image/*" 
                                        class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                                 
-                                @if($businessSettings->logo)
+                                @if($businessSettingsModel->logo)
                                     <a href="{{ route('system-settings.remove-logo') }}" 
                                        onclick="return confirm('هل أنت متأكد من حذف الشعار؟')"
                                        class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">
@@ -250,7 +250,7 @@
                         <h4 class="text-md font-semibold text-gray-900 mb-4">إعدادات الربح</h4>
                         <div class="bg-gray-50 rounded-lg p-4">
                             <label class="block text-sm font-medium text-gray-900 mb-2">نسبة الربح الافتراضية (%)</label>
-                            <input type="number" name="default_profit_percent" value="{{ $businessSettings->default_profit_percent ?? 20 }}" 
+                            <input type="number" name="default_profit_percent" value="{{ $businessSettingsModel->default_profit_percent ?? 20 }}" 
                                    min="0" max="100" step="0.1"
                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
                         </div>

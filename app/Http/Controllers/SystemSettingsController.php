@@ -32,7 +32,7 @@ class SystemSettingsController extends Controller
     public function index(): View|RedirectResponse
     {
         try {
-            $businessSettings = $this->settingRepository->getInstance();
+            $businessSettingsModel = $this->settingRepository->getInstance();
             $timezones = $this->settingRepository->getTimezones();
             $dateFormats = $this->settingRepository->getDateFormats();
             $timeFormats = $this->settingRepository->getTimeFormats();
@@ -40,7 +40,7 @@ class SystemSettingsController extends Controller
             $settingsByCategory = $this->configService->getEditable();
 
             return view('system-settings.index', compact(
-                'businessSettings',
+                'businessSettingsModel',
                 'timezones',
                 'dateFormats',
                 'timeFormats',
