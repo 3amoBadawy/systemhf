@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Branch;
 use App\Models\Expense;
 use App\Models\PaymentMethod;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 
 class ExpenseController extends Controller
 {
@@ -31,7 +31,7 @@ class ExpenseController extends Controller
     {
         $branches = Branch::where('status', 'active')->get();
         $paymentMethods = PaymentMethod::where('status', 'active')->get();
-        
+
         return view('expenses.create', compact('branches', 'paymentMethods'));
     }
 
@@ -83,7 +83,7 @@ class ExpenseController extends Controller
     public function show(Expense $expense): View
     {
         $expense->load(['branch', 'paymentMethod', 'approvedBy', 'createdBy']);
-        
+
         return view('expenses.show', compact('expense'));
     }
 
@@ -99,7 +99,7 @@ class ExpenseController extends Controller
 
         $branches = Branch::where('status', 'active')->get();
         $paymentMethods = PaymentMethod::where('status', 'active')->get();
-        
+
         return view('expenses.edit', compact('expense', 'branches', 'paymentMethods'));
     }
 
@@ -179,7 +179,7 @@ class ExpenseController extends Controller
      */
     public function unapprove(Expense $expense): RedirectResponse
     {
-        if (!$expense->is_approved) {
+        if (! $expense->is_approved) {
             return redirect()->route('expenses.show', $expense)
                 ->with('error', 'المصروف غير معتمد بالفعل!');
         }
@@ -225,12 +225,12 @@ class ExpenseController extends Controller
         $pendingAmount = $query->where('is_approved', false)->sum('amount');
 
         return view('expenses.report', compact(
-            'expenses', 
-            'branches', 
-            'categories', 
-            'startDate', 
-            'endDate', 
-            'branchId', 
+            'expenses',
+            'branches',
+            'categories',
+            'startDate',
+            'endDate',
+            'branchId',
             'category',
             'totalAmount',
             'approvedAmount',

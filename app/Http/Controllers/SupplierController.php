@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Supplier;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 
 class SupplierController extends Controller
 {
@@ -73,7 +73,7 @@ class SupplierController extends Controller
     public function show(Supplier $supplier): View
     {
         $supplier->load(['products']);
-        
+
         return view('suppliers.show', compact('supplier'));
     }
 
@@ -140,6 +140,7 @@ class SupplierController extends Controller
             $supplier->update(['status' => $newStatus]);
 
             $statusText = $newStatus === 'active' ? 'تفعيل' : 'إلغاء تفعيل';
+
             return redirect()->back()
                 ->with('success', "تم {$statusText} المورد بنجاح!");
 

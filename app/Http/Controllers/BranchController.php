@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Branch;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 
 class BranchController extends Controller
 {
@@ -78,7 +78,7 @@ class BranchController extends Controller
     public function show(Branch $branch): View
     {
         $branch->load(['employees', 'customers', 'invoices', 'expenses']);
-        
+
         return view('branches.show', compact('branch'));
     }
 
@@ -147,6 +147,7 @@ class BranchController extends Controller
             $branch->update(['status' => $newStatus]);
 
             $statusText = $newStatus === 'active' ? 'تفعيل' : 'إلغاء تفعيل';
+
             return redirect()->back()
                 ->with('success', "تم {$statusText} الفرع بنجاح!");
 

@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Models\Branch;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 
 class AccountController extends Controller
 {
@@ -28,7 +28,7 @@ class AccountController extends Controller
     public function create(): View
     {
         $branches = Branch::where('status', 'active')->get();
-        
+
         return view('accounts.create', compact('branches'));
     }
 
@@ -73,7 +73,7 @@ class AccountController extends Controller
     public function show(Account $account): View
     {
         $account->load(['branch', 'transactions']);
-        
+
         return view('accounts.show', compact('account'));
     }
 
@@ -83,7 +83,7 @@ class AccountController extends Controller
     public function edit(Account $account): View
     {
         $branches = Branch::where('status', 'active')->get();
-        
+
         return view('accounts.edit', compact('account', 'branches'));
     }
 
@@ -140,6 +140,7 @@ class AccountController extends Controller
             $account->update(['status' => $newStatus]);
 
             $statusText = $newStatus === 'active' ? 'تفعيل' : 'إلغاء تفعيل';
+
             return redirect()->back()
                 ->with('success', "تم {$statusText} الحساب بنجاح!");
 

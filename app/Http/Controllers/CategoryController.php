@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 
 class CategoryController extends Controller
 {
@@ -76,7 +76,7 @@ class CategoryController extends Controller
     public function show(Category $category): View
     {
         $category->load(['products']);
-        
+
         return view('categories.show', compact('category'));
     }
 
@@ -177,6 +177,7 @@ class CategoryController extends Controller
             $category->update(['status' => $newStatus]);
 
             $statusText = $newStatus === 'active' ? 'تفعيل' : 'إلغاء تفعيل';
+
             return redirect()->back()
                 ->with('success', "تم {$statusText} الفئة بنجاح!");
 

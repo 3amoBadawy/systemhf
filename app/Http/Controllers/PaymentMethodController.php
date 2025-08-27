@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Branch;
 use App\Models\PaymentMethod;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
 
 class PaymentMethodController extends Controller
 {
@@ -29,7 +29,7 @@ class PaymentMethodController extends Controller
     public function create(): View
     {
         $branches = Branch::where('status', 'active')->get();
-        
+
         return view('payment-methods.create', compact('branches'));
     }
 
@@ -81,7 +81,7 @@ class PaymentMethodController extends Controller
     public function show(PaymentMethod $paymentMethod): View
     {
         $paymentMethod->load(['branch', 'linkedAccount']);
-        
+
         return view('payment-methods.show', compact('paymentMethod'));
     }
 
@@ -91,7 +91,7 @@ class PaymentMethodController extends Controller
     public function edit(PaymentMethod $paymentMethod): View
     {
         $branches = Branch::where('status', 'active')->get();
-        
+
         return view('payment-methods.edit', compact('paymentMethod', 'branches'));
     }
 
@@ -153,6 +153,7 @@ class PaymentMethodController extends Controller
             $paymentMethod->update(['status' => $newStatus]);
 
             $statusText = $newStatus === 'active' ? 'تفعيل' : 'إلغاء تفعيل';
+
             return redirect()->back()
                 ->with('success', "تم {$statusText} طريقة الدفع بنجاح!");
 
@@ -168,7 +169,7 @@ class PaymentMethodController extends Controller
     public function showAccount(PaymentMethod $paymentMethod): View
     {
         $paymentMethod->load(['linkedAccount', 'branch']);
-        
+
         return view('payment-methods.account', compact('paymentMethod'));
     }
 

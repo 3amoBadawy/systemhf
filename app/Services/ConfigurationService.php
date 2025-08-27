@@ -162,4 +162,104 @@ class ConfigurationService
                 return $value;
         }
     }
+
+    /**
+     * Reset system settings to defaults
+     */
+    public function resetToDefaults(): bool
+    {
+        try {
+            $defaultSettings = [
+                'app_name' => 'SystemHF',
+                'app_locale' => 'ar',
+                'app_timezone' => 'Africa/Cairo',
+                'app_debug' => false,
+                'app_maintenance' => false,
+                'mail_driver' => 'smtp',
+                'cache_driver' => 'file',
+                'session_driver' => 'file',
+                'queue_driver' => 'sync',
+            ];
+
+            foreach ($defaultSettings as $key => $value) {
+                $this->set($key, $value);
+            }
+
+            $this->clearCache();
+
+            return true;
+        } catch (\Exception $e) {
+            Log::error('Error resetting system settings to defaults', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return false;
+        }
+    }
+
+    /**
+     * Get settings by category
+     */
+    public function getByCategory(string $category): array
+    {
+        try {
+            $settings = $this->settingsRepo->getByCategory($category);
+            $result = [];
+
+            foreach ($settings as $setting) {
+                $result[$setting->key] = [
+                    'value' => $this->castValue($setting->value, $setting->type),
+                    'type' => $setting->type,
+                    'description' => $setting->description_ar ?? $setting->description_en,
+                    'is_editable' => $setting->is_editable,
+                    'requires_restart' => $setting->requires_restart,
+                ];
+            }
+
+            return $result;
+        } catch (\Exception $e) {
+            Log::error("Error getting settings by category: {$category}", [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return [];
+        }
+    }
+
+    /**
+     * Search settings by query
+     */
+    public function search(string $query): array
+    {
+        try {
+            $settings = SystemSetting::where('key', 'like', "%{$query}%")
+                ->orWhere('name_ar', 'like', "%{$query}%")
+                ->orWhere('name_en', 'like', "%{$query}%")
+                ->orWhere('description_ar', 'like', "%{$query}%")
+                ->orWhere('description_en', 'like', "%{$query}%")
+                ->get();
+
+            $result = [];
+            foreach ($settings as $setting) {
+                $result[$setting->key] = [
+                    'value' => $this->castValue($setting->value, $setting->type),
+                    'type' => $setting->type,
+                    'category' => $setting->category,
+                    'description' => $setting->description_ar ?? $setting->description_en,
+                    'is_editable' => $setting->is_editable,
+                ];
+            }
+
+            return $result;
+        } catch (\Exception $e) {
+            Log::error("Error searching settings: {$query}", [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return [];
+        }
+    }
 }
