@@ -51,18 +51,25 @@ class ConfigurationService
     /**
      * الحصول على الإعدادات القابلة للتعديل
      */
-    public function getEditable(): array
+    public function getEditable(): \Illuminate\Support\Collection
     {
         $settings = SystemSetting::where('is_editable', true)->get();
 
-        $result = [];
+        $result = collect();
         foreach ($settings as $setting) {
-            $result[$setting->key] = [
+            $category = $setting->category ?? 'general';
+            if (! $result->has($category)) {
+                $result->put($category, collect());
+            }
+
+            $result->get($category)->push([
+                'key' => $setting->key,
                 'value' => $this->castValue($setting->value, $setting->type),
                 'type' => $setting->type,
-                'description' => $setting->description,
+                'description' => $setting->description_ar ?? $setting->description_en ?? $setting->key,
                 'is_editable' => $setting->is_editable,
-            ];
+                'requires_restart' => $setting->requires_restart ?? false,
+            ]);
         }
 
         return $result;

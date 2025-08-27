@@ -282,29 +282,27 @@
                                         <div class="flex items-start justify-between">
                                             <div class="flex-1">
                                                 <label class="block text-sm font-medium text-gray-900 mb-2">
-                                                    {{ $setting->name_ar ?? $setting->key }}
-                                                    @if($setting->requires_restart && $setting->requires_restart == true)
+                                                    {{ $setting['description'] ?? $setting['key'] }}
+                                                    @if(isset($setting['requires_restart']) && $setting['requires_restart'] == true)
                                                         <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
                                                             يتطلب إعادة تشغيل
                                                         </span>
                                                     @endif
                                                 </label>
                                                 
-                                                @if($setting->description_ar)
-                                                    <p class="text-sm text-gray-600 mb-3">{{ $setting->description_ar }}</p>
-                                                @elseif($setting->description_en)
-                                                    <p class="text-sm text-gray-600 mb-3">{{ $setting->description_en }}</p>
+                                                @if(isset($setting['description']) && $setting['description'])
+                                                    <p class="text-sm text-gray-600 mb-3">{{ $setting['description'] }}</p>
                                                 @endif
 
                                                 <!-- حقل الإدخال حسب النوع -->
-                                                @switch($setting->type)
+                                                @switch($setting['type'] ?? 'string')
                                                     @case('boolean')
                                                     @case('bool')
                                                         <div class="flex items-center">
                                                             <input type="checkbox" 
-                                                                   name="settings[{{ $setting->key }}]" 
+                                                                   name="settings[{{ $setting['key'] }}][value]" 
                                                                    value="1" 
-                                                                   {{ ($setting->value == '1' || $setting->value == 'true' || $setting->value == 1 || $setting->value === true) ? 'checked' : '' }}
+                                                                   {{ ($setting['value'] == '1' || $setting['value'] == 'true' || $setting['value'] == 1 || $setting['value'] === true) ? 'checked' : '' }}
                                                                    class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
                                                             <span class="mr-2 text-sm text-gray-700">تفعيل</span>
                                                         </div>
@@ -315,37 +313,35 @@
                                                     @case('number')
                                                     @case('float')
                                                         <input type="number" 
-                                                               name="settings[{{ $setting->key }}]" 
-                                                               value="{{ $setting->value ?? '' }}" 
-                                                               step="{{ in_array($setting->type ?? 'string', ['decimal', 'float', 'number']) ? '0.01' : '1' }}"
+                                                               name="settings[{{ $setting['key'] }}][value]" 
+                                                               value="{{ $setting['value'] ?? '' }}" 
+                                                               step="{{ in_array($setting['type'] ?? 'string', ['decimal', 'float', 'number']) ? '0.01' : '1' }}"
                                                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                                                         @break
 
                                                     @case('json')
                                                     @case('array')
-                                                        <textarea name="settings[{{ $setting->key }}]" 
+                                                        <textarea name="settings[{{ $setting['key'] }}][value]" 
                                                                   rows="3"
                                                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                                                                  placeholder="أدخل البيانات بصيغة JSON">{{ $setting->value ?? '' }}</textarea>
+                                                                  placeholder="أدخل البيانات بصيغة JSON">{{ $setting['value'] ?? '' }}</textarea>
                                                         @break
 
                                                     @case('text')
                                                     @case('string')
                                                     @default
                                                         <input type="text" 
-                                                               name="settings[{{ $setting->key }}]" 
-                                                               value="{{ $setting->value ?? '' }}" 
+                                                               name="settings[{{ $setting['key'] }}][value]" 
+                                                               value="{{ $setting['value'] ?? '' }}" 
                                                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                                                 @endswitch
 
-                                                @if($setting->default_value && $setting->default_value != '')
-                                                    <p class="text-xs text-gray-500 mt-1">القيمة الافتراضية: {{ $setting->default_value }}</p>
-                                                @endif
+                                                <input type="hidden" name="settings[{{ $setting['key'] }}][key]" value="{{ $setting['key'] }}">
                                             </div>
 
                                             <div class="mr-4 text-right">
-                                                <div class="text-xs text-gray-500 mb-1">{{ $setting->key ?? 'N/A' }}</div>
-                                                <div class="text-xs text-gray-400">{{ $setting->type ?? 'string' }}</div>
+                                                <div class="text-xs text-gray-500 mb-1">{{ $setting['key'] ?? 'N/A' }}</div>
+                                                <div class="text-xs text-gray-400">{{ $setting['type'] ?? 'string' }}</div>
                                             </div>
                                         </div>
                                     </div>
