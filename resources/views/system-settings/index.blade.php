@@ -3,297 +3,274 @@
 @section('title', 'إعدادات النظام')
 
 @section('content')
-<div class="container mx-auto px-4 py-6">
-    <!-- رأس الصفحة -->
-    <div class="mb-8">
-        <div class="flex items-center justify-between">
-            <div>
-                <h1 class="text-3xl font-bold text-gray-900 mb-2">إعدادات النظام</h1>
-                <p class="text-gray-600">إدارة جميع إعدادات النظام والتكوين</p>
-            </div>
-            <div class="flex items-center space-x-4 space-x-reverse">
-                <a href="{{ route('system-settings.advanced') }}" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">
-                    <i class="fas fa-tools ml-2"></i>
-                    الأدوات المتقدمة
-                </a>
-            </div>
+<div class="min-h-screen bg-gray-50 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">إعدادات النظام</h1>
+            <p class="mt-2 text-gray-600">إدارة جميع إعدادات النظام والتكوين</p>
         </div>
-    </div>
 
-    <!-- رسائل النجاح والخطأ -->
-    @if(session('success'))
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if($errors->any())
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-            <ul class="list-disc list-inside">
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    <!-- شريط الأدوات -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-        <div class="flex flex-wrap items-center justify-between gap-4">
-            <div class="flex items-center space-x-4 space-x-reverse">
-                <button onclick="resetAllSettings()" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg transition-colors">
-                    <i class="fas fa-undo ml-2"></i>
-                    إعادة تعيين للافتراضي
-                </button>
+        <!-- Action Buttons and Search -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+                <div class="flex flex-wrap items-center gap-3">
+                    <button onclick="clearCache()" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors">
+                        <i class="fas fa-broom ml-2"></i>
+                        مسح الكاش
+                    </button>
+                    
+                    <button onclick="showImportModal()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
+                        <i class="fas fa-download ml-2"></i>
+                        استيراد الإعدادات
+                    </button>
+                    
+                    <button onclick="exportSettings()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
+                        <i class="fas fa-upload ml-2"></i>
+                        تصدير الإعدادات
+                    </button>
+                    
+                    <button onclick="resetAllSettings()" class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg transition-colors">
+                        <i class="fas fa-undo ml-2"></i>
+                        إعادة تعيين للافتراضي
+                    </button>
+                </div>
                 
-                <button onclick="exportSettings()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
-                    <i class="fas fa-download ml-2"></i>
-                    تصدير الإعدادات
-                </button>
-                
-                <button onclick="showImportModal()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors">
-                    <i class="fas fa-upload ml-2"></i>
-                    استيراد الإعدادات
-                </button>
-            </div>
-            
-            <div class="flex items-center space-x-4 space-x-reverse">
-                <input type="text" id="searchSettings" placeholder="البحث في الإعدادات..." 
-                       class="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                <button onclick="clearCache()" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg transition-colors">
-                    <i class="fas fa-broom ml-2"></i>
-                    مسح الكاش
-                </button>
+                <div class="flex-1 max-w-md">
+                    <input type="text" id="searchSettings" placeholder="البحث في الإعدادات..." 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- تبويبات الإعدادات -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
         <!-- Debug Test Button -->
-        <div class="p-4 bg-yellow-100 border-b border-yellow-200">
+        <div class="p-4 bg-yellow-100 border-b border-yellow-200 mb-4">
             <button onclick="testShowCategory()" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded text-sm">
                 🧪 Test Tab Switching (Debug)
             </button>
             <span class="ml-4 text-sm text-gray-600">Click this button to test if showCategory function works</span>
         </div>
-        
-        <div class="border-b border-gray-200">
-            <nav class="flex space-x-8 space-x-reverse px-6" aria-label="Tabs">
-                <!-- تبويب إعدادات الأعمال -->
-                <button onclick="showCategory('business')" 
-                        class="category-tab py-4 px-1 border-b-2 font-medium text-sm transition-colors border-blue-500 text-blue-600"
-                        data-category="business">
-                    إعدادات الأعمال
-                    <span class="ml-2 bg-blue-100 text-blue-900 py-0.5 px-2.5 rounded-full text-xs font-medium">
-                        أساسية
-                    </span>
-                </button>
 
-                @if($settingsByCategory && $settingsByCategory->count() > 0)
+        <!-- Configuration Tabs -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="border-b border-gray-200">
+                <nav class="flex space-x-8 space-x-reverse px-6 overflow-x-auto" aria-label="Tabs">
                     @php $firstCategory = true; @endphp
-                    @foreach($settingsByCategory as $category => $settings)
+                    
+                    <!-- Business Settings Tab -->
+                    <button onclick="showCategory('business')" 
+                            class="category-tab py-4 px-1 border-b-2 font-medium text-sm transition-colors border-blue-500 text-blue-600"
+                            data-category="business">
+                        إعدادات الأعمال
+                        <span class="ml-2 bg-blue-100 text-blue-900 py-0.5 px-2.5 rounded-full text-xs font-medium">
+                            أساسية
+                        </span>
+                    </button>
+
+                    <!-- System Configuration Tabs -->
+                    @foreach($allConfiguration as $category => $settings)
                         <button onclick="showCategory('{{ $category }}')" 
                                 class="category-tab py-4 px-1 border-b-2 font-medium text-sm transition-colors {{ $firstCategory ? 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}"
                                 data-category="{{ $category }}">
-                            {{ \App\Helpers\SystemHelper::getCategoryName($category) }}
+                            {{ $this->getCategoryDisplayName($category) }}
                             <span class="ml-2 bg-gray-100 text-gray-900 py-0.5 px-2.5 rounded-full text-xs font-medium">
-                                {{ $settings->count() }}
+                                {{ count($settings) }}
                             </span>
                         </button>
                         @php $firstCategory = false; @endphp
                     @endforeach
-                @endif
-            </nav>
-        </div>
+                </nav>
+            </div>
 
-        <!-- محتوى التبويبات -->
-        <div class="p-6">
-            <!-- تبويب إعدادات الأعمال -->
-            <div id="category-business" class="category-content">
-                <div class="mb-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">إعدادات الأعمال</h3>
-                    <p class="text-gray-600">إعدادات أساسية للأعمال والشعار والمعلومات العامة</p>
-                </div>
-
-                <form action="{{ route('system-settings.update-business') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
-                    @csrf
-                    
-                    <!-- معلومات الأعمال الأساسية -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="bg-gray-50 rounded-lg p-4">
-                            <label class="block text-sm font-medium text-gray-900 mb-2">اسم الأعمال (عربي)</label>
-                            <input type="text" name="business_name_ar" value="{{ $businessSettingsModel->business_name_ar ?? '' }}" 
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
-                        </div>
-
-                        <div class="bg-gray-50 rounded-lg p-4">
-                            <label class="block text-sm font-medium text-gray-900 mb-2">اسم الأعمال (إنجليزي)</label>
-                            <input type="text" name="business_name" value="{{ $businessSettingsModel->business_name ?? '' }}" 
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
-                        </div>
-
-                        <div class="bg-gray-50 rounded-lg p-4">
-                            <label class="block text-sm font-medium text-gray-900 mb-2">رقم الهاتف</label>
-                            <input type="text" name="phone" value="{{ $businessSettingsModel->phone ?? '' }}" 
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                        </div>
-
-                        <div class="bg-gray-50 rounded-lg p-4">
-                            <label class="block text-sm font-medium text-gray-900 mb-2">البريد الإلكتروني</label>
-                            <input type="email" name="email" value="{{ $businessSettingsModel->email ?? '' }}" 
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                        </div>
-
-                        <div class="bg-gray-50 rounded-lg p-4 md:col-span-2">
-                            <label class="block text-sm font-medium text-gray-900 mb-2">العنوان</label>
-                            <textarea name="address" rows="2" 
-                                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">{{ $businessSettingsModel->address ?? '' }}</textarea>
-                        </div>
-
-                        <div class="bg-gray-50 rounded-lg p-4 md:col-span-2">
-                            <label class="block text-sm font-medium text-gray-900 mb-2">الوصف</label>
-                            <textarea name="description" rows="3" 
-                                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">{{ $businessSettingsModel->description ?? '' }}</textarea>
-                        </div>
+            <!-- Tab Content -->
+            <div class="p-6">
+                <!-- Business Settings Tab -->
+                <div id="category-business" class="category-content">
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">إعدادات الأعمال</h3>
+                        <p class="text-gray-600">إعدادات أساسية للأعمال والشعار والمعلومات العامة</p>
                     </div>
 
-                    <!-- إعدادات العملة -->
-                    <div class="border-t border-gray-200 pt-6">
-                        <h4 class="text-md font-semibold text-gray-900 mb-4">إعدادات العملة</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <form action="{{ route('system-settings.update-business') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                        @csrf
+                        
+                        <!-- Basic Business Information -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="bg-gray-50 rounded-lg p-4">
-                                <label class="block text-sm font-medium text-gray-900 mb-2">العملة</label>
-                                <select name="currency" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
-                                                                    @foreach($currencies as $code => $currency)
-                                    <option value="{{ $code }}" {{ ($businessSettingsModel->currency ?? '') == $code ? 'selected' : '' }}>
-                                        {{ $currency['name'] }}
-                                    </option>
-                                @endforeach
-                                </select>
-                            </div>
-
-                            <div class="bg-gray-50 rounded-lg p-4">
-                                <label class="block text-sm font-medium text-gray-900 mb-2">رمز العملة</label>
-                                <input type="text" name="currency_symbol" value="{{ $businessSettingsModel->currency_symbol ?? '' }}" 
+                                <label class="block text-sm font-medium text-gray-900 mb-2">اسم الأعمال (عربي)</label>
+                                <input type="text" name="business_name_ar" value="{{ $businessSettingsModel->business_name_ar ?? '' }}" 
                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
                             </div>
 
                             <div class="bg-gray-50 rounded-lg p-4">
-                                <label class="block text-sm font-medium text-gray-900 mb-2">موضع رمز العملة</label>
-                                <select name="currency_symbol_placement" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
-                                    <option value="before" {{ ($businessSettingsModel->currency_symbol_placement ?? '') == 'before' ? 'selected' : '' }}>قبل الرقم</option>
-                                    <option value="after" {{ ($businessSettingsModel->currency_symbol_placement ?? '') == 'after' ? 'selected' : '' }}>بعد الرقم</option>
-                                </select>
+                                <label class="block text-sm font-medium text-gray-900 mb-2">اسم الأعمال (إنجليزي)</label>
+                                <input type="text" name="business_name" value="{{ $businessSettingsModel->business_name ?? '' }}" 
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                            </div>
+
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <label class="block text-sm font-medium text-gray-900 mb-2">رقم الهاتف</label>
+                                <input type="text" name="phone" value="{{ $businessSettingsModel->phone ?? '' }}" 
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <label class="block text-sm font-medium text-gray-900 mb-2">البريد الإلكتروني</label>
+                                <input type="email" name="email" value="{{ $businessSettingsModel->email ?? '' }}" 
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+
+                            <div class="bg-gray-50 rounded-lg p-4 md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-900 mb-2">العنوان</label>
+                                <textarea name="address" rows="2" 
+                                          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">{{ $businessSettingsModel->address ?? '' }}</textarea>
+                            </div>
+
+                            <div class="bg-gray-50 rounded-lg p-4 md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-900 mb-2">الوصف</label>
+                                <textarea name="description" rows="3" 
+                                          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">{{ $businessSettingsModel->description ?? '' }}</textarea>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- إعدادات الوقت والتاريخ -->
-                    <div class="border-t border-gray-200 pt-6">
-                        <h4 class="text-md font-semibold text-gray-900 mb-4">إعدادات الوقت والتاريخ</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div class="bg-gray-50 rounded-lg p-4">
-                                <label class="block text-sm font-medium text-gray-900 mb-2">المنطقة الزمنية</label>
-                                <select name="timezone" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
-                                    @foreach($timezones as $timezone)
-                                        <option value="{{ $timezone }}" {{ ($businessSettingsModel->timezone ?? '') == $timezone ? 'selected' : '' }}>
-                                            {{ $timezone }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="bg-gray-50 rounded-lg p-4">
-                                <label class="block text-sm font-medium text-gray-900 mb-2">تنسيق التاريخ</label>
-                                <select name="date_format" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
-                                    @foreach($dateFormats as $format => $example)
-                                        <option value="{{ $format }}" {{ ($businessSettingsModel->date_format ?? '') == $format ? 'selected' : '' }}>
-                                            {{ $example }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="bg-gray-50 rounded-lg p-4">
-                                <label class="block text-sm font-medium text-gray-900 mb-2">تنسيق الوقت</label>
-                                <select name="time_format" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
-                                    @foreach($timeFormats as $format => $example)
-                                        <option value="{{ $format }}" {{ ($businessSettingsModel->time_format ?? '') == $format ? 'selected' : '' }}>
-                                            {{ $example }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- الشعار -->
-                    <div class="border-t border-gray-200 pt-6">
-                        <h4 class="text-md font-semibold text-gray-900 mb-4">شعار الأعمال</h4>
-                        <div class="bg-gray-50 rounded-lg p-4">
-                            @if($businessSettingsModel->logo)
-                                <div class="mb-4">
-                                    <img src="{{ Storage::url($businessSettingsModel->logo) }}" alt="شعار الأعمال" class="h-20 w-auto">
+                        <!-- Currency Settings -->
+                        <div class="border-t border-gray-200 pt-6">
+                            <h4 class="text-md font-semibold text-gray-900 mb-4">إعدادات العملة</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div class="bg-gray-50 rounded-lg p-4">
+                                    <label class="block text-sm font-medium text-gray-900 mb-2">العملة</label>
+                                    <select name="currency" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                                        @foreach($currencies as $code => $currency)
+                                            <option value="{{ $code }}" {{ ($businessSettingsModel->currency ?? '') == $code ? 'selected' : '' }}>
+                                                {{ $currency['name'] }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                            @endif
-                            
-                            <div class="flex items-center space-x-4 space-x-reverse">
-                                <input type="file" name="logo" accept="image/*" 
-                                       class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                                
-                                @if($businessSettingsModel->logo)
-                                    <a href="{{ route('system-settings.remove-logo') }}" 
-                                       onclick="return confirm('هل أنت متأكد من حذف الشعار؟')"
-                                       class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">
-                                        حذف الشعار
-                                    </a>
-                                @endif
+
+                                <div class="bg-gray-50 rounded-lg p-4">
+                                    <label class="block text-sm font-medium text-gray-900 mb-2">رمز العملة</label>
+                                    <input type="text" name="currency_symbol" value="{{ $businessSettingsModel->currency_symbol ?? 'ج.م' }}" 
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                                </div>
+
+                                <div class="bg-gray-50 rounded-lg p-4">
+                                    <label class="block text-sm font-medium text-gray-900 mb-2">موضع الرمز</label>
+                                    <select name="currency_symbol_placement" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                                        <option value="after" {{ ($businessSettingsModel->currency_symbol_placement ?? '') == 'after' ? 'selected' : '' }}>بعد الرقم</option>
+                                        <option value="before" {{ ($businessSettingsModel->currency_symbol_placement ?? '') == 'before' ? 'selected' : '' }}>قبل الرقم</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- إعدادات الربح -->
-                    <div class="border-t border-gray-200 pt-6">
-                        <h4 class="text-md font-semibold text-gray-900 mb-4">إعدادات الربح</h4>
-                        <div class="bg-gray-50 rounded-lg p-4">
-                            <label class="block text-sm font-medium text-gray-900 mb-2">نسبة الربح الافتراضية (%)</label>
-                            <input type="number" name="default_profit_percent" value="{{ $businessSettingsModel->default_profit_percent ?? 20 }}" 
-                                   min="0" max="100" step="0.1"
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                        <!-- Time and Date Settings -->
+                        <div class="border-t border-gray-200 pt-6">
+                            <h4 class="text-md font-semibold text-gray-900 mb-4">إعدادات الوقت والتاريخ</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div class="bg-gray-50 rounded-lg p-4">
+                                    <label class="block text-sm font-medium text-gray-900 mb-2">المنطقة الزمنية</label>
+                                    <select name="timezone" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                                        <option value="Africa/Cairo" {{ ($businessSettingsModel->timezone ?? '') == 'Africa/Cairo' ? 'selected' : '' }}>Africa/Cairo</option>
+                                        <option value="UTC" {{ ($businessSettingsModel->timezone ?? '') == 'UTC' ? 'selected' : '' }}>UTC</option>
+                                        <option value="Europe/London" {{ ($businessSettingsModel->timezone ?? '') == 'Europe/London' ? 'selected' : '' }}>Europe/London</option>
+                                        <option value="America/New_York" {{ ($businessSettingsModel->timezone ?? '') == 'America/New_York' ? 'selected' : '' }}>America/New_York</option>
+                                    </select>
+                                </div>
+
+                                <div class="bg-gray-50 rounded-lg p-4">
+                                    <label class="block text-sm font-medium text-gray-900 mb-2">تنسيق التاريخ</label>
+                                    <select name="date_format" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                                        @foreach($dateFormats as $format => $example)
+                                            <option value="{{ $format }}" {{ ($businessSettingsModel->date_format ?? '') == $format ? 'selected' : '' }}>
+                                                {{ $example }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="bg-gray-50 rounded-lg p-4">
+                                    <label class="block text-sm font-medium text-gray-900 mb-2">تنسيق الوقت</label>
+                                    <select name="time_format" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                                        @foreach($timeFormats as $format => $example)
+                                            <option value="{{ $format }}" {{ ($businessSettingsModel->time_format ?? '') == $format ? 'selected' : '' }}>
+                                                {{ $example }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="flex justify-end">
-                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors">
-                            <i class="fas fa-save ml-2"></i>
-                            حفظ إعدادات الأعمال
-                        </button>
-                    </div>
-                </form>
-            </div>
+                        <!-- Logo -->
+                        <div class="border-t border-gray-200 pt-6">
+                            <h4 class="text-md font-semibold text-gray-900 mb-4">شعار الأعمال</h4>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                @if($businessSettingsModel->logo)
+                                    <div class="mb-4">
+                                        <img src="{{ Storage::url($businessSettingsModel->logo) }}" alt="شعار الأعمال" class="h-20 w-auto">
+                                    </div>
+                                @endif
+                                
+                                <div class="flex items-center space-x-4 space-x-reverse">
+                                    <input type="file" name="logo" accept="image/*" 
+                                           class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                    
+                                    @if($businessSettingsModel->logo)
+                                        <a href="{{ route('system-settings.remove-logo') }}" 
+                                           onclick="return confirm('هل أنت متأكد من حذف الشعار؟')"
+                                           class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">
+                                            حذف الشعار
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
 
-            @if($settingsByCategory && $settingsByCategory->count() > 0)
-                @php $firstContent = false; @endphp
-                @foreach($settingsByCategory as $category => $settings)
+                        <!-- Profit Settings -->
+                        <div class="border-t border-gray-200 pt-6">
+                            <h4 class="text-md font-semibold text-gray-900 mb-4">إعدادات الربح</h4>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <label class="block text-sm font-medium text-gray-900 mb-2">نسبة الربح الافتراضية (%)</label>
+                                <input type="number" name="default_profit_percent" value="{{ $businessSettingsModel->default_profit_percent ?? 20 }}" 
+                                       min="0" max="100" step="0.1"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end">
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors">
+                                <i class="fas fa-save ml-2"></i>
+                                حفظ إعدادات الأعمال
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- System Configuration Tabs -->
+                @foreach($allConfiguration as $category => $settings)
                     <div id="category-{{ $category }}" class="category-content hidden">
                         <div class="mb-6">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ \App\Helpers\SystemHelper::getCategoryName($category) }}</h3>
-                            <p class="text-gray-600">{{ \App\Helpers\SystemHelper::getCategoryDescription($category) }}</p>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ $this->getCategoryDisplayName($category) }}</h3>
+                            <p class="text-gray-600">{{ $this->getCategoryDescription($category) }}</p>
                         </div>
 
-                        <form action="{{ route('system-settings.update') }}" method="POST" class="space-y-6">
-                            @csrf
-                            @if($settings && $settings->count() > 0)
+                        @if(count($settings) > 0)
+                            <div class="space-y-4">
                                 @foreach($settings as $setting)
                                     <div class="bg-gray-50 rounded-lg p-4">
                                         <div class="flex items-start justify-between">
                                             <div class="flex-1">
                                                 <label class="block text-sm font-medium text-gray-900 mb-2">
                                                     {{ $setting['description'] ?? $setting['key'] }}
-                                                    @if(isset($setting['requires_restart']) && $setting['requires_restart'] == true)
+                                                    @if(isset($setting['requires_restart']) && $setting['requires_restart'])
                                                         <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
                                                             يتطلب إعادة تشغيل
+                                                        </span>
+                                                    @endif
+                                                    @if(isset($setting['source']))
+                                                        <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                                            {{ $setting['source'] }}
                                                         </span>
                                                     @endif
                                                 </label>
@@ -302,100 +279,67 @@
                                                     <p class="text-sm text-gray-600 mb-3">{{ $setting['description'] }}</p>
                                                 @endif
 
-                                                <!-- حقل الإدخال حسب النوع -->
+                                                <!-- Display value based on type -->
                                                 @switch($setting['type'] ?? 'string')
                                                     @case('boolean')
                                                     @case('bool')
                                                         <div class="flex items-center">
-                                                            <input type="checkbox" 
-                                                                   name="settings[{{ $setting['key'] }}][value]" 
-                                                                   value="1" 
-                                                                   {{ ($setting['value'] == '1' || $setting['value'] == 'true' || $setting['value'] == 1 || $setting['value'] === true) ? 'checked' : '' }}
-                                                                   class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                                                            <span class="mr-2 text-sm text-gray-700">تفعيل</span>
+                                                            <span class="text-sm text-gray-700">
+                                                                {{ $setting['value'] ? 'مفعل' : 'معطل' }}
+                                                            </span>
                                                         </div>
-                                                        @break
-
-                                                    @case('integer')
-                                                    @case('decimal')
-                                                    @case('number')
-                                                    @case('float')
-                                                        <input type="number" 
-                                                               name="settings[{{ $setting['key'] }}][value]" 
-                                                               value="{{ $setting['value'] ?? '' }}" 
-                                                               step="{{ in_array($setting['type'] ?? 'string', ['decimal', 'float', 'number']) ? '0.01' : '1' }}"
-                                                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                                                         @break
 
                                                     @case('json')
                                                     @case('array')
-                                                        <textarea name="settings[{{ $setting['key'] }}][value]" 
-                                                                  rows="3"
-                                                                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                                                                  placeholder="أدخل البيانات بصيغة JSON">{{ $setting['value'] ?? '' }}</textarea>
+                                                        <div class="bg-gray-100 p-3 rounded text-sm font-mono text-gray-800 overflow-x-auto">
+                                                            <pre>{{ is_array($setting['value']) ? json_encode($setting['value'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) : $setting['value'] }}</pre>
+                                                        </div>
                                                         @break
 
-                                                    @case('text')
-                                                    @case('string')
                                                     @default
-                                                        <input type="text" 
-                                                               name="settings[{{ $setting['key'] }}][value]" 
-                                                               value="{{ $setting['value'] ?? '' }}" 
-                                                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                                        <div class="bg-gray-100 p-3 rounded text-sm font-mono text-gray-800">
+                                                            {{ $setting['value'] }}
+                                                        </div>
                                                 @endswitch
-
-                                                <input type="hidden" name="settings[{{ $setting['key'] }}][key]" value="{{ $setting['key'] }}">
                                             </div>
 
                                             <div class="mr-4 text-right">
                                                 <div class="text-xs text-gray-500 mb-1">{{ $setting['key'] ?? 'N/A' }}</div>
                                                 <div class="text-xs text-gray-400">{{ $setting['type'] ?? 'string' }}</div>
+                                                @if(isset($setting['is_editable']))
+                                                    <div class="text-xs text-gray-400">
+                                                        {{ $setting['is_editable'] ? 'قابل للتعديل' : 'للقراءة فقط' }}
+                                                    </div>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
                                 @endforeach
-
-                                <div class="flex justify-end">
-                                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors">
-                                        <i class="fas fa-save ml-2"></i>
-                                        حفظ الإعدادات
-                                    </button>
-                                </div>
-                            @else
-                                <div class="text-center py-8">
-                                    <p class="text-gray-500">لا توجد إعدادات قابلة للتحرير في هذه الفئة.</p>
-                                </div>
-                            @endif
-                        </form>
+                            </div>
+                        @else
+                            <div class="text-center py-8">
+                                <p class="text-gray-500">لا توجد إعدادات في هذه الفئة.</p>
+                            </div>
+                        @endif
                     </div>
-                    @php $firstContent = false; @endphp
                 @endforeach
-            @else
-                <!-- رسالة عندما لا توجد إعدادات نظام -->
-                <div class="text-center py-8">
-                    <div class="bg-gray-50 rounded-lg p-6">
-                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <h3 class="mt-2 text-sm font-medium text-gray-900">لا توجد إعدادات نظام</h3>
-                        <p class="mt-1 text-sm text-gray-500">لم يتم العثور على إعدادات نظام قابلة للتحرير.</p>
-                    </div>
-                </div>
-            @endif
+            </div>
         </div>
     </div>
 </div>
 
-<!-- Modal استيراد الإعدادات -->
-<div id="importModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
-    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-        <div class="mt-3 text-center">
-            <h3 class="text-lg font-medium text-gray-900 mb-4">استيراد الإعدادات</h3>
+<!-- Import Modal -->
+<div id="importModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="bg-white rounded-lg max-w-md w-full p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">استيراد الإعدادات</h3>
             <form action="{{ route('system-settings.import') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-4">
-                    <input type="file" name="settings_file" accept=".json" required 
-                           class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                    <label class="block text-sm font-medium text-gray-900 mb-2">ملف الإعدادات</label>
+                    <input type="file" name="settings_file" accept=".json,.txt" required
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                 </div>
                 <div class="flex justify-end space-x-3 space-x-reverse">
                     <button type="button" onclick="hideImportModal()" 
@@ -536,12 +480,8 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log(`Category tab ${index}:`, tab.getAttribute('data-category'), 'onclick:', tab.getAttribute('onclick'));
     });
     
-    const firstCategory = '{{ $settingsByCategory->keys()->first() ?? "general" }}';
-    console.log('First category from PHP:', firstCategory);
-    console.log('Calling showCategory with:', firstCategory);
-    
-    // Ensure the first category is shown
-    showCategory(firstCategory);
+    // Show business tab by default
+    showCategory('business');
     
     // Debug: Check final state
     setTimeout(() => {

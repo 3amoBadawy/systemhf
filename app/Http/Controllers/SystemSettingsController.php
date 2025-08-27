@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BusinessSettingsRequest;
 use App\Repositories\Contracts\BusinessSettingRepositoryInterface;
 use App\Services\ConfigurationService;
+use App\Services\SystemConfigurationService;
+use App\Models\BusinessSetting;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -12,40 +14,46 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class SystemSettingsController extends Controller
 {
     protected BusinessSettingRepositoryInterface $settingRepository;
-
     protected ConfigurationService $configService;
+    protected SystemConfigurationService $systemConfigService;
 
     public function __construct(
         BusinessSettingRepositoryInterface $settingRepository,
-        ConfigurationService $configService
+        ConfigurationService $configService,
+        SystemConfigurationService $systemConfigService
     ) {
         $this->settingRepository = $settingRepository;
         $this->configService = $configService;
+        $this->systemConfigService = $systemConfigService;
     }
 
     public function index(): View|RedirectResponse
     {
         try {
+            // Get all system configuration including environment variables, Laravel config, etc.
+            $allConfiguration = $this->systemConfigService->getAllConfiguration();
+            
+            // Get business settings for the business tab
             $businessSettingsModel = $this->settingRepository->getInstance();
             $timezones = $this->settingRepository->getTimezones();
             $dateFormats = $this->settingRepository->getDateFormats();
             $timeFormats = $this->settingRepository->getTimeFormats();
             $currencies = $this->settingRepository->getCurrencies();
-            $settingsByCategory = $this->configService->getEditable();
 
             return view('system-settings.index', compact(
+                'allConfiguration',
                 'businessSettingsModel',
                 'timezones',
                 'dateFormats',
                 'timeFormats',
-                'currencies',
-                'settingsByCategory'
+                'currencies'
             ));
         } catch (\Exception $e) {
             return back()->with('error', 'حدث خطأ أثناء تحميل الإعدادات: '.$e->getMessage());
@@ -472,5 +480,53 @@ class SystemSettingsController extends Controller
         } catch (\Exception $e) {
             return [];
         }
+    }
+
+    /**
+     * Get category display name
+     */
+    private function getCategoryDisplayName(string $category): string
+    {
+        $names = [
+            'system_settings' => 'إعدادات النظام',
+            'business_settings' => 'إعدادات الأعمال',
+            'environment_variables' => 'متغيرات البيئة',
+            'laravel_config' => 'إعدادات Laravel',
+            'database_config' => 'إعدادات قاعدة البيانات',
+            'mail_config' => 'إعدادات البريد',
+            'cache_config' => 'إعدادات الكاش',
+            'queue_config' => 'إعدادات الطوابير',
+            'session_config' => 'إعدادات الجلسات',
+            'logging_config' => 'إعدادات التسجيل',
+            'file_storage_config' => 'إعدادات التخزين',
+            'security_config' => 'إعدادات الأمان',
+            'performance_config' => 'إعدادات الأداء',
+        ];
+
+        return $names[$category] ?? ucfirst(str_replace('_', ' ', $category));
+    }
+
+    /**
+     * Get category description
+     */
+    private function getCategoryDescription(string $category): string
+    {
+        $descriptions = [
+            'system_settings' => 'إعدادات النظام الأساسية والإعدادات العامة',
+            'business_settings' => 'إعدادات الأعمال والشعار والمعلومات العامة',
+            'environment_variables' => 'متغيرات البيئة والملف .env',
+            'laravel_config' => 'إعدادات إطار العمل Laravel',
+            'database_config' => 'إعدادات قاعدة البيانات والاتصالات',
+            'mail_config' => 'إعدادات البريد الإلكتروني وSMTP',
+            'cache_config' => 'إعدادات الكاش والتخزين المؤقت',
+            'queue_config' => 'إعدادات الطوابير والمعالجة الخلفية',
+            'session_config' => 'إعدادات الجلسات والمستخدمين',
+            'logging_config' => 'إعدادات تسجيل الأحداث والسجلات',
+            'file_storage_config' => 'إعدادات تخزين الملفات والأقراص',
+            'security_config' => 'إعدادات الأمان والمصادقة',
+            'performance_config' => 'إعدادات الأداء والتحسين',
+        ];
+
+        return $descriptions[$category] ?? 'إعدادات ' . ucfirst(str_replace('_', ' ', $category));
     }
 }
