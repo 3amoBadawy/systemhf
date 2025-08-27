@@ -31,6 +31,41 @@ SystemHF is a comprehensive Laravel 12 business management system designed for A
 - **CI/CD**: GitHub Actions, Pre-commit hooks, Automated quality gates
 - **Testing**: PHPUnit with comprehensive test coverage
 
+## 📦 **Monitoring & Debugging Packages**
+
+### **Sentry Integration**
+- **Package**: `sentry/sentry-laravel`
+- **Purpose**: Error tracking, performance monitoring, and crash reporting
+- **Features**: 
+  - Automatic error capture and reporting
+  - Performance monitoring with traces and profiles
+  - Environment-based configuration
+  - Customizable sample rates for traces and profiles
+
+### **Laravel Telescope**
+- **Package**: `laravel/telescope`
+- **Purpose**: Application debugging and monitoring (dev-only)
+- **Features**:
+  - Request/response monitoring
+  - Database query logging
+  - Job execution tracking
+  - Mail and notification logging
+  - Gated to local/staging environments only
+
+### **Log Viewer**
+- **Package**: `opcodesio/log-viewer`
+- **Purpose**: Web-based log file viewing and analysis
+- **Features**:
+  - Browse and search log files
+  - Filter by log levels
+  - Download log files
+  - Protected by authentication and permissions
+
+### **Slack Logging**
+- **Feature**: Real-time log notifications to Slack
+- **Configuration**: Integrated with Laravel's logging system
+- **Usage**: Critical errors and important events sent to Slack channels
+
 ## 📊 **Current Status**
 
 ### ✅ **Completed**
@@ -78,12 +113,99 @@ npm install
 cp .env.example .env
 php artisan key:generate
 
+# Add required environment variables for monitoring packages
+echo "SENTRY_DSN=" >> .env
+echo "SENTRY_TRACES_SAMPLE_RATE=0.1" >> .env
+echo "SENTRY_PROFILES_SAMPLE_RATE=0.1" >> .env
+echo "LOG_SLACK_WEBHOOK_URL=" >> .env
+
 # Database setup
 php artisan migrate
 php artisan db:seed
 
 # Verify installation
 composer quality
+
+## 🔧 **Environment Variables**
+
+### **Required for Monitoring Packages**
+```bash
+# Sentry Configuration
+SENTRY_DSN=your_sentry_dsn_here
+SENTRY_TRACES_SAMPLE_RATE=0.1
+SENTRY_PROFILES_SAMPLE_RATE=0.1
+
+# Slack Logging
+LOG_SLACK_WEBHOOK_URL=your_slack_webhook_url_here
+LOG_SLACK_USERNAME="Laravel Log"
+LOG_SLACK_EMOJI=:boom:
+
+# Log Configuration
+LOG_CHANNEL=stack
+LOG_STACK=single,slack
+LOG_LEVEL=critical
+```
+
+### **Optional Sentry Settings**
+```bash
+SENTRY_RELEASE=1.0.0
+SENTRY_ENVIRONMENT=production
+```
+
+## 🔍 **Package Verification**
+
+### **Test Error Tracking Route**
+Visit `/oops` (requires authentication and `system.logs` permission) to test:
+- **Sentry**: Error capture and reporting
+- **Slack**: Log notification delivery
+- **Log Viewer**: Error logging and viewing
+
+### **Access Log Viewer**
+Visit `/logs` (requires authentication and `system.logs` permission) to:
+- Browse application logs
+- Search and filter log entries
+- Download log files
+
+### **Telescope Dashboard**
+Visit `/telescope` (dev-only, local/staging environments) to:
+- Monitor requests and responses
+- View database queries
+- Track job executions
+- Monitor mail and notifications
+
+### **Verify Sentry Integration**
+1. Set `SENTRY_DSN` in your `.env` file
+2. Visit `/oops` to trigger a test error
+3. Check Sentry dashboard for captured error
+4. Verify performance monitoring data
+
+### **Verify Slack Logging**
+1. Set `LOG_SLACK_WEBHOOK_URL` in your `.env` file
+2. Visit `/oops` to trigger a test error
+3. Check Slack channel for error notification
+4. Verify log level configuration in `config/logging.php`
+
+## 🚀 **Installation Commands**
+
+### **Install Required Packages**
+```bash
+# Install monitoring packages
+composer require sentry/sentry-laravel laravel/telescope opcodesio/log-viewer
+
+# Publish Telescope configuration
+php artisan telescope:install
+
+# Publish Log Viewer configuration
+php artisan vendor:publish --provider="Opcodes\LogViewer\LogViewerServiceProvider"
+
+# Run migrations
+php artisan migrate
+```
+
+### **Update Permissions**
+```bash
+# Run permission seeder to add system.logs permission
+php artisan db:seed --class=PermissionSeeder
 ```
 
 ### **Development Server**

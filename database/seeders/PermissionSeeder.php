@@ -91,6 +91,7 @@ class PermissionSeeder extends Seeder
             ['name' => 'system.users', 'name_ar' => 'إدارة المستخدمين', 'group' => 'system'],
             ['name' => 'system.roles', 'name_ar' => 'إدارة الأدوار', 'group' => 'system'],
             ['name' => 'system.permissions', 'name_ar' => 'إدارة الصلاحيات', 'group' => 'system'],
+            ['name' => 'system.logs', 'name_ar' => 'عرض سجلات النظام', 'group' => 'system'],
         ];
 
         foreach ($permissions as $permission) {
@@ -105,6 +106,7 @@ class PermissionSeeder extends Seeder
                 'roles.view', 'roles.create', 'roles.edit', 'roles.delete',
                 'permissions.view', 'permissions.create', 'permissions.edit', 'permissions.delete',
                 'system_settings.view', 'system_settings.edit',
+                'system.logs',
                 'reports.view', 'reports.export',
             ])->get();
             $adminRole->permissions()->sync($adminPermissions->pluck('id'));

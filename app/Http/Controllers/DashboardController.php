@@ -9,7 +9,6 @@ use App\Models\Payment;
 use App\Models\PaymentMethod;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
@@ -76,43 +75,43 @@ class DashboardController extends Controller
     private function getDashboardData(): array
     {
         $currentMonth = now()->startOfMonth();
-        
+
         return [
             // إحصائيات العملاء
             'customersCount' => Customer::count(),
             'newCustomersThisMonth' => Customer::where('created_at', '>=', $currentMonth)->count(),
-            
+
             // إحصائيات الفواتير
             'invoicesCount' => Invoice::count(),
             'totalInvoiced' => Invoice::sum('total'),
             'pendingInvoices' => Invoice::where('payment_status', 'pending')->count(),
             'completedInvoices' => Invoice::where('payment_status', 'completed')->count(),
-            
+
             // إحصائيات المدفوعات
             'paymentsCount' => Payment::count(),
             'totalPaid' => Payment::sum('amount'),
             'paymentsThisMonth' => Payment::where('created_at', '>=', $currentMonth)->sum('amount'),
-            
+
             // إحصائيات المنتجات
             'productsCount' => Product::count(),
             'activeProducts' => Product::where('is_active', true)->count(),
-            
+
             // إحصائيات طرق الدفع
             'paymentMethodsCount' => PaymentMethod::count(),
             'activePaymentMethods' => PaymentMethod::where('is_active', true)->count(),
-            
+
             // الإحصائيات الشهرية
             'monthlyStats' => $this->getMonthlyStats(),
-            
+
             // طرق الدفع الأكثر استخداماً
             'topPaymentMethods' => $this->getTopPaymentMethods(),
-            
+
             // أحدث البيانات
             'recentInvoices' => Invoice::with('customer')->latest()->take(5)->get(),
             'recentPayments' => Payment::with('customer')->latest()->take(5)->get(),
         ];
     }
-    
+
     /**
      * الحصول على الإحصائيات الشهرية
      */
@@ -121,25 +120,25 @@ class DashboardController extends Controller
         $months = [];
         $invoices = [];
         $payments = [];
-        
+
         for ($i = 5; $i >= 0; $i--) {
             $date = now()->subMonths($i);
             $months[] = $date->format('M');
-            
+
             $startOfMonth = $date->startOfMonth();
             $endOfMonth = $date->endOfMonth();
-            
+
             $invoices[] = Invoice::whereBetween('created_at', [$startOfMonth, $endOfMonth])->count();
             $payments[] = Payment::whereBetween('created_at', [$startOfMonth, $endOfMonth])->sum('amount');
         }
-        
+
         return [
             'months' => $months,
             'invoices' => $invoices,
             'payments' => $payments,
         ];
     }
-    
+
     /**
      * الحصول على طرق الدفع الأكثر استخداماً
      */

@@ -10,7 +10,10 @@
         "intervention/image": "^3.11",
         "intervention/image-laravel": "^1.5",
         "laravel/framework": "^12.0",
-        "laravel/tinker": "^2.10.1"
+        "laravel/telescope": "^5.11",
+        "laravel/tinker": "^2.10.1",
+        "opcodesio/log-viewer": "^3.19",
+        "sentry/sentry-laravel": "^4.15"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "*",

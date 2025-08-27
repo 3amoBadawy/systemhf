@@ -191,6 +191,16 @@ Route::middleware(['web', 'auth'])->group(function () {
         Route::get('/activity-logs', [App\Http\Controllers\SystemSettingsController::class, 'getActivityLogs'])->name('activity-logs');
         Route::get('/export-logs', [App\Http\Controllers\SystemSettingsController::class, 'exportLogs'])->name('export-logs');
     });
+
+    // Log Viewer - محمي بالصلاحيات
+    Route::get('/logs', function () {
+        return app(\Opcodes\LogViewer\Http\Controllers\IndexController::class)();
+    })->name('logs.index')->middleware('permission:system.logs');
+
+    // Test route for error tracking - محمي بالصلاحيات
+    Route::get('/oops', function () {
+        throw new RuntimeException('This is a test error for Sentry, Slack logging, and error tracking systems.');
+    })->name('oops')->middleware('permission:system.logs');
 });
 
 // Media Routes - نظام الوسائط المتقدم

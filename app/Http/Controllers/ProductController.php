@@ -2,19 +2,98 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Media;
 use App\Models\Product;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\View\View;
 
 class ProductController extends Controller
 {
     protected \App\Services\MediaService $mediaService;
 
     /**
+     * عرض قائمة المنتجات
+     */
+    public function index(): View
+    {
+        $products = Product::with(['category', 'supplier', 'media'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+
+        return view('products.index', compact('products'));
+    }
+
+    /**
+     * عرض نموذج إنشاء منتج جديد
+     */
+    public function create(): View
+    {
+        $categories = Category::where('status', 'active')->get();
+
+        return view('products.create', compact('categories'));
+    }
+
+    /**
+     * حفظ منتج جديد
+     */
+    public function store(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'name_ar' => 'required|string|max:255',
+            'name' => 'nullable|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'supplier_id' => 'nullable|exists:suppliers,id',
+            'description_ar' => 'nullable|string',
+            'description' => 'nullable|string',
+            'cost_price' => 'required|numeric|min:0',
+            'price' => 'required|numeric|min:0',
+            'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'gallery_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'videos.*' => 'nullable|mimes:mp4,mov,avi,wmv,flv,webm|max:10240',
+        ]);
+
+        try {
+            $product = Product::create($request->validated());
+
+            $this->handleMediaFiles($request, $product);
+
+            return redirect()->route('products.index')
+                ->with('success', 'تم إنشاء المنتج بنجاح!');
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['error' => 'حدث خطأ أثناء إنشاء المنتج: '.$e->getMessage()]);
+        }
+    }
+
+    /**
+     * عرض تفاصيل المنتج
+     */
+    public function show(Product $product): View
+    {
+        $product->load(['category', 'supplier', 'media', 'components']);
+
+        return view('products.show', compact('product'));
+    }
+
+    /**
+     * عرض نموذج تعديل المنتج
+     */
+    public function edit(Product $product): View
+    {
+        $categories = Category::where('status', 'active')->get();
+
+        return view('products.edit', compact('product', 'categories'));
+    }
+
+    /**
      * تحديث منتج
      */
-    public function update(Request $request, Product $product): \Illuminate\Http\RedirectResponse
+    public function update(Request $request, Product $product): RedirectResponse
     {
         $this->validateProductUpdateRequest($request);
 
@@ -28,6 +107,86 @@ class ProductController extends Controller
 
         return redirect()->route('products.index')
             ->with('success', 'تم تحديث المنتج بنجاح!');
+    }
+
+    /**
+     * حذف المنتج
+     */
+    public function destroy(Product $product): RedirectResponse
+    {
+        try {
+            $product->delete();
+
+            return redirect()->route('products.index')
+                ->with('success', 'تم حذف المنتج بنجاح!');
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->withErrors(['error' => 'حدث خطأ أثناء حذف المنتج: '.$e->getMessage()]);
+        }
+    }
+
+    /**
+     * البحث في المنتجات
+     */
+    public function search(Request $request): View
+    {
+        $query = $request->get('q');
+        $products = Product::where('name_ar', 'like', "%{$query}%")
+            ->orWhere('name', 'like', "%{$query}%")
+            ->orWhere('description_ar', 'like', "%{$query}%")
+            ->with(['category', 'supplier', 'media'])
+            ->paginate(20);
+
+        return view('products.index', compact('products', 'query'));
+    }
+
+    /**
+     * عرض المنتجات حسب الفئة
+     */
+    public function getByCategory(Category $category): View
+    {
+        $products = $category->products()
+            ->with(['supplier', 'media'])
+            ->paginate(20);
+
+        return view('products.by-category', compact('category', 'products'));
+    }
+
+    /**
+     * حذف صورة من معرض المنتج
+     */
+    public function removeGalleryImage(Request $request, Product $product): RedirectResponse
+    {
+        $mediaId = $request->get('media_id');
+
+        $media = $product->media()->find($mediaId);
+
+        if ($media) {
+            $media->delete();
+
+            return redirect()->back()->with('success', 'تم حذف الصورة بنجاح!');
+        }
+
+        return redirect()->back()->withErrors(['error' => 'الصورة غير موجودة']);
+    }
+
+    /**
+     * حذف فيديو من المنتج
+     */
+    public function removeVideo(Request $request, Product $product): RedirectResponse
+    {
+        $mediaId = $request->get('media_id');
+
+        $media = $product->media()->where('type', 'video')->find($mediaId);
+
+        if ($media) {
+            $media->delete();
+
+            return redirect()->back()->with('success', 'تم حذف الفيديو بنجاح!');
+        }
+
+        return redirect()->back()->withErrors(['error' => 'الفيديو غير موجود']);
     }
 
     /**
