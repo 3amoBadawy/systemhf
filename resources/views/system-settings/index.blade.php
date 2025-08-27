@@ -408,24 +408,43 @@
 <script>
 // إظهار/إخفاء التبويبات
 function showCategory(category) {
+    console.log('showCategory called with:', category);
+    
     // إخفاء جميع المحتويات
-    document.querySelectorAll('.category-content').forEach(content => {
+    const allContents = document.querySelectorAll('.category-content');
+    console.log('Found category-content elements:', allContents.length);
+    allContents.forEach(content => {
         content.classList.add('hidden');
     });
     
     // إزالة التفعيل من جميع التبويبات
-    document.querySelectorAll('.category-tab').forEach(tab => {
+    const allTabs = document.querySelectorAll('.category-tab');
+    console.log('Found category-tab elements:', allTabs.length);
+    allTabs.forEach(tab => {
         tab.classList.remove('border-blue-500', 'text-blue-600');
         tab.classList.add('border-transparent', 'text-gray-500');
     });
     
     // إظهار المحتوى المطلوب
-    document.getElementById('category-' + category).classList.remove('hidden');
+    const targetContent = document.getElementById('category-' + category);
+    console.log('Target content element:', targetContent);
+    if (targetContent) {
+        targetContent.classList.remove('hidden');
+        console.log('Removed hidden class from target content');
+    } else {
+        console.error('Target content element not found for category:', category);
+    }
     
     // تفعيل التبويب المطلوب
     const activeTab = document.querySelector(`[data-category="${category}"]`);
-    activeTab.classList.remove('border-transparent', 'text-gray-500');
-    activeTab.classList.add('border-blue-500', 'text-blue-600');
+    console.log('Active tab element:', activeTab);
+    if (activeTab) {
+        activeTab.classList.remove('border-transparent', 'text-gray-500');
+        activeTab.classList.add('border-blue-500', 'text-blue-600');
+        console.log('Updated active tab classes');
+    } else {
+        console.error('Active tab element not found for category:', category);
+    }
 }
 
 // البحث في الإعدادات
@@ -493,7 +512,10 @@ function clearCache() {
 
 // تفعيل التبويب الأول عند تحميل الصفحة
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOMContentLoaded event fired');
     const firstCategory = '{{ $settingsByCategory->keys()->first() ?? "general" }}';
+    console.log('First category from PHP:', firstCategory);
+    console.log('Calling showCategory with:', firstCategory);
     showCategory(firstCategory);
 });
 </script>
