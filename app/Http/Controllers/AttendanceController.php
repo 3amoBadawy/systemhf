@@ -23,9 +23,10 @@ class AttendanceController extends Controller
      */
     public function index(): View
     {
+        $perPage = (int) (config('app.pagination_per_page') ?? 20);
         $attendances = Attendance::with(['employee', 'branch'])
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate($perPage);
 
         return view('attendance.index', compact('attendances'));
     }
@@ -51,7 +52,8 @@ class AttendanceController extends Controller
             $query->where('employee_id', $employeeId);
         }
 
-        $attendances = $query->orderBy('date', 'desc')->paginate(50);
+        $perPage = (int) (config('app.report_pagination_per_page') ?? (config('app.pagination_per_page') ?? 50));
+        $attendances = $query->orderBy('date', 'desc')->paginate($perPage);
 
         $employees = Employee::where('status', 'active')->get();
 

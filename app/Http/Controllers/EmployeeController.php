@@ -16,9 +16,10 @@ class EmployeeController extends Controller
      */
     public function index(): View
     {
+        $perPage = (int) (config('app.pagination_per_page') ?? 20);
         $employees = Employee::with(['branch', 'role', 'user'])
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate($perPage);
 
         return view('employees.index', compact('employees'));
     }
@@ -167,12 +168,13 @@ class EmployeeController extends Controller
     public function search(Request $request): View
     {
         $query = $request->get('q');
+        $perPage = (int) (config('app.pagination_per_page') ?? 20);
         $employees = Employee::where('name', 'like', "%{$query}%")
             ->orWhere('name_ar', 'like', "%{$query}%")
             ->orWhere('employee_number', 'like', "%{$query}%")
             ->orWhere('national_id', 'like', "%{$query}%")
             ->with(['branch', 'role', 'user'])
-            ->paginate(20);
+            ->paginate($perPage);
 
         return view('employees.index', compact('employees', 'query'));
     }

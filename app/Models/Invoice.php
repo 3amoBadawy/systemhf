@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 /**
  * @property int $id
@@ -133,9 +135,17 @@ class Invoice extends Model
     /**
      * علاقة المدفوعات
      */
-    public function payments(): HasMany
+    public function payments(): HasManyThrough
     {
-        return $this->hasMany(Payment::class);
+        // Payments linked via payment_allocations
+        return $this->hasManyThrough(
+            Payment::class,
+            PaymentAllocation::class,
+            'invoice_id', // Foreign key on payment_allocations referencing invoices
+            'id',         // Local key on payments
+            'id',         // Local key on invoices
+            'payment_id'  // Foreign key on payment_allocations referencing payments
+        );
     }
 
     /**

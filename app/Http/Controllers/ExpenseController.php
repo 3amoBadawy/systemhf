@@ -17,9 +17,10 @@ class ExpenseController extends Controller
      */
     public function index(): View
     {
+        $perPage = (int) (config('app.pagination_per_page') ?? 20);
         $expenses = Expense::with(['branch', 'paymentMethod', 'approvedBy'])
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate($perPage);
 
         return view('expenses.index', compact('expenses'));
     }
@@ -215,7 +216,8 @@ class ExpenseController extends Controller
             $query->where('category', $category);
         }
 
-        $expenses = $query->orderBy('date', 'desc')->paginate(50);
+        $perPage = (int) (config('app.report_pagination_per_page') ?? (config('app.pagination_per_page') ?? 50));
+        $expenses = $query->orderBy('date', 'desc')->paginate($perPage);
 
         $branches = Branch::where('status', 'active')->get();
         $categories = Expense::distinct()->pluck('category');

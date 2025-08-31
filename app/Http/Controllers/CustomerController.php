@@ -21,9 +21,10 @@ class CustomerController extends Controller
      */
     public function index(): View
     {
+        $perPage = (int) (config('app.pagination_per_page') ?? 20);
         $customers = Customer::with(['branch', 'category'])
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate($perPage);
 
         return view('customers.index', compact('customers'));
     }
@@ -113,11 +114,12 @@ class CustomerController extends Controller
     public function search(Request $request): View
     {
         $query = $request->get('q');
+        $perPage = (int) (config('app.pagination_per_page') ?? 20);
         $customers = Customer::where('name', 'like', "%{$query}%")
             ->orWhere('phone', 'like', "%{$query}%")
             ->orWhere('email', 'like', "%{$query}%")
             ->with(['branch', 'category'])
-            ->paginate(20);
+            ->paginate($perPage);
 
         return view('customers.index', compact('customers', 'query'));
     }
@@ -157,10 +159,11 @@ class CustomerController extends Controller
      */
     public function getInvoices(Customer $customer): View
     {
+        $perPage = (int) (config('app.pagination_per_page') ?? 20);
         $invoices = $customer->invoices()
             ->with(['items', 'payments'])
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate($perPage);
 
         return view('customers.invoices', compact('customer', 'invoices'));
     }

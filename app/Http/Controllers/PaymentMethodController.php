@@ -15,10 +15,11 @@ class PaymentMethodController extends Controller
      */
     public function index(): View
     {
+        $perPage = (int) (config('app.pagination_per_page') ?? 20);
         $paymentMethods = PaymentMethod::with(['branch'])
             ->orderBy('sort_order', 'asc')
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate($perPage);
 
         return view('payment-methods.index', compact('paymentMethods'));
     }

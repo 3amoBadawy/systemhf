@@ -15,9 +15,10 @@ class CategoryController extends Controller
      */
     public function index(): View
     {
+        $perPage = (int) (config('app.pagination_per_page') ?? 20);
         $categories = Category::orderBy('sort_order', 'asc')
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate($perPage);
 
         return view('categories.index', compact('categories'));
     }
@@ -122,7 +123,7 @@ class CategoryController extends Controller
             'name' => $request->input('name'),
             'name_ar' => $request->input('name_ar'),
             'description' => $request->input('description'),
-            'sort_order' => $request->input('sort_order') ?? 0,
+            'sort_order' => (int) ($request->input('sort_order') ?? 0),
         ]);
 
         return redirect()->route('categories.index')
@@ -158,11 +159,12 @@ class CategoryController extends Controller
     public function search(Request $request): View
     {
         $query = $request->get('q');
+        $perPage = (int) (config('app.pagination_per_page') ?? 20);
         $categories = Category::where('name', 'like', "%{$query}%")
             ->orWhere('name_ar', 'like', "%{$query}%")
             ->orWhere('description', 'like', "%{$query}%")
             ->orderBy('sort_order', 'asc')
-            ->paginate(20);
+            ->paginate($perPage);
 
         return view('categories.index', compact('categories', 'query'));
     }
