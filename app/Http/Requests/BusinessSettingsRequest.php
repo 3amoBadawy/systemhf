@@ -14,7 +14,14 @@ class BusinessSettingsRequest extends FormRequest
     {
         $user = Auth::user();
 
-        return Auth::check() && $user && method_exists($user, 'hasPermission') && $user->hasPermission('manage_business_settings');
+        return Auth::check()
+            && $user
+            && method_exists($user, 'hasPermission')
+            && (
+                $user->hasPermission('system.settings')
+                || $user->hasPermission('system_settings.edit')
+                || $user->hasPermission('manage_business_settings')
+            );
     }
 
     /**
