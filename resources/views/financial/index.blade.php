@@ -101,7 +101,7 @@
                     <div class="mr-5 w-0 flex-1">
                         <dl>
                             <dt class="text-sm font-medium text-gray-500 truncate">إجمالي الأرصدة</dt>
-                            <dd class="text-lg font-medium text-gray-900">{{ number_format($stats['total_balance'], 2) }} ريال</dd>
+                            <dd class="text-lg font-medium text-gray-900">{{ number_format($stats['total_balance'], 2) }} {{ $currencySymbol ?? optional(\App\Models\BusinessSetting::getInstance())->currency_symbol }}</dd>
                         </dl>
                     </div>
                 </div>
@@ -211,7 +211,7 @@
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium {{ $account->type === 'expense' || $account->type === 'liability' ? 'text-red-600' : 'text-green-600' }}">
-                                            {{ number_format($account->current_balance, 2) }} ريال
+                                            {{ number_format($account->current_balance, 2) }} {{ $currencySymbol ?? optional(\App\Models\BusinessSetting::getInstance())->currency_symbol }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             @if($account->is_active)
@@ -317,7 +317,7 @@
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             @if($method->account)
                                                 <div class="text-sm font-semibold text-green-600">
-                                                    {{ number_format($method->current_balance ?? 0, 2) }} ريال
+                                                    {{ number_format($method->current_balance ?? 0, 2) }} {{ $currencySymbol ?? optional(\App\Models\BusinessSetting::getInstance())->currency_symbol }}
                                                 </div>
                                                 @if($method->account->transactions()->count() > 0)
                                                     <div class="text-sm text-gray-500">

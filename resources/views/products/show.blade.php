@@ -46,12 +46,12 @@
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
                 <div>
                     <label class="form-label">سعر البيع:</label>
-                    <p class="form-value price">💰 {{ number_format($product->price, 2) }} ريال</p>
+                    <p class="form-value price">💰 {{ number_format($product->price, 2) }} {{ $currencySymbol ?? optional(\App\Models\BusinessSetting::getInstance())->currency_symbol }}</p>
                 </div>
                 
                 <div>
                     <label class="form-label">سعر التكلفة:</label>
-                    <p class="form-value">{{ $product->cost_price ? number_format($product->cost_price, 2) . ' ريال' : 'غير محدد' }}</p>
+                    <p class="form-value">{{ $product->cost_price ? number_format($product->cost_price, 2) . ' ' . ($currencySymbol ?? optional(\App\Models\BusinessSetting::getInstance())->currency_symbol) : 'غير محدد' }}</p>
                 </div>
             </div>
 
