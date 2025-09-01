@@ -130,14 +130,14 @@
                                 
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">
-                                        <span class="font-medium">{{ number_format($customer->total_invoiced, 0) }} ريال</span>
+                                        <span class="font-medium">{{ number_format($customer->total_invoiced, 0) }} {{ $currencySymbol ?? optional(\App\Models\BusinessSetting::getInstance())->currency_symbol }}</span>
                                     </div>
                                     <div class="text-sm text-gray-500">
-                                        مدفوع: {{ number_format($customer->total_paid, 0) }} ريال
+                                        مدفوع: {{ number_format($customer->total_paid, 0) }} {{ $currencySymbol ?? optional(\App\Models\BusinessSetting::getInstance())->currency_symbol }}
                                     </div>
                                     @if($customer->remaining_balance > 0)
                                         <div class="text-sm text-red-600 font-medium">
-                                            متبقي: {{ number_format($customer->remaining_balance, 0) }} ريال
+                                            متبقي: {{ number_format($customer->remaining_balance, 0) }} {{ $currencySymbol ?? optional(\App\Models\BusinessSetting::getInstance())->currency_symbol }}
                                         </div>
                                     @endif
                                 </td>

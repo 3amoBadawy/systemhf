@@ -161,7 +161,7 @@
                     <div class="mr-5 w-0 flex-1">
                         <dl>
                             <dt class="text-sm font-medium text-gray-500 truncate">إجمالي المبلغ</dt>
-                            <dd class="text-lg font-medium text-gray-900">{{ number_format($customer->invoices_sum_total ?? 0, 0) }} ريال</dd>
+                            <dd class="text-lg font-medium text-gray-900">{{ number_format($customer->invoices_sum_total ?? 0, 0) }} {{ $currencySymbol ?? optional(\App\Models\BusinessSetting::getInstance())->currency_symbol }}</dd>
                         </dl>
                     </div>
                 </div>
@@ -182,7 +182,7 @@
                     <div class="mr-5 w-0 flex-1">
                         <dl>
                             <dt class="text-sm font-medium text-gray-500 truncate">إجمالي المدفوعات</dt>
-                            <dd class="text-lg font-medium text-gray-900">{{ number_format($customer->payments_sum_amount ?? 0, 0) }} ريال</dd>
+                            <dd class="text-lg font-medium text-gray-900">{{ number_format($customer->payments_sum_amount ?? 0, 0) }} {{ $currencySymbol ?? optional(\App\Models\BusinessSetting::getInstance())->currency_symbol }}</dd>
                         </dl>
                     </div>
                 </div>
@@ -225,7 +225,7 @@
                                     {{ $invoice->created_at->format('Y/m/d') }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    {{ number_format($invoice->total, 0) }} ريال
+                                    {{ number_format($invoice->total, 0) }} {{ $currencySymbol ?? optional(\App\Models\BusinessSetting::getInstance())->currency_symbol }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if($invoice->status == 'paid')

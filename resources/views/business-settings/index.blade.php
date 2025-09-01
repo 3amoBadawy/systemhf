@@ -184,7 +184,7 @@
                                 قبل المبلغ ($ 100.00)
                             </option>
                             <option value="after" {{ old('currency_symbol_placement', $settings->currency_symbol_placement) == 'after' ? 'selected' : '' }}>
-                                بعد المبلغ (100.00 ريال)
+                                بعد المبلغ (100.00 {{ $settings->currency_symbol ?? optional(\App\Models\BusinessSetting::getInstance())->currency_symbol }})
                             </option>
                         </select>
                     </div>
