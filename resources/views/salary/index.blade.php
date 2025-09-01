@@ -50,7 +50,7 @@
                     </div>
                     <div class="mr-4">
                         <p class="text-sm font-medium text-gray-600">إجمالي الرواتب</p>
-                        <p class="text-2xl font-semibold text-gray-900">{{ number_format($totalSalaries ?? 0, 2) }} ريال</p>
+                        <p class="text-2xl font-semibold text-gray-900">{{ number_format($totalSalaries ?? 0, 2) }} {{ $currencySymbol ?? optional(\App\Models\BusinessSetting::getInstance())->currency_symbol }}</p>
                     </div>
                 </div>
             </div>
@@ -165,16 +165,16 @@
                                         {{ $salary->month_name ?? 'غير محدد' }} {{ $salary->year ?? 'غير محدد' }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ number_format($salary->basic_salary ?? 0, 2) }} ريال
+                                        {{ number_format($salary->basic_salary ?? 0, 2) }} {{ $currencySymbol ?? optional(\App\Models\BusinessSetting::getInstance())->currency_symbol }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ number_format($salary->allowances ?? 0, 2) }} ريال
+                                        {{ number_format($salary->allowances ?? 0, 2) }} {{ $currencySymbol ?? optional(\App\Models\BusinessSetting::getInstance())->currency_symbol }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ number_format($salary->deductions ?? 0, 2) }} ريال
+                                        {{ number_format($salary->deductions ?? 0, 2) }} {{ $currencySymbol ?? optional(\App\Models\BusinessSetting::getInstance())->currency_symbol }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                        {{ number_format($salary->net_salary ?? 0, 2) }} ريال
+                                        {{ number_format($salary->net_salary ?? 0, 2) }} {{ $currencySymbol ?? optional(\App\Models\BusinessSetting::getInstance())->currency_symbol }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         @if(isset($salary->status))

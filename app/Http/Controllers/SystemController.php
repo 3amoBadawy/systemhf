@@ -6,6 +6,9 @@ use App\Services\SystemHealthService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class SystemController extends Controller
 {
@@ -33,6 +36,111 @@ class SystemController extends Controller
                 'uptime' => $this->getUptime(),
             ],
         ];
+    }
+
+    /**
+     * Display system status page data
+     */
+    public function status(): \Illuminate\View\View
+    {
+        $status = $this->health();
+
+        // Basic counters for summary
+        $flat = collect($status)->flatMap(function ($group) {
+            return is_array($group) ? $group : [];
+        });
+
+        $counts = [
+            'total_components' => $flat->count(),
+            'working_components' => $flat->filter(fn ($s) => is_array($s) && ($s['status'] ?? null) === 'working')->count(),
+            'warning_components' => $flat->filter(fn ($s) => is_array($s) && ($s['status'] ?? null) === 'warning')->count(),
+            'error_components' => $flat->filter(fn ($s) => is_array($s) && ($s['status'] ?? null) === 'error')->count(),
+        ];
+
+        $systemStatus = array_merge($status, $counts, [
+            'php_version' => \PHP_VERSION,
+            'laravel_version' => app()->version(),
+            'database_version' => $this->getDatabaseVersion(),
+            'disk_space' => $this->getDiskSpace(),
+            'memory_usage' => $this->getMemoryUsage(),
+            'uptime' => $this->getUptime(),
+        ]);
+
+        return view('system.status', compact('systemStatus'));
+    }
+
+    /**
+     * Run basic diagnostics
+     */
+    public function diagnostics(): JsonResponse
+    {
+        try {
+            // Trigger simple set of checks
+            $result = [
+                'controllers' => SystemHealthService::checkControllers(),
+                'models' => SystemHealthService::checkModels(),
+                'routes' => SystemHealthService::checkRoutes(),
+                'views' => SystemHealthService::checkViews(),
+                'database' => SystemHealthService::checkDatabase(),
+                'php_extensions' => SystemHealthService::checkPhpExtensions(),
+            ];
+
+            return response()->json(['success' => true, 'result' => $result]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Perform maintenance actions
+     */
+    public function maintenance(Request $request): JsonResponse
+    {
+        $action = (string) $request->input('action');
+
+        try {
+            $map = [
+                'cache_clear' => fn () => [Artisan::call('cache:clear'), Artisan::call('config:clear'), Artisan::call('view:clear')],
+                'config_clear' => fn () => Artisan::call('config:clear'),
+                'route_clear' => fn () => Artisan::call('route:clear'),
+                'view_clear' => fn () => Artisan::call('view:clear'),
+                'cache_config' => fn () => Artisan::call('config:cache'),
+                'cache_route' => fn () => Artisan::call('route:cache'),
+                'cache_view' => fn () => Artisan::call('view:cache'),
+                'optimize' => fn () => Artisan::call('optimize'),
+                'storage_link' => fn () => Artisan::call('storage:link'),
+                'queue_restart' => fn () => Artisan::call('queue:restart'),
+            ];
+
+            if (! isset($map[$action])) {
+                return response()->json(['success' => false, 'message' => 'إجراء غير معروف'], 400);
+            }
+
+            $map[$action]();
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Download latest application log
+     */
+    public function downloadLatestLog(): \Symfony\Component\HttpFoundation\StreamedResponse
+    {
+        $latest = collect(Storage::disk('local')->files('logs'))
+            ->filter(fn ($f) => str_ends_with($f, '.log'))
+            ->sortDesc()
+            ->first();
+
+        if (! $latest) {
+            abort(404, 'لا توجد ملفات سجل');
+        }
+
+        return response()->streamDownload(function () use ($latest) {
+            echo Storage::disk('local')->get($latest);
+        }, basename($latest));
     }
 
     /**

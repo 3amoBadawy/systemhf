@@ -14,9 +14,10 @@ class BranchController extends Controller
      */
     public function index(): View
     {
+        $perPage = (int) (config('app.pagination_per_page') ?? 20);
         $branches = Branch::orderBy('sort_order', 'asc')
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate($perPage);
 
         return view('branches.index', compact('branches'));
     }
@@ -170,7 +171,7 @@ class BranchController extends Controller
             'total_customers' => $branch->customers()->count(),
             'active_customers' => $branch->customers()->where('status', 'active')->count(),
             'total_invoices' => $branch->invoices()->count(),
-            'total_invoice_amount' => $branch->invoices()->sum('total'),
+            'total_invoice_amount' => (float) $branch->invoices()->sum('total'),
             'total_expenses' => $branch->expenses()->sum('amount'),
             'monthly_revenue' => $branch->invoices()
                 ->where('created_at', '>=', now()->startOfMonth())

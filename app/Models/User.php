@@ -123,8 +123,17 @@ class User extends Authenticatable
     public function hasPermission(string $permissionName): bool
     {
         $role = $this->role()->first();
-        if ($role && property_exists($role, 'permissions') && $role->permissions) {
-            return in_array($permissionName, $role->permissions);
+        if ($role && method_exists($role, 'hasPermission')) {
+            if ($role->hasPermission($permissionName)) {
+                return true;
+            }
+
+            // دعم صلاحيات الموديول (module.*)
+            $parts = explode('.', $permissionName);
+            if (count($parts) > 1) {
+                $modulePermission = $parts[0].'.*';
+                return $role->hasPermission($modulePermission);
+            }
         }
 
         return false;

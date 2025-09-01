@@ -14,8 +14,9 @@ class SupplierController extends Controller
      */
     public function index(): View
     {
+        $perPage = (int) (config('app.pagination_per_page') ?? 20);
         $suppliers = Supplier::orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate($perPage);
 
         return view('suppliers.index', compact('suppliers'));
     }

@@ -15,10 +15,11 @@ class PaymentMethodController extends Controller
      */
     public function index(): View
     {
+        $perPage = (int) (config('app.pagination_per_page') ?? 20);
         $paymentMethods = PaymentMethod::with(['branch'])
             ->orderBy('sort_order', 'asc')
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate($perPage);
 
         return view('payment-methods.index', compact('paymentMethods'));
     }
@@ -80,7 +81,7 @@ class PaymentMethodController extends Controller
      */
     public function show(PaymentMethod $paymentMethod): View
     {
-        $paymentMethod->load(['branch', 'linkedAccount']);
+        $paymentMethod->load(['branch', 'account']);
 
         return view('payment-methods.show', compact('paymentMethod'));
     }
@@ -168,7 +169,7 @@ class PaymentMethodController extends Controller
      */
     public function showAccount(PaymentMethod $paymentMethod): View
     {
-        $paymentMethod->load(['linkedAccount', 'branch']);
+        $paymentMethod->load(['account', 'branch']);
 
         return view('payment-methods.account', compact('paymentMethod'));
     }

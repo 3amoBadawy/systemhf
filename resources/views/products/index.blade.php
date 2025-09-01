@@ -145,7 +145,7 @@
                                     {{ $product->category->name ?? 'غير محدد' }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    {{ number_format($product->price, 0) }} ريال
+                                    {{ number_format($product->price, 0) }} {{ $currencySymbol ?? optional(\App\Models\BusinessSetting::getInstance())->currency_symbol }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if($product->is_active)

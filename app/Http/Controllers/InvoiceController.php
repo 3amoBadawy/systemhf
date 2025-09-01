@@ -17,9 +17,10 @@ class InvoiceController extends Controller
      */
     public function index(): View
     {
+        $perPage = (int) (config('app.pagination_per_page') ?? 20);
         $invoices = Invoice::with(['customer', 'branch', 'items'])
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate($perPage);
 
         return view('invoices.index', compact('invoices'));
     }
@@ -173,12 +174,13 @@ class InvoiceController extends Controller
     public function search(Request $request): View
     {
         $query = $request->get('q');
+        $perPage = (int) (config('app.pagination_per_page') ?? 20);
         $invoices = Invoice::where('contract_number', 'like', "%{$query}%")
             ->orWhereHas('customer', function ($q) use ($query) {
                 $q->where('name', 'like', "%{$query}%");
             })
             ->with(['customer', 'branch', 'items'])
-            ->paginate(20);
+            ->paginate($perPage);
 
         return view('invoices.index', compact('invoices', 'query'));
     }

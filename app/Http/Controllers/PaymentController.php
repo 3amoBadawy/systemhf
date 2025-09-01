@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\Invoice;
 use App\Models\Payment;
+use App\Models\PaymentAllocation;
+use App\Models\PaymentMethod;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -16,11 +19,37 @@ class PaymentController extends Controller
     /**
      * عرض قائمة المدفوعات
      */
-    public function index(): View
+    public function index(\Illuminate\Http\Request $request): View
     {
-        $payments = Payment::with(['customer', 'invoice', 'paymentMethod'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(20);
+        $perPage = (int) (config('app.pagination_per_page') ?? 20);
+        $query = Payment::with(['customer', 'paymentMethod'])
+            ->orderBy('created_at', 'desc');
+
+        if ($search = $request->get('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('reference_number', 'like', "%{$search}%")
+                    ->orWhereHas('customer', function ($cq) use ($search) {
+                        $cq->where('name', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        if ($customerId = $request->get('customer_id')) {
+            $query->where('customer_id', (int) $customerId);
+        }
+
+        if ($paymentMethodId = $request->get('payment_method_id')) {
+            $query->where('payment_method_id', (int) $paymentMethodId);
+        }
+
+        if ($dateFrom = $request->get('date_from')) {
+            $query->whereDate('payment_date', '>=', $dateFrom);
+        }
+        if ($dateTo = $request->get('date_to')) {
+            $query->whereDate('payment_date', '<=', $dateTo);
+        }
+
+        $payments = $query->paginate($perPage);
 
         return view('payments.index', compact('payments'));
     }
@@ -32,8 +61,9 @@ class PaymentController extends Controller
     {
         $customers = Customer::where('status', 'active')->get();
         $invoices = Invoice::where('payment_status', '!=', 'paid')->get();
+        $paymentMethods = PaymentMethod::where('is_active', true)->orderBy('sort_order')->get();
 
-        return view('payments.create', compact('customers', 'invoices'));
+        return view('payments.create', compact('customers', 'invoices', 'paymentMethods'));
     }
 
     /**
@@ -45,8 +75,8 @@ class PaymentController extends Controller
             'customer_id' => 'required|exists:customers,id',
             'invoice_id' => 'nullable|exists:invoices,id',
             'amount' => 'required|numeric|min:0.01',
-            'payment_method' => 'required|in:cash,check,bank_transfer,credit_card,other',
-            'payment_status' => 'required|in:pending,completed,failed,refunded',
+            'payment_method_id' => 'required|exists:payment_methods,id',
+            'status' => 'required|in:pending,confirmed,cancelled,refunded',
             'payment_date' => 'required|date',
             'reference_number' => 'nullable|string|max:100',
             'notes' => 'nullable|string',
@@ -55,14 +85,14 @@ class PaymentController extends Controller
 
         try {
             $paymentData = [
-                'customer_id' => $request->input('customer_id'),
-                'invoice_id' => $request->input('invoice_id'),
-                'amount' => $request->input('amount'),
-                'payment_method' => $request->input('payment_method'),
-                'payment_status' => $request->input('payment_status'),
+                'customer_id' => (int) $request->input('customer_id'),
+                'amount' => (float) $request->input('amount'),
+                'payment_method_id' => (int) $request->input('payment_method_id'),
+                'status' => $request->input('status'),
                 'payment_date' => $request->input('payment_date'),
                 'reference_number' => $request->input('reference_number'),
                 'notes' => $request->input('notes'),
+                'user_id' => Auth::id(),
             ];
 
             $payment = Payment::create($paymentData);
@@ -73,9 +103,19 @@ class PaymentController extends Controller
                 $payment->update(['receipt_image' => $receiptImagePath]);
             }
 
-            // تحديث حالة الدفع في الفاتورة إذا كانت موجودة
-            if ($payment->invoice_id) {
-                $this->updateInvoicePaymentStatus($payment->invoice);
+            // تخصيص الدفعة لفاتورة إذا تم اختيارها
+            if ($invoiceId = $request->input('invoice_id')) {
+                PaymentAllocation::create([
+                    'payment_id' => $payment->id,
+                    'invoice_id' => (int) $invoiceId,
+                    'allocated_amount' => (float) $payment->amount,
+                    'remaining_balance' => 0,
+                    'allocation_status' => ($payment->status === 'confirmed') ? 'full' : 'partial',
+                ]);
+                $invoice = Invoice::find((int) $invoiceId);
+                if ($invoice) {
+                    $this->updateInvoicePaymentStatus($invoice);
+                }
             }
 
             return redirect()->route('payments.index')
@@ -117,8 +157,8 @@ class PaymentController extends Controller
         $request->validate([
             'customer_id' => 'required|exists:customers,id',
             'amount' => 'required|numeric|min:0.01',
-            'payment_method' => 'required|in:cash,check,bank_transfer,credit_card,other',
-            'payment_status' => 'required|in:pending,completed,failed,refunded',
+            'payment_method_id' => 'required|exists:payment_methods,id',
+            'status' => 'required|in:pending,confirmed,cancelled,refunded',
             'payment_date' => 'required|date',
             'reference_number' => 'nullable|string|max:100',
             'notes' => 'nullable|string',
@@ -143,10 +183,10 @@ class PaymentController extends Controller
         }
 
         $updateData = [
-            'customer_id' => $request->input('customer_id'),
-            'amount' => $request->input('amount'),
-            'payment_method' => $request->input('payment_method'),
-            'payment_status' => $request->input('payment_status'),
+            'customer_id' => (int) $request->input('customer_id'),
+            'amount' => (float) $request->input('amount'),
+            'payment_method_id' => (int) $request->input('payment_method_id'),
+            'status' => $request->input('status'),
             'payment_date' => $request->input('payment_date'),
             'reference_number' => $request->input('reference_number'),
             'notes' => $request->input('notes'),
@@ -185,12 +225,13 @@ class PaymentController extends Controller
     public function search(Request $request): View
     {
         $query = $request->get('q');
+        $perPage = (int) (config('app.pagination_per_page') ?? 20);
         $payments = Payment::where('reference_number', 'like', "%{$query}%")
             ->orWhereHas('customer', function ($q) use ($query) {
                 $q->where('name', 'like', "%{$query}%");
             })
             ->with(['customer', 'invoice', 'paymentMethod'])
-            ->paginate(20);
+            ->paginate($perPage);
 
         return view('payments.index', compact('payments', 'query'));
     }
@@ -219,11 +260,12 @@ class PaymentController extends Controller
     public function getStats(): JsonResponse
     {
         $stats = [
-            'total_payments' => Payment::sum('amount'),
-            'total_completed' => Payment::where('payment_status', 'completed')->sum('amount'),
-            'total_pending' => Payment::where('payment_status', 'pending')->sum('amount'),
-            'total_failed' => Payment::where('payment_status', 'failed')->sum('amount'),
-            'monthly_payments' => Payment::where('created_at', '>=', now()->startOfMonth())->sum('amount'),
+            'total_payments' => (float) Payment::sum('amount'),
+            'total_confirmed' => (float) Payment::where('status', 'confirmed')->sum('amount'),
+            'total_pending' => (float) Payment::where('status', 'pending')->sum('amount'),
+            'total_cancelled' => (float) Payment::where('status', 'cancelled')->sum('amount'),
+            'total_refunded' => (float) Payment::where('status', 'refunded')->sum('amount'),
+            'monthly_payments' => (float) Payment::where('created_at', '>=', now()->startOfMonth())->sum('amount'),
         ];
 
         return response()->json($stats);
@@ -234,8 +276,8 @@ class PaymentController extends Controller
      */
     private function updateInvoicePaymentStatus(Invoice $invoice): void
     {
-        $totalPaid = $invoice->payments()->sum('amount');
-        $total = $invoice->total;
+        $totalPaid = (float) PaymentAllocation::where('invoice_id', $invoice->id)->sum('allocated_amount');
+        $total = (float) $invoice->total;
 
         if ($totalPaid >= $total) {
             $status = 'paid';

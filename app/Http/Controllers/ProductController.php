@@ -19,9 +19,10 @@ class ProductController extends Controller
      */
     public function index(): View
     {
+        $perPage = (int) (config('app.pagination_per_page') ?? 20);
         $products = Product::with(['category', 'supplier', 'media'])
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate($perPage);
 
         return view('products.index', compact('products'));
     }
@@ -132,11 +133,12 @@ class ProductController extends Controller
     public function search(Request $request): View
     {
         $query = $request->get('q');
+        $perPage = (int) (config('app.pagination_per_page') ?? 20);
         $products = Product::where('name_ar', 'like', "%{$query}%")
             ->orWhere('name', 'like', "%{$query}%")
             ->orWhere('description_ar', 'like', "%{$query}%")
             ->with(['category', 'supplier', 'media'])
-            ->paginate(20);
+            ->paginate($perPage);
 
         return view('products.index', compact('products', 'query'));
     }
@@ -146,9 +148,10 @@ class ProductController extends Controller
      */
     public function getByCategory(Category $category): View
     {
+        $perPage = (int) (config('app.pagination_per_page') ?? 20);
         $products = $category->products()
             ->with(['supplier', 'media'])
-            ->paginate(20);
+            ->paginate($perPage);
 
         return view('products.by-category', compact('category', 'products'));
     }

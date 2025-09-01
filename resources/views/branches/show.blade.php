@@ -114,7 +114,7 @@
                 <div class="stat-icon">💰</div>
                 <div class="stat-content">
                     <h4>إجمالي الفواتير</h4>
-                    <div class="stat-number">{{ number_format($branch->invoices()->sum('total'), 2) }} ريال</div>
+                    <div class="stat-number">{{ number_format($branch->invoices()->sum('total'), 2) }} {{ $currencySymbol ?? optional(\App\Models\BusinessSetting::getInstance())->currency_symbol }}</div>
                 </div>
             </div>
             
@@ -130,7 +130,7 @@
                 <div class="stat-icon">💸</div>
                 <div class="stat-content">
                     <h4>إجمالي المدفوع</h4>
-                    <div class="stat-number">{{ number_format($branch->payments()->sum('amount'), 2) }} ريال</div>
+                    <div class="stat-number">{{ number_format($branch->payments()->sum('amount'), 2) }} {{ $currencySymbol ?? optional(\App\Models\BusinessSetting::getInstance())->currency_symbol }}</div>
                 </div>
             </div>
             

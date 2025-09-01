@@ -92,6 +92,17 @@ class ConfigurationServiceProvider extends ServiceProvider
             if ($backupFrequency) {
                 Config::set('backup.frequency', $backupFrequency);
             }
+
+            // إعدادات التقسيم الصفحي (Pagination)
+            $perPage = $configService->get('pagination_per_page');
+            if ($perPage) {
+                Config::set('app.pagination_per_page', (int) $perPage);
+            }
+
+            $reportPerPage = $configService->get('report_pagination_per_page');
+            if ($reportPerPage) {
+                Config::set('app.report_pagination_per_page', (int) $reportPerPage);
+            }
         } catch (\Exception $e) {
             // في حالة عدم وجود قاعدة البيانات، استخدم القيم الافتراضية
         }

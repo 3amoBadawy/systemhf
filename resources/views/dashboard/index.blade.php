@@ -24,7 +24,7 @@
             <div class="stat-content">
                 <h3>{{ number_format($invoicesCount) }}</h3>
                 <p>إجمالي الفواتير</p>
-                <small>{{ number_format($totalInvoiced, 2) }} ريال</small>
+                <small>{{ number_format($totalInvoiced, 2) }} {{ $currencySymbol ?? optional(\App\Models\BusinessSetting::getInstance())->currency_symbol }}</small>
             </div>
         </div>
 
@@ -34,7 +34,7 @@
             <div class="stat-content">
                 <h3>{{ number_format($paymentsCount) }}</h3>
                 <p>إجمالي المدفوعات</p>
-                <small>{{ number_format($totalPaid, 2) }} ريال</small>
+                <small>{{ number_format($totalPaid, 2) }} {{ $currencySymbol ?? optional(\App\Models\BusinessSetting::getInstance())->currency_symbol }}</small>
             </div>
         </div>
 
@@ -87,7 +87,7 @@
             <h3>📅 مدفوعات هذا الشهر</h3>
             <div class="monthly-payments">
                 <div class="amount">{{ number_format($paymentsThisMonth, 2) }}</div>
-                <div class="label">ريال</div>
+                <div class="label">{{ $currencySymbol ?? optional(\App\Models\BusinessSetting::getInstance())->currency_symbol }}</div>
             </div>
         </div>
     </div>
@@ -150,7 +150,7 @@
                         <div class="activity-content">
                             <div class="activity-title">فاتورة {{ $invoice->invoice_number }}</div>
                             <div class="activity-subtitle">{{ $invoice->customer->name }}</div>
-                            <div class="activity-meta">{{ number_format($invoice->total, 2) }} ريال</div>
+                            <div class="activity-meta">{{ number_format($invoice->total, 2) }} {{ $currencySymbol ?? optional(\App\Models\BusinessSetting::getInstance())->currency_symbol }}</div>
                         </div>
                         <div class="activity-time">{{ $invoice->created_at->diffForHumans() }}</div>
                     </div>
@@ -171,7 +171,7 @@
                     <div class="activity-item">
                         <div class="activity-icon">💰</div>
                         <div class="activity-content">
-                            <div class="activity-title">{{ number_format($payment->amount, 2) }} ريال</div>
+                            <div class="activity-title">{{ number_format($payment->amount, 2) }} {{ $currencySymbol ?? optional(\App\Models\BusinessSetting::getInstance())->currency_symbol }}</div>
                             <div class="activity-subtitle">{{ $payment->customer->name }}</div>
                             <div class="activity-meta">{{ $payment->payment_method }}</div>
                         </div>

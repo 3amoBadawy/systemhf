@@ -56,7 +56,7 @@
                     <div class="mr-5 w-0 flex-1">
                         <dl>
                             <dt class="text-sm font-medium text-gray-500 truncate">إجمالي المبلغ</dt>
-                            <dd class="text-lg font-medium text-gray-900">{{ number_format($payments->sum('amount'), 0) }} ريال</dd>
+                            <dd class="text-lg font-medium text-gray-900">{{ number_format($payments->sum('amount'), 0) }} {{ optional(\App\Models\BusinessSetting::getInstance())->currency_symbol ?? 'ريال' }}</dd>
                         </dl>
                     </div>
                 </div>
@@ -210,7 +210,7 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
-                                    {{ number_format($payment->amount, 0) }} ريال
+                                    {{ number_format($payment->amount, 0) }} {{ $currencySymbol ?? optional(\App\Models\BusinessSetting::getInstance())->currency_symbol }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     {{ $payment->paymentMethod->name ?? 'غير محدد' }}

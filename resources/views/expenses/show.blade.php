@@ -56,7 +56,7 @@
             </div>
             <div class="info-item">
                 <label>المبلغ:</label>
-                <span class="amount negative">{{ number_format($expense->amount, 2) }} ريال</span>
+                <span class="amount negative">{{ number_format($expense->amount, 2) }} {{ $currencySymbol ?? optional(\App\Models\BusinessSetting::getInstance())->currency_symbol }}</span>
             </div>
             <div class="info-item">
                 <label>الفئة:</label>

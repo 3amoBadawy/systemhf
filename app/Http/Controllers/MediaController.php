@@ -23,11 +23,12 @@ class MediaController extends Controller
      */
     public function index(): View
     {
+        $perPage = (int) (config('app.pagination_per_page') ?? 20);
         try {
             // @psalm-suppress UndefinedMagicMethod
-            $media = Media::query()->latest()->paginate(20);
+            $media = Media::query()->latest()->paginate($perPage);
         } catch (\Exception $e) {
-            $media = new LengthAwarePaginator([], 0, 20, 1);
+            $media = new LengthAwarePaginator([], 0, $perPage, 1);
         }
 
         return view('media.index', compact('media'));
@@ -38,11 +39,12 @@ class MediaController extends Controller
      */
     public function gallery(): View
     {
+        $perPage = (int) (config('app.pagination_per_page') ?? 20);
         try {
             // @psalm-suppress UndefinedMagicMethod
-            $media = Media::query()->latest()->paginate(20);
+            $media = Media::query()->latest()->paginate($perPage);
         } catch (\Exception $e) {
-            $media = new LengthAwarePaginator([], 0, 20, 1);
+            $media = new LengthAwarePaginator([], 0, $perPage, 1);
         }
 
         return view('media.gallery', compact('media'));

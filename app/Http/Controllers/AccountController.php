@@ -15,9 +15,10 @@ class AccountController extends Controller
      */
     public function index(): View
     {
+        $perPage = (int) (config('app.pagination_per_page') ?? 20);
         $accounts = Account::with(['branch'])
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate($perPage);
 
         return view('accounts.index', compact('accounts'));
     }
@@ -167,10 +168,11 @@ class AccountController extends Controller
     public function showTransactionsByBranch(Account $account, int $branchId): View
     {
         $branch = Branch::findOrFail($branchId);
+        $perPage = (int) (config('app.pagination_per_page') ?? 20);
         $transactions = $account->transactions()
             ->where('branch_id', $branchId)
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate($perPage);
 
         return view('accounts.transactions-by-branch', compact('account', 'branch', 'transactions'));
     }
@@ -180,10 +182,11 @@ class AccountController extends Controller
      */
     public function showAllTransactions(Account $account): View
     {
+        $perPage = (int) (config('app.pagination_per_page') ?? 20);
         $transactions = $account->transactions()
             ->with(['branch'])
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate($perPage);
 
         return view('accounts.all-transactions', compact('account', 'transactions'));
     }

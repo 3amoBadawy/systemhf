@@ -115,11 +115,11 @@
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
                 <div class="form-group">
-                    <label for="payment_method">طريقة الدفع *</label>
-                    <select id="payment_method" name="payment_method" required class="form-control">
+                    <label for="payment_method_id">طريقة الدفع *</label>
+                    <select id="payment_method_id" name="payment_method_id" required class="form-control">
                         <option value="">اختر طريقة الدفع</option>
                         @foreach($paymentMethods as $method)
-                            <option value="{{ $method->code }}" {{ old('payment_method') == $method->code ? 'selected' : '' }}>
+                            <option value="{{ $method->id }}" {{ old('payment_method_id') == $method->id ? 'selected' : '' }}>
                                 {{ $method->name_ar }}
                             </option>
                         @endforeach
@@ -127,13 +127,13 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="payment_status">حالة الدفع *</label>
-                    <select id="payment_status" name="payment_status" required class="form-control">
+                    <label for="status">حالة الدفع *</label>
+                    <select id="status" name="status" required class="form-control">
                         <option value="">اختر حالة الدفع</option>
-                        <option value="pending" {{ old('payment_status') == 'pending' ? 'selected' : '' }}>في الانتظار</option>
-                        <option value="completed" {{ old('payment_status') == 'completed' ? 'selected' : '' }}>مكتمل</option>
-                        <option value="failed" {{ old('payment_status') == 'failed' ? 'selected' : '' }}>فشل</option>
-                        <option value="refunded" {{ old('payment_status') == 'refunded' ? 'selected' : '' }}>مسترد</option>
+                        <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>في الانتظار</option>
+                        <option value="confirmed" {{ old('status') == 'confirmed' ? 'selected' : '' }}>مؤكد</option>
+                        <option value="cancelled" {{ old('status') == 'cancelled' ? 'selected' : '' }}>ملغي</option>
+                        <option value="refunded" {{ old('status') == 'refunded' ? 'selected' : '' }}>مسترد</option>
                     </select>
                 </div>
             </div>

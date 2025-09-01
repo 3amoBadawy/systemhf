@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', $businessName)</title>
+    <script>
+        window.appCurrencySymbol = @json(isset($currencySymbol) ? $currencySymbol : (optional(\App\Models\BusinessSetting::getInstance())->currency_symbol ?? ''));
+        window.appName = @json(isset($businessName) ? $businessName : (config('app.name') ?: ''));
+    </script>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

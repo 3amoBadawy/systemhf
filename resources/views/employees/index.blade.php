@@ -199,7 +199,7 @@
                                     {{ $employee->branch->name ?? 'غير محدد' }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    {{ $employee->salary ? number_format($employee->salary, 0) . ' ريال' : 'غير محدد' }}
+                                    {{ $employee->salary ? number_format($employee->salary, 0) . ' ' . ($currencySymbol ?? optional(\App\Models\BusinessSetting::getInstance())->currency_symbol) : 'غير محدد' }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if($employee->is_active)
