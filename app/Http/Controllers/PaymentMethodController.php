@@ -81,7 +81,7 @@ class PaymentMethodController extends Controller
      */
     public function show(PaymentMethod $paymentMethod): View
     {
-        $paymentMethod->load(['branch', 'linkedAccount']);
+        $paymentMethod->load(['branch', 'account']);
 
         return view('payment-methods.show', compact('paymentMethod'));
     }
@@ -169,7 +169,7 @@ class PaymentMethodController extends Controller
      */
     public function showAccount(PaymentMethod $paymentMethod): View
     {
-        $paymentMethod->load(['linkedAccount', 'branch']);
+        $paymentMethod->load(['account', 'branch']);
 
         return view('payment-methods.account', compact('paymentMethod'));
     }
